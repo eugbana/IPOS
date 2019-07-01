@@ -394,7 +394,7 @@
 							<?php } if( ($user_info->roles) == "custom" ) {
 								 foreach($allowed_modules->result() as $module){ ?>
 											<li class="has_sub">				
-												<a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+												<a href="<?php echo site_url("$module->module_id");?>" <?php if($_SERVER['REQUEST_URI'] == "/$module->module_id"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
 											</li>
 										<?php }
 								} elseif(($user_info->role)==7){
@@ -403,10 +403,10 @@
 										{
 										 if($this->lang->line("module_".$module->module_id)=="Laboratory"){?>
 													<li>
-														<a href="<?php echo site_url("laboratory");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span> Available Test </span></a>
+														<a href="<?php echo site_url("laboratory");?>" <?php if($_SERVER['REQUEST_URI'] == "/laboratory"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> Available Test </span></a>
 													</li>
 													<li>
-														<a href="<?php echo site_url("laboratory/test_start");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span> New Test </span></a>
+														<a href="<?php echo site_url("laboratory/test_start");?>" <?php if($_SERVER['REQUEST_URI'] == "/laboratory/test_start"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> New Test </span></a>
 													</li>
 													<li id="search">
 														<a><i class="<?php echo $module->icon; ?>"></i><span> Test Results Status </span></a>
@@ -417,7 +417,7 @@
 							
 												<?php }else{?>
 												<li class="has_sub">
-												<a href="<?php echo site_url("$module->module_id");?>" <?php if($_SERVER['REQUEST_URI'] == "/customers"): ?> class="waves-effect waves-light active" <?php else: ?> class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+												<a href="<?php echo site_url("$module->module_id");?>" <?php if($_SERVER['REQUEST_URI'] == "/$module->module_id"): ?> class="waves-effect waves-light active" <?php else: ?> class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
 													
 											</li>
 												<?php
@@ -434,10 +434,10 @@
 										 if($this->lang->line("module_".$module->module_id)=="Account"){?>
 														
 														<li>
-															<a href="<?php echo site_url("account/unprocessed_payment");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed</span></a>
+															<a href="<?php echo site_url("account/unprocessed_payment");?>" <?php if($_SERVER['REQUEST_URI'] == "/account/unprocessed_payment"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed</span></a>
 														</li>
 														<li>
-															<a href="<?php echo site_url("account/processed_payment");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>Processed Payments</span></a>
+															<a href="<?php echo site_url("account/processed_payment");?>" <?php if($_SERVER['REQUEST_URI'] == "/account_processed_payment"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Processed Payments</span></a>
 														</li>
 														
 														
@@ -454,13 +454,13 @@
 											
 										 if($this->lang->line("module_".$module->module_id)=="Account"){?>
 														<li>
-															<a href="<?php echo site_url("reports/account_report");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo 'Reports' ?></span></a>
+															<a href="<?php echo site_url("reports/account_report");?>" <?php if($_SERVER['REQUEST_URI'] == "/reports/account_report"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span><?php echo 'Reports' ?></span></a>
 														</li>
 														<li>
-															<a href="<?php echo site_url("account/unprocessed_payment");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed</span></a>
+															<a href="<?php echo site_url("account/unprocessed_payment");?>" <?php if($_SERVER['REQUEST_URI'] == "/account/unprocessed_payment"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed</span></a>
 														</li>
 														<li>
-															<a href="<?php echo site_url("account/processed_payment");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>Processed Payments</span></a>
+															<a href="<?php echo site_url("account/processed_payment");?>" <?php if($_SERVER['REQUEST_URI'] == "/account/processed_payment"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Processed Payments</span></a>
 														</li>
 														
 														
@@ -477,10 +477,10 @@
 											
 										 if($this->lang->line("module_".$module->module_id)=="Employees"){?>
 														<li>
-															<a href="<?php echo site_url("employees");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>Employees</span></a>
+										 					<a href="<?php echo site_url("employees");?>" <?php if($_SERVER['REQUEST_URI'] == "/employees"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Employees</span></a>
 														</li>
 														<li>
-															<a href="<?php echo site_url("config");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>Settings</span></a>
+															<a href="<?php echo site_url("config");?>" <?php if($_SERVER['REQUEST_URI'] == "/config"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Settings</span></a>
 														</li>
 														
 														
@@ -497,13 +497,13 @@
 															
 																
 														<li>
-															<a href="<?php echo site_url("laboratory/new_results");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed Results</span></a>
+															<a href="<?php echo site_url("laboratory/new_results");?>" <?php if($_SERVER['REQUEST_URI'] == "/laboratory/new_results"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed Results</span></a>
 														</li>
 														<li>
-															<a href="<?php echo site_url("laboratory/pending_results");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>Pending Results</span></a>
+															<a href="<?php echo site_url("laboratory/pending_results");?>" <?php if($_SERVER['REQUEST_URI'] == "/laboratory/pending_results"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Pending Results</span></a>
 														</li>
 														<li>
-															<a href="<?php echo site_url("laboratory/completed_results");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span>Completed Results</span></a>
+															<a href="<?php echo site_url("laboratory/completed_results");?>" <?php if($_SERVER['REQUEST_URI'] == "/laboratory/completed_results"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Completed Results</span></a>
 														</li>
 												<?php
 												}
@@ -511,13 +511,13 @@
 										?>
 								<?php }elseif(($user_info->role)==5){?>
 										<li>
-											<a href="<?php echo site_url("sales");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span> New Sale </span></a>
+											<a href="<?php echo site_url("sales");?>" <?php if($_SERVER['REQUEST_URI'] == "/sales"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> New Sale </span></a>
 										</li>
 										<li>
-											<a href="<?php echo site_url("sales/pill");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span> Pill Reminder </span></a>
+											<a href="<?php echo site_url("sales/pill");?>" <?php if($_SERVER['REQUEST_URI'] == "/sales/pill"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> Pill Reminder </span></a>
 										</li>
 										<li>
-											<a href="<?php echo site_url("sales/detailed_sales");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span> Online Sales </span></a>
+											<a href="<?php echo site_url("sales/detailed_sales");?>" <?php if($_SERVER['REQUEST_URI'] == "/sales/detailed_sales"): ?>class="waves-effect waves-light active" <?php else: ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> Online Sales </span></a>
 										</li>
 							<?php
 								}elseif(($user_info->role)==4){?>
@@ -528,7 +528,7 @@
 								?>
 								<?php if($this->lang->line("module_".$module->module_id)=="Items"){?>					
 									<li>
-										<a href="<?php echo site_url("$module->module_id");?>" <?php if($_SERVER['REQUEST_URI'] == "/items"): ?>class="waves-effect waves-light active" <?php else:  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-layers"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></a>
+										<a href="<?php echo site_url("$module->module_id");?>" <?php if($_SERVER['REQUEST_URI'] == "/$module->module_id"): ?>class="waves-effect waves-light active" <?php else:  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-layers"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></a>
 									</li>
 									<li>
 										<a href="<?php echo site_url("items/categories");?>" <?php if($_SERVER['REQUEST_URI'] == "/items/categories"): ?>class="waves-effect waves-light active" <?php else:  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-extension"></i><span>Categories</span></a>
