@@ -76,13 +76,13 @@ $(document).ready(function()
 				{
 				?>
 					<button id="delete" class="btn btn-default btn-sm">
-						<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_terminate");?>
+						<span class="fa fa-close">&nbsp</span><?php echo $this->lang->line("common_terminate");?>
 					</button>
 				<?php
 				}else{
 				?>
 					<button id="delete" class="btn btn-default btn-sm">
-						<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete");?>
+						<span class="fa fa-close">&nbsp</span><?php echo $this->lang->line("common_delete");?>
 					</button>
 				<?php
 				}

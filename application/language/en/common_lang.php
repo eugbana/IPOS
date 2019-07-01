@@ -2,7 +2,7 @@
 
 $lang["common_address_1"] = "Address 1";
 $lang["common_status"] = "Status";
-$lang["common_terminate"] = "Terminate";
+$lang["common_terminate"] = "De-activate";
 $lang["sign_in"] = "SIGN IN";
 $lang["login_to_account"] = "Please login to your account";
 $lang["forgot_your_password"] = "Forgot your password?";
