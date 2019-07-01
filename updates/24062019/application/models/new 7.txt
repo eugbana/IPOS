@@ -1,0 +1,13 @@
+li {
+    border-right: 1px solid #bbb;
+}
+
+li:last-child {
+    border-right: none;
+}
+
+	<a href="{$urls.base_url}">
+            <img class="logo img-responsive" src="{$shop.logo}" alt="{$shop.name}" height="100px" style="display:block;margin-left:auto;margin-right:auto;width:20%;margin-top:0px">
+          </a>
+		  
+		  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif
