@@ -57,41 +57,66 @@
 			</div>
 		</div>
 		<div class="form-group form-group-sm">	
-	<?php echo form_label('prescription', 'prescriptions', array('class'=>'control-label col-xs-3')); ?>
-	<div class="col-xs-4">
-		<label class="radio-inline">
-			<?php echo form_radio(array(
-					'name'=>'prescriptions',
-					'type'=>'radio',
-					'id'=>'prescriptions',
-					'value'=>'YES',
-					'checked'=>$item_info->prescriptions === 'YES')
-					); ?> <?php echo 'Yes'; ?>
-		</label>
-		<label class="radio-inline">
-			<?php echo form_radio(array(
-					'name'=>'prescriptions',
-					'type'=>'radio',
-					'id'=>'prescriptions',
-					'value'=>'NO',
-					'checked'=>$item_info->prescriptions === 'NO' || empty($item_info->prescriptions))
-					); ?> <?php echo 'No'; ?>
-		</label>
-
-	</div>
-	<?php echo form_label('Shelf', 'shelf', array('class'=>'control-label col-xs-1')); ?>
-			<div class='col-xs-3'>
-				<div class="input-group">
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-					<?php echo form_input(array(
-							'name'=>'shelf',
-							'id'=>'shelf',
-							'class'=>'form-control input-sm',
-							'value'=>$item_info->shelf)
-							);?>
-				</div>
+			<?php echo form_label('Apply V.A.T.', 'apply_vat', array('class' => 'control-label col-xs-3 text-danger')); ?>
+			<div class="col-xs-4">
+				<label class="radio-inline">
+					<?php echo form_radio(array(
+						'name'		=>	'apply_vat',
+						'type'		=>	'radio',
+						'id'		=>	'apply_vat',
+						'value'		=>	'YES',
+						'checked'	=> $item_info->apply_vat == 'YES')
+						); 
+					?> <?php echo 'Yes'; ?>
+				</label>
+				<label class="radio-inline">
+					<?php echo form_radio(array(
+						'name'		=>	'apply_vat',
+						'type'		=>	'radio',
+						'id'		=>	'apply_vat',
+						'value'		=>	'NO',
+						'checked'	=> $item_info->apply_vat == 'NO' || !$item_info->apply_vat ? 'checked' : '')
+						); 
+					?> <?php echo 'No'; ?>
+				</label>
 			</div>
-</div>
+		</div>
+		<div class="form-group form-group-sm">	
+		<?php echo form_label('prescription', 'prescriptions', array('class'=>'control-label col-xs-3')); ?>
+		<div class="col-xs-4">
+			<label class="radio-inline">
+				<?php echo form_radio(array(
+						'name'=>'prescriptions',
+						'type'=>'radio',
+						'id'=>'prescriptions',
+						'value'=>'YES',
+						'checked'=>$item_info->prescriptions === 'YES')
+						); ?> <?php echo 'Yes'; ?>
+			</label>
+			<label class="radio-inline">
+				<?php echo form_radio(array(
+						'name'=>'prescriptions',
+						'type'=>'radio',
+						'id'=>'prescriptions',
+						'value'=>'NO',
+						'checked'=>$item_info->prescriptions === 'NO' || empty($item_info->prescriptions))
+						); ?> <?php echo 'No'; ?>
+			</label>
+
+		</div>
+		<?php echo form_label('Shelf', 'shelf', array('class'=>'control-label col-xs-1')); ?>
+		<div class='col-xs-3'>
+			<div class="input-group">
+				<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
+				<?php echo form_input(array(
+						'name'=>'shelf',
+						'id'=>'shelf',
+						'class'=>'form-control input-sm',
+						'value'=>$item_info->shelf)
+						);?>
+			</div>
+		</div>
+		</div>
 		<div class="form-group form-group-sm">
 			<?php echo form_label('Type', 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-3'>

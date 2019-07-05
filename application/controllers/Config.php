@@ -289,6 +289,7 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array(
 			'theme' => $this->input->post('theme'),
+			'vat'	=> $this->input->post('default_vat'),
 			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
 			'default_tax_1_name' => $this->input->post('default_tax_1_name'),
 			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),

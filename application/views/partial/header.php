@@ -98,6 +98,8 @@
 		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
+		<!-- <script type="text/javascript" src="dist/jQuery/jQuery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="dist/assets/plugins/notifyjs/dist/notify.min.js"></script> -->
 		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=406c44e716"></script>
 		<!-- end minjs template tags -->
 		<?php endif; ?>

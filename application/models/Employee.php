@@ -571,5 +571,15 @@ class Employee extends Person
 
 		return $success;
 	}
+
+	public function get_employee_by_code($code) {
+		$query = $this->db->get_where('employees', array('auth_code' => $code), 1);
+
+		if($query->num_rows() == 1) {
+			return $query->row();
+		} 
+
+		return [];
+	}
 }
 ?>

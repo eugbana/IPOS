@@ -192,6 +192,6 @@ class Person extends CI_Model
 	public function delete_list($person_ids)
 	{
 		return TRUE;
- 	}
+	}
 }
 ?>

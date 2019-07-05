@@ -688,6 +688,8 @@ class Sale extends CI_Model
 				$table_status = 0;
 			}
 		}
+
+		$auth_code = $this->sale_lib->get_auth_code();
 		
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
@@ -695,11 +697,12 @@ class Sale extends CI_Model
 			'employee_id'	 => $employee_id,
 			'comment'		 => $comment,
 			'invoice_number' => $invoice_number,
-			'quote_number' => $quote_number,
+			'quote_number' 	 => $quote_number,
 			'dinner_table_id'=> $dinner_table,
 			'sales_amount'	 => $sales_amount,
 			'location_id'	 => $location_id,
-			'sale_status'	 => $sale_status
+			'sale_status'	 => $sale_status,
+			'auth_code'		 => $auth_code
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
@@ -924,17 +927,20 @@ class Sale extends CI_Model
 			}
 		}
 
+		$auth_code = $this->sale_lib->get_auth_code();
+
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
 			'customer_id'	 => null,
 			'employee_id'	 => $employee_id,
 			'comment'		 => '',
 			'invoice_number' => null,
-			'quote_number' => null,
+			'quote_number'   => null,
 			'dinner_table_id'=> 0,
 			'sales_amount'	 => $sales_amount,
 			'location_id'	 => $location_id,
-			'sale_status'	 => $sale_status
+			'sale_status'	 => $sale_status,
+			'auth_code'		 => $auth_code,
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
@@ -1016,15 +1022,18 @@ class Sale extends CI_Model
 			}
 		}
 
+		$auth_code = $this->sale_lib->get_auth_code();
+
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'	 => $employee_id,
 			'comment'		 => $comment,
 			'invoice_number' => $invoice_number,
-			'quote_number' => $quote_number,
+			'quote_number'   => $quote_number,
 			'dinner_table_id'=> $dinner_table,
-			'sale_status'	 => $sale_status
+			'sale_status'	 => $sale_status,
+			'auth_code'		 => $auth_code
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
@@ -1039,7 +1048,7 @@ class Sale extends CI_Model
 			'sale_id'		 => $sale_id,
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
 			'result_time'	 => date('Y-m-d H:i:s'),
-			'invoice_id'		 => $invoice_id,
+			'invoice_id'	 => $invoice_id,
 		
 		);
 		
@@ -1496,6 +1505,8 @@ class Sale extends CI_Model
 			}
 		}
 
+		$auth_code = $this->sale_lib->get_auth_code();
+
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
@@ -1504,7 +1515,8 @@ class Sale extends CI_Model
 			'invoice_number' => $invoice_number,
 			'quote_number' => $quote_number,
 			'dinner_table_id'=> $dinner_table,
-			'sale_status'	 => $sale_status
+			'sale_status'	 => $sale_status,
+			'auth_code'		 => $auth_code
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
@@ -1883,36 +1895,35 @@ class Sale extends CI_Model
 	{
 		$payments = array();
 
-		if($this->config->item('payment_options_order') == 'debitcreditcash')
-		{
+		if($this->config->item('payment_options_order') == 'debitcreditcash') {
 			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
 			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
 			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-		}
-		elseif($this->config->item('payment_options_order') == 'debitcashcredit')
-		{
+		} else if ($this->config->item('payment_options_order') == 'debitcashcredit') {
 			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
 			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
 			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-		}
-		else // default: if($this->config->item('payment_options_order') == 'cashdebitcredit')
-		{
+		} else if ( $this->config->item('payment_options_order') == 'cashcardtransfer' ) {
+			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
+			$payments[$this->lang->line('sales_card')] = $this->lang->line('sales_card');
+			$payments[$this->lang->line('sales_ussd')] = $this->lang->line('sales_ussd');
+			$payments[$this->lang->line('sales_transfer')] = $this->lang->line('sales_transfer');
+			$payments[$this->lang->line('sales_wallet')] = $this->lang->line('sales_wallet');
+		} else { // default: if($this->config->item('payment_options_order') == 'cashdebitcredit')
 			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
 			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
 			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
 		}
 
-		$payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
+		// $payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
 
-		if($giftcard)
-		{
-			$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
-		}
+		// if($giftcard) {
+		// 	$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
+		// }
 
-		if($reward_points)
-		{
-			$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
-		}
+		// if($reward_points) {
+		// 	$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
+		// }
 
 		return $payments;
 	}

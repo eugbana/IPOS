@@ -474,24 +474,23 @@ class Sale_lib
 		$totals = array();
 
 		$subtotal = 0;
-		$discounted_subtotal = 0;
+		$discounted_subtotal = 0.00;
 		$tax_exclusive_subtotal = 0;
-		foreach($this->get_labcart() as $item)
-		{
+		$initial_cost = 0.00;
+		foreach($this->get_labcart() as $item) {
 			//$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
 			//$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
-			if($item['stock_name'] == "WholeSale"){
+			if ($item['stock_name'] == "WholeSale") {
 				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], FALSE));
 			} else {
 				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
 			}
-			if($item['stock_name'] == "WholeSale"){
+			if ($item['stock_name'] == "WholeSale") {
 				$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], TRUE));
 			} else {
 				$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
 			}
-			if($this->CI->config->config['tax_included'])
-			{
+			if ($this->CI->config->config['tax_included']) {
 				$tax_exclusive_subtotal = bcadd($tax_exclusive_subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], TRUE));
 			}
 		}
@@ -564,6 +563,7 @@ class Sale_lib
 		$subtotal = 0;
 		$discounted_subtotal = 0;
 		$tax_exclusive_subtotal = 0;
+		$total_vat = 0.00;
 		foreach($this->get_cart() as $item)
 		{
 			//$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
@@ -582,8 +582,16 @@ class Sale_lib
 			{
 				$tax_exclusive_subtotal = bcadd($tax_exclusive_subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], TRUE));
 			}
+
+			// calculate VAT for VATable items
+			if ( $item["apply_vat"] == "YES" ) {
+				$app_vat = $this->CI->config->item('vat') ? $this->CI->config->item('vat') : 5;
+				$vat = bcmul( bcdiv($app_vat, 100), $item["price"] );
+				$total_vat += $vat;
+			}
 		}
 
+		$totals['total_vat'] = $total_vat * $item['quantity'];
 		$totals['subtotal'] = $subtotal;
 		$totals['discounted_subtotal'] = $discounted_subtotal;
 		$totals['tax_exclusive_subtotal'] = $tax_exclusive_subtotal;
@@ -1022,18 +1030,13 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 					'print_option' => '1',
 					'stock_type' => $stock_type,
 					'tax_category_id' => $item_info->tax_category_id,
-					
-					
 					'time_started' => $time_started,
 					'reference' => $reference,
-					
-					
 					'reminder_value' => $reminder_value,
 					'reminder_amount' => $reminder_amount,
 					'no_of_days' => $no_of_days,
-					
 					'period' => $period,
-					
+					'apply_vat' => $item_info->apply_vat
 				)
 			);
 			//add to existing array
@@ -2816,6 +2819,14 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 		}
 
 		return $rounded_total;
+	}
+
+	public function set_auth_code($code) {
+		$this->CI->session->set_userdata('sales_auth_code', $code);
+	}
+
+	public function get_auth_code() {
+		return $this->CI->session->userdata('sales_auth_code') ? $this->CI->session->userdata('sales_auth_code') : null;
 	}
 }
 

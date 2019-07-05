@@ -1293,5 +1293,15 @@ class Reports extends Secure_Controller
 		
 		return $subtitle;
 	}
+
+	public function summary_vat($start_date, $end_date, $sale_type, $location_id = 'all') {
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
+
+		$this->load->model('reports/Summary_vat');
+		$model = $this->Summary_discounts;
+
+		$report_data = $model->getData($inputs);
+		$summary = $this->xss_clean($model->getSummaryData($inputs));
+	}
 }
 ?>

@@ -11,6 +11,17 @@
 				</div>
 			</div>
 
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_vat'), 'V.A.T.', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_input( array(
+						'name'	=> 'default_vat',
+						'id'	=> 'default_vat',
+						'class' => 'form-control input-sm',
+						'value' =>	$this->config->item('vat') ? $this->config->item('vat') : 5) ); ?>
+				</div>
+			</div>
+
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_default_tax_rate_1'), 'default_tax_1_rate', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>

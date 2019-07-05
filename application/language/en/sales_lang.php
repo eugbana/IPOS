@@ -144,3 +144,9 @@ $lang["sales_unsuccessfully_updated"] = "Sale unsuccessfully updated";
 $lang["sales_unsuspend"] = "Unsuspend";
 $lang["sales_unsuspend_and_delete"] = "";
 $lang["sales_update"] = "Update";
+
+
+$lang["sales_card"] = "Card";
+$lang["sales_ussd"] = "USSD";
+$lang["sales_transfer"] = "Bank Transfer";
+$lang["sales_wallet"] = "Wallet";

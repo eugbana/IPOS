@@ -231,3 +231,4 @@ $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Timezone";
 $lang["config_top"] = "Top";
 $lang["config_website"] = "Website";
+$lang["config_vat"] = "V.A.T. (%)";

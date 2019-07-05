@@ -120,21 +120,14 @@
 				</thead>
 
 				<tbody id="cart_contents">
-					<?php
-					if(count($cart) == 0)
-					{
-					?>
+					<?php if(count($cart) == 0) { ?>
 						<tr>
 							<td colspan='10'>
 								<div class='alert alert-dismissible alert-info'><?php echo $this->lang->line('sales_no_items_in_cart'); ?></div>
 							</td>
 						</tr>
-					<?php
-					}
-					else
-					{				
-						foreach(array_reverse($cart, TRUE) as $line=>$item)
-						{					
+					<?php } else {				
+						foreach(array_reverse($cart, TRUE) as $line=>$item) {					
 					?>
 							<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 							<?php
@@ -342,17 +335,12 @@
 							<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_total"); ?></th>
 							<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>
 						</tr>
-						<?php
-						if(!empty($mailchimp_info))
-						{
-						?>
+						<?php if (!empty($mailchimp_info)) { ?>
 							<tr>
 								<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_mailchimp_status"); ?></th>
 								<th style="width: 45%; text-align: right;"><?php echo $mailchimp_info['status']; ?></th>
 							</tr>
-						<?php
-						}
-						?>
+						<?php } ?>
 					</table>
 
 					<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
@@ -380,8 +368,20 @@
 
 				<table class="sales_table_100" id="sale_totals">
 					<tr>
-						<th style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $subtotal); ?></th>
+						<th style="width: 20%;">Total Cost</th>
+						<th style="width: 20%; text-align: right;"><?php echo to_currency($initial_cost); ?><p></p></th>
+					</tr>
+					<tr>
+						<th style="width: 20%;">Total Discount</th>
+						<th style="width: 20%; text-align: right;"><?php echo to_currency($total_discount); ?><p></p></th>
+					</tr>
+					<tr>
+						<th style="width: 20%;">VAT <?php echo $this->config->item('vat') . '%'; ?> </th>
+						<th style="width: 20%; text-align: right;"><?php echo to_currency($total_vat); ?><p></p></th>
+					</tr>
+					<tr>
+						<th style="width: 20%;"><?php echo $this->lang->line('sales_sub_total'); ?></th>
+						<th style="width: 20%; text-align: right;"><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $subtotal); ?><p></p></th>
 					</tr>
 					
 					<?php
@@ -389,8 +389,8 @@
 					{
 					?>
 						<tr>
-							<th style='width: 55%;'><?php echo $sales_tax['tax_group']; ?></th>
-							<th style="width: 45%; text-align: right;"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></th>
+							<th style='width: 20%;'><?php echo $sales_tax['tax_group']; ?></th>
+							<th style="width: 20%; text-align: right;"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></th>
 						</tr>
 					<?php
 					}
@@ -409,7 +409,7 @@
 				?>
 					<table class="sales_table_100" id="payment_totals">
 						<tr>
-							<th style="width: 55%;"><?php echo $this->lang->line('sales_payments_total');?></th>
+							<th style="width: 55%;"><?php echo $this->lang->line('sales_payments_total');?><p></p></th>
 							<th style="width: 45%; text-align: right;"><?php echo to_currency($payments_total); ?></th>
 						</tr>
 						<tr>
@@ -440,20 +440,11 @@
 									</tr>
 								</table>
 							<?php echo form_close(); ?>
-								<?php
-								// Only show this part if the payment cover the total and in sale or return mode
-								if($sales_or_return_mode == '1')
-								{
-								?>
-								<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
-								<?php
-								}
-								?>
-						<?php
-						}
-						else
-						{
-						?>
+								<!-- Only show this part if the payment cover the total and in sale or return mode -->
+								<?php if($sales_or_return_mode == '1') { ?>
+									<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+								<?php } ?>
+							<?php } else { ?>
 							<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 								<table class="sales_table_100">
 									<tr>
@@ -469,19 +460,36 @@
 											<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm giftcard-input', 'disabled' => true, 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
 										</td>
 									</tr>
+									<?php if ( $total_discount > 0 ): ?>
+									<?php if ( !$discount_approved || $discount_approved == FALSE ): ?>
+									<tr>
+										<td>
+											<span id="discount_authorization">
+												Authorization Code
+											</span>
+										</td>
+										<td>
+											<?php echo form_input(array('name'=>'discount_authorization_val', 'id'=>'discount_authorization_val', 'class'=>'form-control input-sm disabled', 'type' => 'password', 'value'=>'', 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
+										</td>
+									</tr>
+									<?php endif; ?>
+									<?php endif; ?>
 								</table>
 							<?php echo form_close(); ?>
 
-							<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
-						<?php
-						}
-						?>
+							<?php if ( $total_discount == 0 ): ?>
+								<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
+							<?php else: ?>
+								<?php if ( $discount_approved == FALSE ): ?>
+									<div class='btn btn-sm btn-success pull-right' id='verify_discount' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span>Approve discount</div>
+								<?php else: ?>
+									<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
+								<?php endif; ?>
+							<?php endif; ?>
+						<?php } ?>
 
-						<?php
-						// Only show this part if there is at least one payment entered.
-						if(count($payments) > 0)
-						{
-						?>
+						<!-- Only show this part if there is at least one payment entered. -->
+						<?php if(count($payments) > 0) { ?>
 							<table class="sales_table_100" id="register">
 								<thead>
 									<tr>
@@ -492,48 +500,31 @@
 								</thead>
 					
 								<tbody id="payment_contents">
-									<?php
-									foreach($payments as $payment_id=>$payment)
-									{
-									?>
+									<?php foreach($payments as $payment_id=>$payment) { ?>
 										<tr>
 											<td><?php echo anchor($controller_name."/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>'); ?></td>
 											<td><?php echo $payment['payment_type']; ?></td>
 											<td style="text-align: right;"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
 										</tr>
-									<?php
-									}
-									?>
+									<?php } ?>
 								</tbody>
 							</table>
-						<?php
-						}
-						?>
+						<?php } ?>
 					</div>
 
 					<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
 						<div class="form-group" id="buttons_sale">
 							<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
-							<?php
-							// Only show this part if the payment cover the total
-							if($quote_or_invoice_mode && isset($customer))
-							{
-							?>
-							<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
-							<?php
-							}
-							?>
-
+							<!-- Only show this part if the payment cover the total -->
+							<?php if($quote_or_invoice_mode && isset($customer)) { ?>
+								<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
+							<?php } ?>
 							<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 						</div>
 					<?php echo form_close(); ?>
 
-
-					<?php
-					// Only show this part if the payment cover the total
-					if($payments_cover_total || $quote_or_invoice_mode)
-					{
-					?>
+					<!--Only show this part if the payment cover the total -->
+					<?php if($payments_cover_total || $quote_or_invoice_mode) { ?>
 						<div class="container-fluid">
 							<div class="no-gutter row">
 								<div class="form-group form-group-sm">
@@ -544,7 +535,6 @@
 								</div>
 							</div>
 							<div class="row">
-
 								<div class="form-group form-group-sm">
 									<div class="col-xs-6">
 										<label for="sales_print_after_sale" class="control-label checkbox">
@@ -553,25 +543,17 @@
 										</label>
 									</div>
 
-									<?php
-									if(!empty($customer_email))
-									{
-									?>
+									<?php if(!empty($customer_email)) { ?>
 										<div class="col-xs-6">
 											<label for="email-receipt" class="control-label checkbox">
 												<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'value'=>1, 'checked'=>$email_receipt)); ?>
 												<?php echo $this->lang->line('sales_email_receipt');?>
 											</label>
 										</div>
-									<?php
-									}
-									?>
+									<?php } ?>
 								</div>
 							</div>
-						<?php
-						if(($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
-						{
-						?>
+						<?php if(($mode == "sale") && $this->config->item('invoice_enable') == TRUE) { ?>
 							<div class="row">
 								<div class="form-group form-group-sm">
 
@@ -590,44 +572,35 @@
 									</div>
 								</div>
 							</div>
-						<?php
-						}
-						?>
+						<?php } ?>
 						</div>
-					<?php
-					}
-					?>
-				<?php
-				}
-				?>
+					<?php } ?>
+				<?php } ?>
 			</div>
 		</div>
 		
-	<?php// print_r($register_id); ?>
+	<?php // print_r($register_id); ?>
 	</div>
 </div>
 
 <script type="text/javascript">
-$(document).ready(function()
-{
+	$(document).ready(function() {
 	$('.datetimepicker3').datetimepicker();
 	$("#roles").change(function(){
-		/*$.ajax({
-                url: '<?php echo site_url("sales/set_role");?>',
-                method: 'POST',
-                dataType: 'text',
-                data: {
-                    role: $('#roles').val(),
-                
-                }, success: function (response) {
-                   alert($('#roles').val());
-                }
-            });*/
-			//alert($('#roles').val());
+		// $.ajax({
+		// 	url: '<?php echo site_url("sales/set_role");?>',
+        //     method: 'POST',
+        //     dataType: 'text',
+        //     data: {
+        //         role: $('#roles').val(),
+        //     }, 
+		// 	success: function (response) {
+        //         alert($('#roles').val());
+        //     }
+        // });
+		//alert($('#roles').val());
 		$.post('<?php echo site_url($controller_name."/set_role");?>', {role: $('#roles').val()});
-		
-		    
-		});
+	});
 	$("#item").autocomplete(
 	{
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
@@ -767,6 +740,48 @@ $(document).ready(function()
 	$("#add_payment_button").click(function()
 	{
 		$('#add_payment_form').submit();
+	});
+
+	$("#verify_discount").click(function() {
+		$(this).html('Please wait...').attr('disabled', true);
+		console.log('code: ' + $('#discount_authorization_val').val());
+		$.post('<?php echo site_url($controller_name."/approve_discount");?>', {
+			code: $('#discount_authorization_val').val(),
+		}, function(data, status) {
+			data = JSON.parse(data);
+			console.log('data', data);
+			if ( status == "success" ) {
+				if ( data.success ) {
+					$.notify({
+						title: 'Authorization successful.',
+						message: data.message,
+						type: 'success'
+					});
+					setTimeout(() => {
+						window.location.reload();
+					}, 1500);
+				} else {
+					$("#verify_discount").html('<i class="glyphicon glyphicon-credit-card"></i>&nbsp;Approve discount').attr('disabled', false);
+					$.notify({
+						title: 'Authorization failed.',
+						message: data.message,
+					}, {
+						type: 'danger'
+					});
+					return;
+				}
+			} else {
+				$("#verify_discount").html('<i class="glyphicon glyphicon-credit-card"></i>&nbsp;Approve discount').attr('disabled', false);
+				$.notify({
+					title: 'Request failed!',
+					message: data.message,
+					type: 'danger'
+				});
+				return;
+			}
+			console.log('status' + status);
+			console.log('resp', data);
+		});
 	});
 
 	$("#payment_types").change(check_payment_type).ready(check_payment_type);

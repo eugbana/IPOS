@@ -117,7 +117,8 @@
 					<?php echo form_dropdown('payment_options_order', array(
 						'cashdebitcredit' => $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_credit'),
 						'debitcreditcash' => $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_credit') . ' / ' . $this->lang->line('sales_cash'),
-						'debitcashcredit' => $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_credit')
+						'debitcashcredit' => $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_credit'),
+						'cashcardtransfer' => 'Cash / Card / USSD / Bank Transfer / Wallet'
 					),
 					$this->config->item('payment_options_order'), array('class' => 'form-control input-sm'));
 					?>

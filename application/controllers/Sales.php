@@ -1018,32 +1018,25 @@ class Sales extends Secure_Controller
 		$data['amount_change'] = $data['amount_due'] * -1;
 		$item_location = $this->sale_lib->get_sale_location();
 
-		if($this->sale_lib->is_invoice_mode() || $data['invoice_number_enabled'] == TRUE)
-		{
+		if($this->sale_lib->is_invoice_mode() || $data['invoice_number_enabled'] == TRUE) {
 			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
-			if($this->sale_lib->is_sale_by_receipt_mode())
-			{
+			if($this->sale_lib->is_sale_by_receipt_mode()) {
 				$this->sale_lib->set_invoice_number($this->input->post('invoice_number'), $keep_custom = TRUE);
 				$invoice_format = $this->sale_lib->get_invoice_number();
 				if(empty($invoice_format))
 				{
 					$invoice_format = $this->config->item('sales_invoice_format');
 				}
-			}
-			else
-			{
+			} else {
 				$invoice_format = $this->config->item('sales_invoice_format');
 			}
 			$invoice_number = $this->token_lib->render($invoice_format);
 
 			// TODO If duplicate invoice then determine the number of employees and repeat until until success or tried the number of employees (if QSEQ was used).
-			if($this->Sale->check_invoice_number_exists($invoice_number))
-			{
+			if($this->Sale->check_invoice_number_exists($invoice_number)) {
 				$data['error'] = $this->lang->line('sales_invoice_number_duplicate');
 				$this->_reload($data);
-			}
-			else
-			{
+			} else {
 				$data['invoice_number'] = $invoice_number;
 				$data['sale_status'] = '0'; // Complete
 
@@ -1056,38 +1049,30 @@ class Sales extends Secure_Controller
 
 				$data = $this->xss_clean($data);
 
-				if($data['sale_id_num'] == -1)
-				{
+				if($data['sale_id_num'] == -1) {
 					$data['error_message'] = $this->lang->line('sales_transaction_failed');
-				}
-				else
-				{
+				} else {
 					$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
+					$this->sale_lib->set_auth_code(null);
 					$this->load->view('sales/invoice', $data);
 					$this->sale_lib->clear_all();
 				}
 			}
-		}
-		elseif($this->sale_lib->is_quote_mode())
-		{
+		} elseif($this->sale_lib->is_quote_mode()) {
 			$invoice_number = NULL;
 			$quote_number = $this->sale_lib->get_quote_number();
 
-			if($quote_number == NULL)
-			{
+			if($quote_number == NULL) {
 				// generate quote number
 				$quote_format = $this->config->item('sales_quote_format');
 				$quote_number = $this->token_lib->render($quote_format);
 			}
 
 			// TODO If duplicate quote then determine the number of employees and repeat until until success or tried the number of employees (if QSEQ was used).
-			if($this->Sale->check_quote_number_exists($quote_number))
-			{
+			if($this->Sale->check_quote_number_exists($quote_number)) {
 				$data['error'] = $this->lang->line('sales_quote_number_duplicate');
 				$this->_reload($data);
-			}
-			else
-			{
+			} else {
 				$data['invoice_number'] = $invoice_number;
 				$data['quote_number'] = $quote_number;
 				$data['sale_status'] = '1'; // Suspended
@@ -1101,15 +1086,13 @@ class Sales extends Secure_Controller
 
 				$data['barcode'] = NULL;
 
-//				$this->suspend_quote($quote_number);
-
+				//				$this->suspend_quote($quote_number);
+				$this->sale_lib->set_auth_code(null);
 				$this->load->view('sales/quote', $data);
 				$this->sale_lib->clear_mode();
 				$this->sale_lib->clear_all();
 			}
-		}
-		else
-		{
+		} else {
 			// Save the data to the sales table
 			$data['sale_status'] = '0'; // Complete
 			$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], NULL, NULL, $data['payments'], $data['dinner_table'], $data['taxes'],$data['total'],$item_location);
@@ -1119,17 +1102,15 @@ class Sales extends Secure_Controller
 			$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 			$data = $this->xss_clean($data);
 
-			if($data['sale_id_num'] == -1)
-			{
+			if($data['sale_id_num'] == -1) {
 				$data['error_message'] = $this->lang->line('sales_transaction_failed');
-			}
-			else
-			{
+			} else {
 				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 
 				// Reload (sorted) and filter the cart line items for printing purposes
 				$data['cart'] = $this->get_filtered($this->sale_lib->get_cart_reordered($data['sale_id_num']));
 
+				$this->sale_lib->set_auth_code(null);
 				$this->load->view('sales/receipt', $data);
 				$this->sale_lib->clear_all();
 			}
@@ -1637,8 +1618,7 @@ class Sales extends Secure_Controller
 		//$this->load->view('employees/form', $data);
 	}
 
-	private function _reload($data = array())
-	{
+	private function _reload($data = array()) {
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$balance_info = $this->CI->Item->get_balanceinfo($employee_id);
 		$register=$balance_info->register_id ;
@@ -1663,14 +1643,9 @@ class Sales extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_cart();
 		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
 
-		if($this->config->item('invoice_enable') == '0')
-		{
-			$data['modes'] = array(
-				'sale' => $this->lang->line('sales_sale'),
-				'return' => $this->lang->line('sales_return'));
-		}
-		else
-		{
+		if($this->config->item('invoice_enable') == '0') {
+			$data['modes'] = array('sale' => $this->lang->line('sales_sale'), 'return' => $this->lang->line('sales_return'));
+		} else {
 			$data['modes'] = array(
 				'sale' => $this->lang->line('sales_sale'),
 				'sale_invoice' => $this->lang->line('sales_sale_by_invoice'),
@@ -1690,6 +1665,12 @@ class Sales extends Secure_Controller
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals();
+		$totals['discount_total'] = $totals['subtotal'] - $totals['discounted_subtotal'];
+		$data['discount_approved'] = $this->sale_lib->get_auth_code() != null ? TRUE : FALSE;
+		$totals['cash_amount_due'] += $totals['total_vat'];
+		$data['total_discount'] = $totals['discount_total'];
+		$data['total_vat'] = $totals['total_vat'];
+		$data['initial_cost'] = $totals['subtotal'];
 		$data['subtotal'] = $totals['discounted_subtotal'];
 		$data['cash_total'] = $totals['cash_total'];
 		$data['cash_amount_due'] = $totals['cash_amount_due'];
@@ -1699,13 +1680,10 @@ class Sales extends Secure_Controller
 		$data['payments_cover_total'] = $totals['payments_cover_total'];
 		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
 
-		if($data['cash_rounding'])
-		{
+		if($data['cash_rounding']) {
 			$data['total'] = $totals['cash_total'];
 			$data['amount_due'] = $totals['cash_amount_due'];
-		}
-		else
-		{
+		} else {
 			$data['total'] = $totals['total'];
 			$data['amount_due'] = $totals['amount_due'];
 		}
@@ -1713,18 +1691,19 @@ class Sales extends Secure_Controller
 
 		$data['comment'] = $this->sale_lib->get_comment();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
-		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
-		if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
-		{
+		$data['selected_payment_type'] = null;
+		// $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
+		if($customer_info && $this->config->item('customer_reward_enable') == TRUE) {
 			$data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
-		}
-		else
-		{
+		} else {
 			$data['payment_options'] = $this->Sale->get_payment_options();
 		}
+		// echo "<pre>";
+		// print_r($totals);
+		// echo "</pre>";
+		// exit;
 		$quote_number = $this->sale_lib->get_quote_number();
-		if($quote_number != NULL)
-		{
+		if($quote_number != NULL) {
 			$data['quote_number'] = $quote_number;
 		}
 
@@ -2196,6 +2175,30 @@ class Sales extends Secure_Controller
 		}
 
 		return $filtered_cart;
+	}
+
+	public function approve_discount() {
+		$resp = array(
+			'success'	=> FALSE,
+			'message'	=> 'Pending'
+		);
+		$code = $this->input->post("code");
+		if ( !$code ) {
+			$resp['message'] = 'Please enter authorization code';
+			echo json_encode($resp, true);
+		} else {
+			$employee = $this->Employee->get_employee_by_code($code);
+			if ( count($employee) > 0 ) {
+				$this->sale_lib->set_auth_code($code);
+				$resp['success'] = TRUE;
+				$resp['message'] = "Authorization successful.";
+				echo json_encode($resp, true); 
+			} else {
+				$resp['message'] = 'Invalid Authorization Code!';
+				echo json_encode($resp, true); 
+			}
+		}
+
 	}
 }
 

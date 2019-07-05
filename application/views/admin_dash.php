@@ -195,7 +195,7 @@
 								<a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></a>
 								</li>
 							
-			<?php }elseif($this->lang->line("module_".$module->module_id)=="Config"){?>
+			    <?php }elseif($this->lang->line("module_".$module->module_id)=="Config"){?>
 										
 						<li class="has_sub">
                                 <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
@@ -323,7 +323,7 @@
                 </div> <!-- content -->
 
                 <footer class="footer text-right">
-                    <?php echo date('Y')?> © Infostrategy.
+                    2018 - <?php echo date('Y')?> &copy; Infostrategy.
                 </footer>
 
             </div>
