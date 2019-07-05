@@ -21,5 +21,7 @@ git-svn-diff.py
 *~
 *.~
 *.log
-.env
-.sql
+*.env
+*.sql
+*.csv
+*.zip
