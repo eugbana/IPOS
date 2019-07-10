@@ -95,7 +95,7 @@
 				</div>
 				<div class="list-group">
 					<a class="list-group-item" href="<?php echo site_url('reports/revenue_by_item'); ?>">Revenue by Item</a>
-					<a class="list-group-item" href="<?php echo site_url('reports/revenue_by_employee'); ?>">Revenue by Employee</a>
+					<!-- <a class="list-group-item" href="<?php echo site_url('reports/revenue_by_employee'); ?>">Revenue by Employee</a> -->
 				</div>
 			</div>
 		</div>

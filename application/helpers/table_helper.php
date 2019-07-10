@@ -419,23 +419,22 @@ function get_inventory_history_headers() {
 function get_vat_headers() {
 	$CI =& get_instance();
 	$headers = array(
-	    array('name' 	=> 'Item'),
-		array('total' 	=> 'Total'),
+		array('id' 				=> 'ID'),
+		array('name' 			=> 'Item'),
+		array('total_quantity'	=> 'Total Quantity'),
+		array('total_vat'		=> 'Total'),
 	);
 	return transform_headers($headers);
 }
 
-function get_vat_item_row($item, $id, $controller) {
+function get_vat_item_row($id, $quantity, $name, $vat, $controller) {
     $CI =& get_instance();
     $controller_name = strtolower(get_class($CI));
     return array(
-		'receivings.receiving_id'		=> $id,
-		'supplier_id'					=> $item->company_name ? $item->company_name : 'N/A',
-		'employee_id'					=> $item->first_name . ' ' . $item->last_name,
-		'payment_type'					=> $item->payment_type ? $item->payment_type : "N/A",
-		'reference'						=> $item->reference ? $item->reference : "N/A",
-		'receiving_time'				=> $item->receiving_time ? $item->receiving_time : "N/A",
-		'edit' 							=> anchor($controller_name."/history_view/$item->receiving_id", 'view items', 'title="View Inventory Items"')
+		'id'		    	=> $id,
+		'name'				=> $name,
+		'total_quantity'	=> $quantity,
+		'total_vat'			=> $vat,
 	);
 }
 
