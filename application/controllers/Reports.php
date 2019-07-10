@@ -1303,5 +1303,45 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 	}
+
+	public function revenue_by_item($start_date = 0, $end_date = 0, $location_id = 'all') {
+		$data['table_headers'] = $this->xss_clean(get_vat_headers());
+
+		$this->load->view('reports/vat', $data);
+	}
+
+	public function revenue_by_item_data() {
+		// $logged_in_employee_info = $this->Employee->get_logged_in_employee_info();
+		// echo $logged_in_employee_info->person_id;
+		// exit;
+		$search			= $this->input->get('search') ? $this->input->get('search') : '';
+		$start_date		= $this->input->get('start_date') ? $this->input->get('start_date') : date('Y-m-d H:i:s', strtotime("-31 days"));
+		$end_date		= $this->input->get('end_date') ? $this->input->get('end_date') : $end_date = date('Y-m-d H:i:s');
+		$location_id	= $this->input->get('location_id') ? $this->input->get('location_id') : 'all';
+
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'location_id' => $location_id, 'search' => $search);
+
+		$this->load->model('reports/Summary_vat');
+		$model = $this->Summary_vat;
+
+		$report_data = $model->getData($inputs);
+
+		$items = array();
+		foreach ($report_data as $key => $value) {
+			$cost_for_item_sold = bcmul( $value['quantity'], $value['price'] );
+			$total_cost_for_item_sold = bcsub( $cost_for_item_sold, bcmul( bcdiv($value['discount'], 100), $value["price"] ) );
+			if ( in_array( $value['name'], $items ) ) {
+				$items[$value['name']] += $total_cost_for_item_sold;
+			} else {
+				$items[$value['name']] = $total_cost_for_item_sold;
+			}
+			$data_rows[] = $this->xss_clean(get_vat_item_row($items[$value['name']], $total_cost_for_item_sold, $this));
+		}
+		echo json_encode(array('total' => count($items), 'rows' => $data_rows));
+	}
+
+	public function revenue_by_employee() {
+
+	}
 }
 ?>

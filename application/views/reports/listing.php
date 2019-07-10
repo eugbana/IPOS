@@ -4,32 +4,26 @@
 	dialog_support.init("a.modal-dlg");
 </script>
 
-<?php
-if(isset($error))
-{
-	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
-}
-?>
+<?php if(isset($error)) { echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>"; } ?>
 <div class="content-page">
-                <!-- Start content -->
-                <div class="content">
+	<!-- Start content -->
+	<div class="content">
 		<div class="row">
 			<div class="col-md-4">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp</span><?php echo $this->lang->line('reports_graphical_reports'); ?></h3>
+						<h3 class="panel-title">
+							<span class="glyphicon glyphicon-stats">&nbsp</span>
+							<?php echo $this->lang->line('reports_graphical_reports'); ?>
+						</h3>
 					</div>
 					<div class="list-group">
-						<?php
-						foreach($grants as $grant) 
-						{
-							if (preg_match('/reports_/', $grant['permission_id']) && !preg_match('/(inventory|receivings)/', $grant['permission_id']))
-							{
+						<?php foreach($grants as $grant) {
+							if (preg_match('/reports_/', $grant['permission_id']) && !preg_match('/(inventory|receivings)/', $grant['permission_id'])) {
 								show_report('graphical_summary', $grant['permission_id']);
 							}
-						}
-						?>
-					 </div>
+						} ?>
+					</div>
 				</div>
 			</div>
 
@@ -88,6 +82,21 @@ if(isset($error))
 				<?php 
 				}
 				?>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-stats">&nbsp</span>
+						<?php echo $this->lang->line('vat_report_title'); ?>
+					</h3>
+				</div>
+				<div class="list-group">
+					<a class="list-group-item" href="<?php echo site_url('reports/revenue_by_item'); ?>">Revenue by Item</a>
+					<a class="list-group-item" href="<?php echo site_url('reports/revenue_by_employee'); ?>">Revenue by Employee</a>
+				</div>
 			</div>
 		</div>
 	</div>
