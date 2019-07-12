@@ -2273,9 +2273,76 @@ class Sale extends CI_Model
 			)'
 		);
 	}
-	
-	
 
+	public function get_sales_history(array $inputs)
+	{
+		$this->db->select('sales.sale_time as timestamp, sales.sale_id, sales.sale_status, sales.sales_amount, employees.username as employee, COUNT(item_id) as total_items');
+		$this->db->from('sales');
+		$this->db->join('employees', 'sales.employee_id = employees.person_id', 'left');
+		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id', 'left');
+		if ( !empty($inputs['search']) ) {
+			$this->db->group_start();
+				$this->db->where('sales.sale_id', $inputs['search']);
+				// $this->db->or_like('sales.sale_amount', $inputs['search']);
+			$this->db->group_end();
+		}
+		if ( empty($this->config->item('date_or_time_format')) ) {
+			$this->db->where('DATE_FORMAT(sale_time, "%Y-%m-%d") BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		} else {
+			$this->db->where('sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+		}
 
+		$this->db->group_by($inputs['sort'], $inputs['order']);
+		if ($inputs['limit'] > 0) {
+			$this->db->limit($inputs['limit'], $inputs['offset']);
+		}
+		return $this->db->get();
+	}
+
+	public function get_sales_history_count(array $inputs) {
+		$this->db->select('sales.sale_time as timestamp, sales.sale_id, sales.sale_status, sales.sales_amount, employees.username as employee, COUNT(item_id) as total_items');
+		$this->db->from('sales');
+		$this->db->join('employees', 'sales.employee_id = employees.person_id', 'left');
+		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id', 'left');
+		if ( !empty($inputs['search']) ) {
+			$this->db->group_start();
+				$this->db->where('sales.sale_id', $inputs['search']);
+				// $this->db->or_like('sales.sale_amount', $inputs['search']);
+			$this->db->group_end();
+		}
+		if ( empty($this->config->item('date_or_time_format')) ) {
+			$this->db->where('DATE_FORMAT(sale_time, "%Y-%m-%d") BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		} else {
+			$this->db->where('sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+		}
+		$this->db->group_by($inputs['sort'], $inputs['order']);
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	public function get_sales_history_by_receipt_number($id) {
+		$this->db->select('sales.*, people.first_name, people.last_name, employees.username');
+		$this->db->from('sales');
+		$this->db->join('employees', 'sales.employee_id = employees.person_id', 'left');
+		$this->db->join('people', 'people.person_id = employees.person_id', 'left');
+		$this->db->where('sale_id', $id);
+		return $this->db->limit(1)->get();
+	}
+
+	public function get_sales_history_items_by_receipt_number($id) {
+		$this->db->select('sales_items.*, items.name as name, items.apply_vat as vatable, stock_locations.location_name as location');
+		$this->db->from('sales_items');
+		$this->db->join('items', 'items.item_id = sales_items.item_id');
+		$this->db->join('stock_locations', 'stock_locations.location_id = sales_items.item_location');
+		$this->db->where('sale_id', $id);
+		return $this->db->get();
+	}
+
+	public function get_sales_history_payment_methods($id) {
+		$this->db->select('sales_payments.*');
+		$this->db->from('sales_payments');
+		$this->db->where('sale_id', $id);
+		return $this->db->get();
+	}
 }
 ?>

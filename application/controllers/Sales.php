@@ -2200,6 +2200,95 @@ class Sales extends Secure_Controller
 		}
 
 	}
+
+	public function history()
+	{
+		$data = [];
+		$data['table_headers'] = $this->xss_clean(get_sales_history_headers());
+		$this->load->view("sales/history", $data);
+	}
+
+	public function history_data()
+	{
+		$search			= $this->input->get('search');
+		$limit 			= $this->input->get('limit');
+		$offset 		= $this->input->get('offset');
+		$sort 			= $this->input->get('sort') ? $this->input->get('sort') : 'sale_id';
+		$order 			= $this->input->get('order');
+		$start_date		= $this->input->get('start_date');
+		$end_date		= $this->input->get('end_date');
+
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'search' => $search, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort, 'order' => $order);
+
+		$data		= $this->Sale->get_sales_history($inputs);
+		$total		= $this->Sale->get_sales_history_count($inputs);
+		$data_rows	= array();
+		foreach($data->result() as $d) {
+			$status = "Pending";
+			if ($d->sale_status == 0) {
+				$status = "Complete";
+			}
+			$tmp = array('sale_id' => $d->sale_id, 'employee' => $d->employee, 'sales_amount' => $d->sales_amount, 'timestamp' => $d->timestamp, 'sale_status' => $status, 'total_items' => $d->total_items);
+			$data_rows[] = $this->xss_clean(get_sales_history_row($tmp, $this));
+		}
+		echo json_encode(array('total' => $total, 'rows' => $data_rows));
+	}
+
+	public function history_view($receiptNumber = -1) {
+		if ($receiptNumber == -1) {
+			$this->history();
+		}
+		$saleData	= $this->Sale->get_sales_history_by_receipt_number($receiptNumber)->result();
+		$items		= $this->Sale->get_sales_history_items_by_receipt_number($receiptNumber)->result();
+		$payments	= $this->Sale->get_sales_history_payment_methods($receiptNumber)->result();
+
+		$payments_types = [];
+		$n = count($payments);
+		foreach($payments as $i => $val) {
+			if ( !in_array($val->payment_type, $payments_types) ) {
+				$payments_types["$val->payment_type"] = $val->payment_amount;
+			} else {
+				$payments_types["$val->payment_type"] += $val->payment_amount;
+			}
+		}
+
+		$data = array(
+			'meta'		=> $saleData[0],
+			'items'		=> $items,
+			'payments'	=> $payments_types
+		);
+		$this->load->view("sales/history_view", $data);
+	}
+
+	public function sales_history_reprint($receiptNumber = -1) {
+		if ($receiptNumber == -1) {
+			$this->history();
+		}
+		$saleData	= $this->Sale->get_sales_history_by_receipt_number($receiptNumber)->result();
+		$items		= $this->Sale->get_sales_history_items_by_receipt_number($receiptNumber)->result();
+		$payments	= $this->Sale->get_sales_history_payment_methods($receiptNumber)->result();
+
+		$payments_types = [];
+		$n = count($payments);
+		foreach($payments as $i => $val) {
+			if ( !in_array($val->payment_type, $payments_types) ) {
+				$payments_types["$val->payment_type"] = $val->payment_amount;
+			} else {
+				$payments_types["$val->payment_type"] += $val->payment_amount;
+			}
+		}
+
+		$data = array(
+			'meta'		=> $saleData[0],
+			'items'		=> $items,
+			'payments'	=> $payments_types
+		);
+
+		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data['receipt_title'] = $this->lang->line('sales_receipt');
+		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
+		$this->load->view("sales/history_print", $data);
+	}
 }
 
 ?>

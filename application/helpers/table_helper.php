@@ -464,6 +464,34 @@ function get_receiving_item_data_row($item, $id, $controller) {
 	);
 }
 
+function get_sales_history_headers() {
+	$CI =& get_instance();
+	$headers = array(
+	    array('sale_id' 	=> 'Receipt Number'),
+		array('employee'	=> 'Employee'),
+		array('sales_amount'=> 'Total'),
+		array('timestamp' 	=> 'Timestamp'),
+		array('sale_status'	=> 'Status'),
+		array('total_items' => 'Total Items')
+	);
+	return transform_headers($headers);
+}
+
+function get_sales_history_row($item, $controller) {
+	$CI =& get_instance();
+	$controller_name = strtolower(get_class($CI));
+	$id = $item['sale_id'];
+	return array(
+		'sale_id'		=> $id,
+		'employee'		=> $item['employee'],
+		'sales_amount'	=> $item['sales_amount'],
+		'timestamp'		=> $item['timestamp'],
+		'sale_status'	=> $item['sale_status'],
+		'total_items'	=> $item['total_items'],
+		'edit'			=> anchor($controller_name."/history_view/$id", 'view items', 'title="View Items"')
+	);
+}
+
 function get_item_data_row($item, $controller)
 {
 	if($item->batch =='') {
