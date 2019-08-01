@@ -887,8 +887,24 @@ class Reports extends Secure_Controller
 		$details_data = array();
 		$details_data_rewards = array();
 
+		$sumTotalAmount = 0;
+		$salesRecords = $model->GetEmployeeSaleByIdAndDate($employee_id, $start_date, $end_date);
+		// echo "<pre>";
+		// print_r($salesRecords);
+		// echo "</pre>";
+		// exit;
+		foreach($salesRecords as $val => $sR)
+		{
+			$amounts = $model->GetSaleTotalAmountBySaleId($sR->sale_id);
+			foreach($amounts as $val2 => $aR2)
+			{
+				$sumTotalAmount += $aR2->payment_amount;
+			}
+		}
+
 		foreach($report_data['summary'] as $key => $row)
 		{
+			$paymentTypeArr = explode(" ", $row['payment_type']);
 			$summary_data[] = $this->xss_clean(array(
 				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
 				'sale_date' => $row['sale_date'],
@@ -899,7 +915,7 @@ class Reports extends Secure_Controller
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
-				'payment_type' => $row['payment_type'],
+				'payment_type' => $paymentTypeArr[0],
 				'comment' => $row['comment']));
 
 			foreach($report_data['details'][$key] as $drow)
@@ -918,13 +934,17 @@ class Reports extends Secure_Controller
 
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data = array(
-			'title' => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
-			'headers' => $headers,
-			'summary_data' => $summary_data,
-			'details_data' => $details_data,
-			'details_data_rewards' => $details_data_rewards,
-			'overall_summary_data' => $this->xss_clean($model->getSummaryData($inputs))
+			'title'					=> $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
+			'subtitle' 				=> $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'headers' 				=> $headers,
+			'summary_data' 			=> $summary_data,
+			'details_data' 			=> $details_data,
+			'details_data_rewards' 	=> $details_data_rewards,
+			'overall_summary_data' 	=> $this->xss_clean($model->getSummaryData($inputs)),
+			'employee_id'			=> $employee_id,
+			'start'					=> $start_date,
+			'end'					=> $end_date,
+			'sale_type'				=> $sale_type
 		);
 
 		$this->load->view('reports/tabular_details', $data);
@@ -1337,6 +1357,88 @@ class Reports extends Secure_Controller
 
 	public function revenue_by_employee() {
 
+	}
+
+	public function print_filtered_report($start_date, $end_date, $employee_id, $sale_type)
+	{
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type);
+		$this->load->model('reports/Specific_employee');
+		$model = $this->Specific_employee;
+
+		$model->create($inputs);
+
+		$headers = $this->xss_clean($model->GetPrintData());
+		$report_data = $model->getData($inputs);
+
+		$summary_data = array();
+
+		foreach($report_data['summary'] as $key => $row)
+		{
+			$paymentTypeArr = explode(" ", $row['payment_type']);
+			$summary_data[] = $this->xss_clean(array(
+				'id' 			=> 'POS ' . $row['sale_id'],
+				'sale_date' 	=> $row['sale_date'],
+				'quantity' 		=> to_quantity_decimals($row['items_purchased']),
+				'customer_name' => $row['customer_name'],
+				'subtotal' 		=> to_currency($row['subtotal']),
+				'tax' 			=> to_currency($row['tax']),
+				'total' 		=> to_currency($row['total']),
+				'cost' 			=> to_currency($row['cost']),
+				'profit' 		=> to_currency($row['profit']),
+				'payment_type' 	=> $paymentTypeArr[0]));
+		}	
+		
+		$employee_info = $this->Employee->get_info($employee_id);
+		$data = array(
+			'title'					=> $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
+			'subtitle' 				=> $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'headers' 				=> $headers,
+			'summary_data' 			=> $summary_data,
+			'overall_summary_data' 	=> $this->xss_clean($model->getSummaryData($inputs)),
+			'employee_id'			=> $employee_id,
+			'start'					=> $start_date,
+			'end'					=> $end_date,
+			'sale_type'				=> $sale_type
+		);
+
+		$this->load->view('reports/tabular_details_print', $data);
+	}
+
+	public function print_filtered_report_items($start_date, $end_date, $employee_id, $sale_type)
+	{
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type);
+		$this->load->model('reports/Specific_employee');
+		$model = $this->Specific_employee;
+
+		$model->create($inputs);
+
+		$headers = $this->xss_clean($model->GetPrintData());
+		$report_data = $model->getData($inputs);
+
+		$details_data = array();
+
+		foreach($report_data['summary'] as $key => $row)
+		{
+			foreach($report_data['details'][$key] as $drow)
+			{
+				$details_data[$row['sale_id']][] = $this->xss_clean(array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['tax']), to_currency($drow['total']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%'));
+			}
+		}	
+		
+		$employee_info = $this->Employee->get_info($employee_id);
+		$data = array(
+			'title'					=> $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
+			'subtitle' 				=> $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'headers' 				=> $headers,
+			'details_data' 			=> $details_data,
+			'overall_summary_data' 	=> $this->xss_clean($model->getSummaryData($inputs)),
+			'employee_id'			=> $employee_id,
+			'start'					=> $start_date,
+			'end'					=> $end_date,
+			'sale_type'				=> $sale_type
+		);
+
+		$this->load->view('reports/tabular_details_print_content', $data);
 	}
 }
 ?>

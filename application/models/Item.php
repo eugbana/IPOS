@@ -340,6 +340,10 @@ class Item extends CI_Model
 				{
 					$this->db->where('items.description', '');
 				}
+				if ($filters['apply_vat'] != FALSE)
+				{
+					$this->db->where('items.apply_vat', 'YES');
+				}
 
 				// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
 				$this->db->group_by('items.item_id');

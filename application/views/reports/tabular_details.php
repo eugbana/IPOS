@@ -2,7 +2,13 @@
 <div class="content-page">
                 <!-- Start content -->
                 <div class="content">
-		<div id="page_title"><?php echo $title ?></div>
+		<div id="page_title">
+			<?php echo $title ?>
+			<p style="font-size:16px;">
+				<a href="<?php echo site_url('reports/print_filtered_report/' . $start . '/' . $end . '/' . $employee_id . '/' . $sale_type); ?>">Print all</a> | 
+				<a href="<?php echo site_url('reports/print_filtered_report_items/' . $start . '/' . $end . '/' . $employee_id . '/' . $sale_type); ?>">Print all items</a>
+			</p>
+		</div>
 
 		<div id="page_subtitle"><?php echo $subtitle ?></div>
 

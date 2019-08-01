@@ -31,3 +31,4 @@ $lang["module_laboratory"] = "Laboratory";
 $lang["module_laboratory_desc"] = "Configure Laboratory";
 $lang["module_account"] = "Account";
 $lang["module_account_desc"] = "Configure Laboratory Account";
+$lang["module_logs"] = "Logs";

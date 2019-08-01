@@ -96,7 +96,10 @@
 	</style>
 	<script type="text/javascript">
         $(document).ready(function() {
-        $('.blockUI').remove();
+			$('.blockUI').remove();
+			if (window.location.href.endsWith('sales/complete_receipt')) {
+				window.print();
+			}
         });
       </script>
 </head>

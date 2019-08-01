@@ -581,5 +581,15 @@ class Employee extends Person
 
 		return [];
 	}
+
+	public function get_employee_and_id() {
+		$this->db->from('employees');
+		$this->db->select('employees.person_id, people.first_name as fname, people.last_name as lname, employees.username');
+		$this->db->join('people', 'employees.person_id = people.person_id');
+		//$this->db->where('deleted', 0);
+		$this->db->order_by('people.first_name', 'ASC');
+
+		return $this->db->get();
+	}
 }
 ?>

@@ -462,9 +462,31 @@ class Sales extends Secure_Controller
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 			}
 		}
-
 		//$this->_reload($data);
-		$this->_reload();
+		// first get total payments made so far.
+		// If the total payment made so far is equal to total amount for current purchase then just redirect to the print page.
+		// else go back and continue loop until payment is complete.
+		$totalPaidSoFar = 0;
+		$total_due = $this->sale_lib->get_total();
+		$pMade = $this->sale_lib->get_payments();
+		if ($pMade['Cash']) {
+			$totalPaidSoFar += $pMade['Cash']['payment_amount'];
+		}
+		if ($pMade['USSD']) {
+			$totalPaidSoFar += $pMade['USSD']['payment_amount'];
+		}
+		if ($pMade['Bank Transfer']) {
+			$totalPaidSoFar += $pMade['Bank Transfer']['payment_amount'];
+		}
+		if ($pMade['Wallet']) {
+			$totalPaidSoFar += $pMade['Wallet']['payment_amount'];
+		}
+		if ($totalPaidSoFar >= $total_due) {
+			$this->load->helper('url');
+			redirect('sales/complete_receipt');
+		} else {
+			$this->_reload();
+		}
 	}
 	public function add_payment_pill()
 	{

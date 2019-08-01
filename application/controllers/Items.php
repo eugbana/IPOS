@@ -20,7 +20,8 @@ class Items extends Secure_Controller
 			'low_inventory' => FALSE,
 			'no_description'  => FALSE,
 			'reorder_level'  => FALSE,
-			'expiry' => FALSE);
+			'expiry' => FALSE,
+			'apply_vat' => FALSE);
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filtes = array_merge($filters, $filledup);
 			
@@ -38,7 +39,8 @@ class Items extends Secure_Controller
 			'low_inventory' => $this->lang->line('items_low_inventory_items'),
 			'no_description' => $this->lang->line('items_no_description_items'),
 			'reorder_level' => 'Reorder level items',
-			'expiry' => 'expiry');
+			'expiry' => 'Expiring',
+			'apply_vat' => 'VATable Items');
 		
 
 		$this->load->view('items/manage', $data);

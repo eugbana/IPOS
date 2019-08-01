@@ -59,7 +59,7 @@ class Specific_employee extends Report
 			SUM(total) AS total,
 			SUM(cost) AS cost,
 			SUM(profit) AS profit,
-			MAX(payment_type) AS payment_type,
+			MAX(payment_type) AS payment_type,	
 			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('employee_id', $inputs['employee_id']);
@@ -80,11 +80,13 @@ class Specific_employee extends Report
 		$data['summary'] = $this->db->get()->result_array();
 		$data['details'] = array();
 		$data['rewards'] = array();
-
-		foreach($data['summary'] as $key=>$value)
+		
+		// return $this->db->last_query();
+		foreach($data['summary'] as $key => $value)
 		{
-			$this->db->select('name, category, serialnumber, description, quantity_purchased, subtotal, tax, total, cost, profit, discount_percent');
+			$this->db->select('cost_price, sales_items_temp.name, sales_items_temp.category, serialnumber, sales_items_temp.description, quantity_purchased, subtotal, tax, total, cost, profit, discount_percent');
 			$this->db->from('sales_items_temp');
+			$this->db->join('items', 'items.name = sales_items_temp.name');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 			$this->db->select('used, earned');
@@ -92,7 +94,6 @@ class Specific_employee extends Report
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['rewards'][$key] = $this->db->get()->result_array();
 		}
-
 		return $data;
 	}
 
@@ -112,6 +113,45 @@ class Specific_employee extends Report
 		}
 
 		return $this->db->get()->row_array();
+	}
+
+	public function GetPrintData()
+	{
+		return array(
+			'summary' => array(
+				array('id' => $this->lang->line('reports_sale_id')),
+				array('sale_date' => $this->lang->line('reports_date')),
+				array('quantity' => $this->lang->line('reports_quantity')),
+				array('customer_name' => $this->lang->line('reports_sold_to')),
+				array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
+				array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
+				array('oprice' => 'Original Price', 'sorter' => 'number_sorter'),
+				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
+				array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
+				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
+				array('payment_type' => $this->lang->line('reports_payment_type')))
+		);
+	}
+
+	public function GetEmployeeSaleByIdAndDate($id, $start_date, $end_date)
+	{
+		$start_date	= $start_date . ' 00:00:00';
+		$end_date	= $end_date . ' 23:59:00';
+		$this->db->select('sale_id, sale_status');
+		$this->db->from('sales');
+		$this->db->where('employee_id', $id);
+		// $this->db->where('sale_status', 1);
+		$this->db->where('sale_time >=', $start_date);
+		$this->db->where('sale_time <=', $end_date);
+		return $this->db->get()->result();
+	}
+
+	public function GetSaleTotalAmountBySaleId($saleId)
+	{
+		$this->db->select('payment_amount');
+		$this->db->from('sales_payments');
+		$this->db->where('sale_id', $saleId);
+		return $this->db->get()->result();
 	}
 }
 ?>
