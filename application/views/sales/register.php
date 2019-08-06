@@ -814,6 +814,7 @@
 
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
+		// alert('table support handle function called!');
 		if(response.success) 
 		{
 			if(resource.match(/customers$/))

@@ -43,7 +43,7 @@
                 <div id="employee"><?php echo $this->lang->line('employees_employee').": " . $meta->first_name . ' ' . $meta->last_name; ?></div>
             </div>
 
-            <table id="receipt_items">
+            <table class="table table-bordered table-hover" id="receipt_items">
                 <tr>
                     <th>#</th>
                     <th>Item</th>
@@ -52,21 +52,34 @@
                     <th>Unit Price</th>
                     <th>Discount Percent</th>
                     <th>Location</th>
-                    <th>Receiving Quantity</th>
+                    <!-- <th>Receiving Quantity</th> -->
                 </tr>
                 <tbody>
                     <?php foreach($items as $i => $val): ?>
+                        <?php $sumTotal += ($val->item_cost_price * $val->quantity_purchased); ?>
+                        <?php $quantityTotal += $val->quantity_purchased; ?>
+                        <?php $costTotal += $val->item_cost_price; ?>
                         <tr>
                             <td><?php echo ($i+=1); ?></td>
                             <td><?php echo $val->name; ?></td>
                             <td><?php echo $val->quantity_purchased; ?></td>
                             <td><?php echo $val->item_cost_price; ?></td>
-                            <td><?php echo $val->item_unit_price; ?></td>
+                            <td><?php echo number_format($val->item_cost_price * $val->quantity_purchased, 2); ?></td>
                             <td><?php echo $val->discount_percent; ?></td>
                             <td><?php echo $val->location_name; ?></td>
-                            <td><?php echo $val->receiving_quantity; ?></td>
+                            <!-- <td><?php echo $val->receiving_quantity; ?></td> -->
                         </tr>
                     <?php endforeach; ?>
+                    <?php if (count($items) > 0): ?>
+                        <tr>
+                            <td><b>#</b></td>
+                            <td colspan="3"><b>TOTAL</b></td>
+                            <!-- <td><b><?php echo number_format($quantityTotal, 2); ?></b></td> -->
+                            <!-- <td><b><?php echo number_format($costTotal, 2); ?></b></td> -->
+                            <td><b><?php echo number_format($sumTotal, 2); ?></b></td>
+                            <td colspan="2"></td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

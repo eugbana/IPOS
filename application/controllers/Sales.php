@@ -2101,16 +2101,19 @@ class Sales extends Secure_Controller
 
 		$data = array();
 		$sales_taxes = array();
-		if($this->Sale->save($sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, $sales_taxes,$total,$item_location) == '-1')
+		$save_resp = $this->Sale->save($sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, $sales_taxes,$total,$item_location);
+		if($save_resp == '-1')
 		{
 			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
 		}
 		else
 		{
-			$data['success'] = $this->lang->line('sales_successfully_suspended_sale');
+			$data['success'] = $this->lang->line('sales_successfully_suspended_sale') . ' - Suspended Sale ID = ' . $save_resp;
 		}
 
 		$this->sale_lib->clear_all();
+		// $data['current_suspended_sale_id'] = $save_resp; 
+		//Initially I wanted to return the ID as a data param but displaying it on the notification is better.
 		$this->_reload($data);
 	}
 
@@ -2158,6 +2161,7 @@ class Sales extends Secure_Controller
 
 		if($sale_id > 0)
 		{
+			$items_test = $this->Sale->reupdate_stock_quantity($sale_id);
 			$this->sale_lib->copy_entire_sale($sale_id);
 			$this->Sale->delete_suspended_sale($sale_id);
 		}

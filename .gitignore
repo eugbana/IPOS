@@ -25,3 +25,4 @@ git-svn-diff.py
 *.sql
 *.csv
 *.zip
+.vscode/*

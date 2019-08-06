@@ -2125,9 +2125,11 @@ class Sale extends CI_Model
 	{
 		if($customer_id == -1)
 		{
-			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
+			$query = $this->db->query('select '
+				. 'sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
 				. $this->db->dbprefix('sales') . ' where sale_status = 1 '
-				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
+				. ' union '
+				. ' select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
 				. $this->db->dbprefix('sales_suspended'));
 		}
 		else
@@ -2343,6 +2345,32 @@ class Sale extends CI_Model
 		$this->db->from('sales_payments');
 		$this->db->where('sale_id', $id);
 		return $this->db->get();
+	}
+
+	public function reupdate_stock_quantity($sale_id) {
+		// before adding the items to cart,
+		// Since at the point of suspension, each item has been subtracted from the inventory,
+		// Re-add each item back to the inventory using the quantity that was requested.
+		// This is because after each item has been suspended, stock level has been depleted and kept aside for intended buyer
+		// then if the quantity for that particular item has been exhausted, at least the one we re-added will be available
+		// for the user to buy since he / she has already kept it aside.
+		$reupdated = 0;
+		$items = $this->get_sale_items_ordered($sale_id);
+		$items = $items->result();
+		foreach($items as $i) {
+			$item_quantity = $this->Item_quantity->get_item_quantity($i->item_id, $i->item_location);
+			$this->Item_quantity->save(
+				array(
+					'quantity'		=> $item_quantity->quantity + $i->quantity_purchased,
+					'item_id'		=> $i->item_id,
+					'location_id'	=> $i->item_location
+				), 
+				$i->item_id, 
+				$i->item_location
+			);
+		}
+		$reupdated = 1;
+		return $reupdated;
 	}
 }
 ?>

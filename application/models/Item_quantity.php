@@ -47,6 +47,7 @@ class Item_quantity extends CI_Model
     
     public function get_item_quantity($item_id, $location_id)
     {     
+        // return array('item_id' => $item_id, 'message' => 'Test response');
         $this->db->from('item_quantities');
         $this->db->where('item_id', $item_id);
         // $this->db->where('location_id', $location_id);

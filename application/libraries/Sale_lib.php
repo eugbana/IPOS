@@ -950,7 +950,8 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 				$maxkey = $item['line'];
 			}
 
-			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			// if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			if($item['item_id'] == $item_id && $item['reference']==$reference)
 			{
 				$itemalreadyinsale = TRUE;
 				$updatekey = $item['line'];
@@ -959,7 +960,8 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 					$quantity = bcadd($quantity, $items[$updatekey]['quantity']);
 				}
 			}
-			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			// if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			if($item['item_id'] == $item_id && $item['reference']==$reference)
 			{
 				$itemalreadyinsale = TRUE;
 				$updatekey = $item['line'];
