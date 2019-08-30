@@ -198,9 +198,7 @@
 															<a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
 															<ul class="list-unstyled">
                                                                 <li><a href="<?php echo site_url("sales");?>">New Sale</a></li>
-                                                                <li><a href="<?php echo site_url("sales/simplified"); ?>">Simplified Sale</a></li>
-																<li><a href="<?php echo site_url("sales/manage");?>">Sale Transaction</a></li>
-																
+																<li><a href="<?php echo site_url("sales/manage");?>">Sale Transaction</a></li>																
 															</ul>
 														</li>
 														

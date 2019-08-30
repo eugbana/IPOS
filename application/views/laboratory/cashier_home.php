@@ -7,15 +7,14 @@
 
 <h3 class="text-center"></h3>
 <div id="home_module_list">
-
-		<div class="module_item" title="New Test">
-			<a href="<?php echo site_url("laboratory/lab_sales");?>"><img src="<?php echo base_url().'images/menubar/items.png';?>" border="0" alt="Menubar Image" /></a>
-			<a href="<?php echo site_url("laboratory/lab_sales");?>">New Test</a>
-		</div>
-		<div class="module_item" title="Check Result" id="search">
-			<a><img src="<?php echo base_url().'images/menubar/customers.png';?>" border="0" alt="Menubar Image" /></a>
-			<a>Check Result</a>
-		</div>
+	<div class="module_item" title="New Test">
+		<a href="<?php echo site_url("laboratory/lab_sales");?>"><img src="<?php echo base_url().'images/menubar/items.png';?>" border="0" alt="Menubar Image" /></a>
+		<a href="<?php echo site_url("laboratory/lab_sales");?>">New Test</a>
+	</div
+	<div class="module_item" title="Check Result" id="search">
+		<a><img src="<?php echo base_url().'images/menubar/customers.png';?>" border="0" alt="Menubar Image" /></a>
+		<a>Check Result</a>
+	</div>
 	
 </div>
 

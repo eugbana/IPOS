@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
         <meta name="author" content="Coderthemes">
+        <meta name="siteurl" content="<?php echo site_url("laboratory/get_unprocessed_tests_count"); ?>">
 
         <link rel="shortcut icon" href="dist/assets/images/favicon_1.ico">
 
@@ -25,6 +26,9 @@
         <link href="dist/assets/css/responsive.css" rel="stylesheet" type="text/css">
 
         <script src="dist/assets/js/modernizr.min.js"></script>
+        <!-- <script src="dist/assets/js/adapter-latest.js"></script>
+        <script src="dist/assets/js/webRTC.js" async></script> -->
+        <script src="dist/assets/js/signaling.js" async></script>
 <!-- <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -335,7 +339,7 @@
                 </div> <!-- content -->
 
                 <footer class="footer text-right">
-                    <?php echo date('Y')?> © Infostrategy.
+                    <?php echo date('Y')?> &copy; Infostrategy.
                 </footer>
 
             </div>

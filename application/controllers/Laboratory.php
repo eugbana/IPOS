@@ -575,7 +575,7 @@ class Laboratory extends Secure_Controller
 		$this->sale_lib->clear_all();
 		$this->load->view('laboratory/new_results', $data);
 	}
-		public function pending_results()
+	public function pending_results()
 	{
 		//$data['table_headers'] = $this->xss_clean(get_account_manage_table_headers());
 		//$data['notice'] = $this->sale_lib->notice_transfer_items();
@@ -2479,6 +2479,67 @@ class Laboratory extends Secure_Controller
 
 	// Multiple Payments
 	
+	public function search_patients()
+	{
+		$data = [];
+		$data['table_headers'] = $this->xss_clean(get_patients_headers());
+		$this->load->view("laboratory/patient_search", $data);
+	}
 
+	public function service_search_patients()
+	{
+		$search			= $this->input->get('search');
+		$limit 			= $this->input->get('limit');
+		$offset 		= $this->input->get('offset');
+		$sort 			= $this->input->get('sort') ? $this->input->get('sort') : 'people.person_id';
+		$order 			= $this->input->get('order');
+		$start_date		= $this->input->get('start_date');
+		$end_date		= $this->input->get('end_date');
+
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'search' => $search, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort, 'order' => $order);
+		$suggestions		= $this->Customer->search_page($inputs);
+		$suggestions_total	= $this->Customer->search_page_count($inputs);
+		$data_rows	= array();
+		foreach($suggestions->result() as $d) {
+			$tmp = array('person_id' => $d->person_id, 'first_name' => $d->first_name, 'last_name' => $d->last_name, 'phone_number' => $d->phone_number);
+			$data_rows[] = $this->xss_clean(get_patients_row($tmp, $this));
+		}
+		echo json_encode(array('total' => $suggestions_total, 'rows' => $data_rows));
+	}
+
+	public function view_patient_data($id)
+	{
+		$patient_data = $this->Customer->load_patient_data($id)->result();
+		$data['patient'] = $patient_data[0];
+
+		//get all pos id's for this patient.
+		$customerPOSIDs = $this->Item->get_customer_pos_ids($id);
+		$data['pos_id'] = $customerPOSIDs;
+		$this->load->view("laboratory/patient_data", $data);
+	}
+
+	public function get_unprocessed_tests_count()
+	{
+		$lab_items	=	array();
+		$data		=	$this->Item->new_result_items();
+		foreach($data as $row => $value) {
+			$lab_items[]	= array('sale_id' => $value['sale_id'], 'customer_id' => $data['customer'], 'doctor_name' => $value['doctor_name'], 'edit' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$value['invoice_id'].'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>','print' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg " id="'.$value['invoice_id'].'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+		}
+		echo json_encode(count($lab_items));
+	}
+
+	public function result_info_profile($id)
+	{
+		$result_info=$this->Item->get_labresult_info($id);
+	
+		$data['sale_id'] = $id;
+		$data['invoice'] = $result_info->invoice_id;
+		$data['status'] = $result_info->status;
+		$customer_id = $result_info->customer_id;
+		$customer_info = $this->_load_customer_data($customer_id, $data);
+		//$data['cart'] = $this->sale_lib->get_labsaveresultcart_reordered($sale_id);
+		// filters that will be loaded in the multiselect dropdown
+		$this->load->view('laboratory/results_check', $data);
+	}
 }
 ?>

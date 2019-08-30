@@ -107,6 +107,8 @@
 		 <!-- Custom styles for this template-->
 		<link href="dist/css/sb-admin.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<meta name="siteurl" content="<?php echo site_url("laboratory/get_unprocessed_tests_count"); ?>">
+		<script src="dist/assets/js/signaling.js" async></script>
 		<style>
 			* {
 				box-sizing: border-box;
@@ -191,7 +193,11 @@
 			});
 		</script>
 
-        <script src="dist/assets/js/modernizr.min.js"></script>
+		<script src="dist/assets/js/modernizr.min.js"></script>
+		<?php if($_SERVER['REQUEST_URI'] == '/laboratory/test_start' || $_SERVER['REQUEST_URI'] == '/laboratory/select_customer'): ?>
+			<!-- <script src="dist/assets/js/adapter-latest.js"></script>
+			<script src="dist/assets/js/webRTC.js" async></script> -->
+		<?php endif; ?>
 		<!-- <script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -220,7 +226,7 @@
                 <!-- LOGO -->
                 <div class="topbar-left">
                     <div class="text-center">
-                        <a href="<?php echo site_url();?>" class="logo"><i class="md md-terrain"></i> <span>IPOS</span></a>
+						<a href="<?php echo site_url();?>" class="logo"><i class="md md-terrain"></i> <span>IPOS</span></a>
                     </div>
                 </div>
                 <!-- Button mobile view to collapse sidebar menu -->

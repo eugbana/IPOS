@@ -912,6 +912,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_rewards_remainder');
 	}
 
+// public function add_item(&$item_id, $retail_or_whole_sale = 'retail', $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0',$qty_selected='retail',$reference=0)
 public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0',$qty_selected='retail',$reference=0)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
@@ -950,8 +951,8 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 				$maxkey = $item['line'];
 			}
 
-			// if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
-			if($item['item_id'] == $item_id && $item['reference']==$reference)
+			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			// if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
 			{
 				$itemalreadyinsale = TRUE;
 				$updatekey = $item['line'];
@@ -960,8 +961,8 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 					$quantity = bcadd($quantity, $items[$updatekey]['quantity']);
 				}
 			}
-			// if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
-			if($item['item_id'] == $item_id && $item['reference']==$reference)
+			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			// if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
 			{
 				$itemalreadyinsale = TRUE;
 				$updatekey = $item['line'];

@@ -193,14 +193,15 @@
 								?>
 								<?php if($this->lang->line("module_".$module->module_id)=="Laboratory"){?>
 													
-														<li class="has_sub">
-															<a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-															<ul class="list-unstyled">
-																<li><a href="<?php echo site_url("laboratory");?>">Available Test</a></li>
-																<li><a href="<?php echo site_url("laboratory/test_start");?>">New Test</a></li>
-																<li id="search"><a>Test Results Status</a></li>
-															</ul>
-														</li>
+                                    <li class="has_sub">
+                                        <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                        <ul class="list-unstyled">
+                                            <li><a href="<?php echo site_url("laboratory");?>">Available Test</a></li>
+                                            <li><a href="<?php echo site_url("laboratory/test_start");?>">New Test</a></li>
+                                            <li id="search"><a>Test Results Status</a></li>
+                                            <li><a href="<?php echo site_url("laboratory/search_patients"); ?>">Search Patient</a></li>
+                                        </ul>
+                                    </li>
 														
 										<?php }elseif($this->lang->line("module_".$module->module_id)=="Customers"){?>
 					

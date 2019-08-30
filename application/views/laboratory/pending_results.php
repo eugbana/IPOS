@@ -42,7 +42,7 @@ $(document).ready(function()
     table_support.init({
         employee_id: <?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>,
         resource: '<?php echo site_url($controller_name);?>',
-        headers: <?php echo $table_headers; ?>,
+        headers: '<?php echo $table_headers; ?>',
         pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
         uniqueId: 'items.item_id',
         queryParams: function() {

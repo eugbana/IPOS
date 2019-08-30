@@ -1943,5 +1943,17 @@ class Item extends CI_Model
 
 		return FALSE;	
 	}
+
+	public function get_customer_pos_ids($customerID) {
+		$this->db->select('laboratory_results.*');
+		$this->db->from('laboratory_results');
+		$this->db->where('customer_id', $customerID);
+		$query = $this->db->get();
+		if($query->num_rows() >= 1)
+		{
+			return $query->result();
+		}
+		return FALSE;	
+	}
 }
 ?>

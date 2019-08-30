@@ -333,6 +333,56 @@ class Customer extends Person
 		return $suggestions;
 	}
 
+	/*
+		custom function to load patients search page
+	*/
+
+	public function search_page(array $inputs)
+	{
+		$this->db->from('customers');
+		$this->db->join('people', 'customers.person_id = people.person_id');
+		if (!empty($inputs['search']))
+		{
+			$this->db->group_start();	
+				$this->db->like('people.phone_number', $inputs['search']);
+				$this->db->or_like('people.last_name', $inputs['search']); 
+				$this->db->or_like('people.email', $inputs['search']);
+			$this->db->group_end();
+		}
+		$this->db->where('deleted', 0);
+		$this->db->group_by($inputs['sort'], $inputs['order']);
+		if ($inputs['limit'] > 0) {
+			$this->db->limit($inputs['limit'], $inputs['offset']);
+		}
+		return $this->db->get();
+	}
+
+	public function search_page_count(array $inputs)
+	{
+		$this->db->from('customers');
+		$this->db->join('people', 'customers.person_id = people.person_id');
+		if (!empty($inputs['search']))
+		{
+			$this->db->group_start();	
+				$this->db->like('people.phone_number', $inputs['search']);
+				$this->db->or_like('people.last_name', $inputs['search']); 
+				$this->db->or_like('people.email', $inputs['search']);
+			$this->db->group_end();
+		}
+		$this->db->where('deleted', 0);
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	public function load_patient_data($id)
+	{
+		$this->db->from('customers');
+		$this->db->select('people.*');
+		$this->db->join('people', 'customers.person_id = people.person_id');
+		$this->db->where('customers.person_id', $id);
+		return $this->db->limit(1)->get();
+	}
+
  	/*
 	Gets rows
 	*/

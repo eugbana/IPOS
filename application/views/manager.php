@@ -289,19 +289,12 @@
                             
                         </div> 
                         <!-- End row-->
-
-
-                        
-
-
-                        
-
                     </div> <!-- container -->
                                
                 </div> <!-- content -->
 
                 <footer class="footer text-right">
-                    <?php echo date('Y')?> © Infostrategy.
+                    <?php echo date('Y')?> &copy; Infostrategy.
                 </footer>
 
             </div>

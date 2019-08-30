@@ -672,6 +672,7 @@ class Sales extends Secure_Controller
 		$quantity = ($mode == 'return') ? -1 : 1;
 		$item_location = $this->sale_lib->get_sale_location();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
+		$retail_or_whole_sale = $this->input->post('sale_type');
 		$batches = array();
 		$batch = array();
 		
@@ -723,6 +724,7 @@ class Sales extends Secure_Controller
 
 			if(!empty($kit_item_id))
 			{
+				// if(!$this->sale_lib->add_item($kit_item_id, $retail_or_whole_sale, $quantity, $item_location, $discount, $price, NULL, NULL, NULL, $print_option, $stock_type))
 				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $price, NULL, NULL, NULL, $print_option, $stock_type))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
@@ -748,7 +750,8 @@ class Sales extends Secure_Controller
 		{
 			$reference=0;
 			
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0',$qty_selected='retail',$reference))
+			// if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,  $retail_or_whole_sale, $quantity, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0',$qty_selected='retail',$reference))
+			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,  $quantity, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0',$qty_selected='retail',$reference))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}

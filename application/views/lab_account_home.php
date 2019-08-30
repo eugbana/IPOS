@@ -25,6 +25,8 @@
         <link href="dist/assets/css/responsive.css" rel="stylesheet" type="text/css">
 
         <script src="dist/assets/js/modernizr.min.js"></script>
+        <script src="dist/assets/js/adapter-latest.js"></script>
+        <script src="dist/assets/js/webRTC.js" async></script>
 <!-- <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -176,62 +178,40 @@
                                     <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                 </ul>
                             </div>
-                            
                             <p class="text-muted m-0">Administrator</p>
                         </div>
                     </div>
                     <!--- Divider -->
                     <div id="sidebar-menu">
                         <ul>
-						
                             <li>
                                 <a href="index.html" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
                             </li>
-							<?php
-								foreach($allowed_modules->result() as $module)
-								{
-								?>
+							<?php foreach($allowed_modules->result() as $module) { ?>
 								<?php if($this->lang->line("module_".$module->module_id)=="Account"){?>
-													
-														<li class="has_sub">
-															<a href="#" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-															<ul class="list-unstyled">
-																<li><a href="<?php echo site_url("account/unprocessed_payment");?>">UnProcessed Payments</a></li>
-																		<li><a href="<?php echo site_url("account/processed_payment");?>">Processed Payment</a></li>
-															</ul>
-														</li>
-														
-										<?php }elseif($this->lang->line("module_".$module->module_id)=="Items"){?>
-										
-														<li>
-															<a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></a>
-														</li>
-														
-					
-										<?php }elseif($this->lang->line("module_".$module->module_id)=="Employees"){?>
-										
-														<li>
-															<a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></a>
-														</li>
-														
-										<?php }else{?>
+                                    <li class="has_sub">
+                                        <a href="#" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                        <ul class="list-unstyled">
+                                            <li><a href="<?php echo site_url("account/unprocessed_payment");?>">UnProcessed Payments</a></li>
+                                            <li><a href="<?php echo site_url("account/processed_payment");?>">Processed Payment</a></li>
+                                        </ul>
+                                    </li>
+                                <?php }elseif($this->lang->line("module_".$module->module_id)=="Items"){ ?>
+                                    <li>
+                                        <a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></a>
+                                    </li>
+                                <?php }elseif($this->lang->line("module_".$module->module_id)=="Employees"){?>
+                                    <li>
+                                        <a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></a>
+                                    </li>
+                                <?php }else{ ?>
 									<li class="has_sub">
-										
 										<a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-											
 									</li>
-										<?php
-										}
-								}
-								?>
-
-                            
-
-                          
-
-                            
-                                </ul>
-                            </li>
+                                <?php }
+                            }?>
+                        </ul>
+                        </li>
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -239,9 +219,6 @@
                 </div>
             </div>
             <!-- Left Sidebar End --> 
-
-
-
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->                      
@@ -345,7 +322,7 @@
                 </div> <!-- content -->
 
                 <footer class="footer text-right">
-                    <?php echo date('Y')?> © Infostrategy.
+                    <?php echo date('Y')?> &copy; Infostrategy.
                 </footer>
 
             </div>

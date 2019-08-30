@@ -727,4 +727,29 @@ function get_item_kit_data_row($item_kit, $controller)
 		));
 }
 
+function get_patients_headers() {
+	$CI =& get_instance();
+	$headers = array(
+	    array('person_id' 		=> 'Person ID'),
+		array('first_name'		=> 'First Name'),
+		array('last_name'		=> 'Last Name'),
+		array('phone_number' 	=> 'Phone Number'),
+		array('view'			=> 'Action')
+	);
+	return transform_headers($headers);
+}
+
+function get_patients_row($item, $controller) {
+	$CI =& get_instance();
+	$controller_name = strtolower(get_class($CI));
+	$id = $item['person_id'];
+	return array(
+		'person_id'		=> $id,
+		'first_name'	=> $item['first_name'],
+		'last_name'		=> $item['last_name'],
+		'phone_number'	=> $item['phone_number'],
+		'view'			=> anchor($controller_name."/view_patient_data/$id", 'view items', 'title="View Patient Data"')
+	);
+}
+
 ?>

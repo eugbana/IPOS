@@ -82,6 +82,7 @@
 			<?php $tabindex = 0; ?>
 
 			<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
+				<?php echo form_hidden('sale_type', 'retail'); ?>
 				<div class="panel-body form-group">
 					<ul>
 						<li class="pull-left first_li">
