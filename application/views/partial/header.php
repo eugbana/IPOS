@@ -108,7 +108,7 @@
 		<link href="dist/css/sb-admin.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<meta name="siteurl" content="<?php echo site_url("laboratory/get_unprocessed_tests_count"); ?>">
-		<script src="dist/assets/js/signaling.js" async></script>
+		<!-- <script src="dist/assets/js/signaling.js" async></script> -->
 		<style>
 			* {
 				box-sizing: border-box;

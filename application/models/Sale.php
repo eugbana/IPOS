@@ -2372,5 +2372,18 @@ class Sale extends CI_Model
 		$reupdated = 1;
 		return $reupdated;
 	}
+
+	public function deduct_item_quantity_after_selling($sale_id) {
+		$items = $this->get_sale_items_ordered($sale_id);
+		$items = $items->result();
+		if (!empty($items)) {
+			foreach($items as $i) {
+				$this->db->where('item_id', $i->item_id);
+				$this->db->where('location_id', $i->item_location);
+				$this->db->set('quantity', 'quantity-1', FALSE);
+				$this->db->update('item_quantities');
+			}
+		}
+	}
 }
 ?>

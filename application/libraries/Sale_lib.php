@@ -951,7 +951,7 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 				$maxkey = $item['line'];
 			}
 
-			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference && $item['qty_selected'] == $qty_selected)
 			// if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
 			{
 				$itemalreadyinsale = TRUE;
@@ -961,7 +961,7 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 					$quantity = bcadd($quantity, $items[$updatekey]['quantity']);
 				}
 			}
-			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference)
+			if($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference']==$reference && $item['qty_selected'] == $qty_selected)
 			// if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
 			{
 				$itemalreadyinsale = TRUE;
@@ -2335,9 +2335,10 @@ public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0
 		$this->empty_cart();
 		$this->remove_customer();
 
-		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
+		$saleSession = $this->CI->Sale->get_sale_items_ordered($sale_id)->result();
+		foreach($saleSession as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option, '0', $row->qty_selected, 0);
 		}
 
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)

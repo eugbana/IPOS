@@ -82,7 +82,6 @@ class Stock_location extends CI_Model
     	$this->db->where('person_id', $this->session->userdata('person_id'));
     	$this->db->where('deleted', 0);
     	$this->db->limit(1);
-
     	return $this->db->get()->row()->location_id;
     }
     

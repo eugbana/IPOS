@@ -28,7 +28,7 @@
         <script src="dist/assets/js/modernizr.min.js"></script>
         <!-- <script src="dist/assets/js/adapter-latest.js"></script>
         <script src="dist/assets/js/webRTC.js" async></script> -->
-        <script src="dist/assets/js/signaling.js" async></script>
+        <!-- <script src="dist/assets/js/signaling.js" async></script> -->
 <!-- <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

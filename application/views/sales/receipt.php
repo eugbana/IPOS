@@ -1,5 +1,10 @@
 <?php $this->load->view("partial/header_print"); ?>
 
+<style>
+	#receipt_wrapper {
+		width: 90% !important;
+	}
+</style>
 <?php
 if (isset($error_message))
 {

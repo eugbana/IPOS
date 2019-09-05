@@ -482,8 +482,7 @@ class Sales extends Secure_Controller
 			$totalPaidSoFar += $pMade['Wallet']['payment_amount'];
 		}
 		if ($totalPaidSoFar >= $total_due) {
-			$this->load->helper('url');
-			redirect('sales/complete_receipt');
+			$this->complete_receipt();
 		} else {
 			$this->_reload();
 		}
@@ -794,10 +793,10 @@ class Sales extends Secure_Controller
 		//$quantity = parse_decimals($this->input->post('quantity'));
 		$stockno= parse_decimals($this->input->post('stockno'));
 		$quantit = parse_decimals($this->input->post('quantity'));
-		if($quantit>$stockno and $mode != 'return'){
+		if($quantit > $stockno && $mode != 'return') {
 			$quantity =1;
 			$data['warning'] = "Warning, Inputed Product Quantity is Insufficient,Reduce quantity to process sale or contact Admin to update inventory";
-		}else{
+		} else {
 			$quantity = parse_decimals($this->input->post('quantity'));
 		}
 		$discount = parse_decimals($this->input->post('discount'));
@@ -1134,6 +1133,9 @@ class Sales extends Secure_Controller
 
 				// Reload (sorted) and filter the cart line items for printing purposes
 				$data['cart'] = $this->get_filtered($this->sale_lib->get_cart_reordered($data['sale_id_num']));
+
+				//added this line so item quantities can be dedudcted from the database once they have been sold.
+				// $this->Sale->deduct_item_quantity_after_selling($data['sale_id_num']);
 
 				$this->sale_lib->set_auth_code(null);
 				$this->load->view('sales/receipt', $data);
@@ -1945,9 +1947,6 @@ class Sales extends Secure_Controller
 		{
 			$data['error'] = $this->lang->line('sales_error_editing_item');
 		}
-
-		
-
 		$this->pill();
 	}
 
