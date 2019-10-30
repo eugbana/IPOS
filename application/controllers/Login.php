@@ -1,6 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Login extends CI_Controller 
+class Login extends CI_Controller
 {
 	public function __construct()
 	{
@@ -9,27 +9,20 @@ class Login extends CI_Controller
 
 	public function index()
 	{
-		if($this->Employee->is_logged_in())
-		{
+		if ($this->Employee->is_logged_in()) {
 			redirect('home');
-		}
-		else
-		{
+		} else {
 			$this->form_validation->set_rules('username', 'lang:login_undername', 'callback_login_check');
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-			
-			if($this->form_validation->run() == FALSE)
-			{
+
+			if ($this->form_validation->run() == FALSE) {
 				$this->load->view('login');
-			}
-			else
-			{
-				if($this->config->item('statistics'))
-				{
+			} else {
+				if ($this->config->item('statistics')) {
 					$this->load->library('tracking_lib');
-					
+
 					$this->tracking_lib->track_page('login', 'login');
-					
+
 					$this->tracking_lib->track_event('Stats', 'Theme', $this->config->item('theme'));
 					$this->tracking_lib->track_event('Stats', 'Language', $this->config->item('language'));
 					$this->tracking_lib->track_event('Stats', 'Timezone', $this->config->item('timezone'));
@@ -53,26 +46,23 @@ class Login extends CI_Controller
 	{
 		$password = $this->input->post('password');
 
-		if($this->_security_check($username, $password))
-		{
+		if ($this->_security_check($username, $password)) {
 			$this->form_validation->set_message('login_check', 'Security check failure');
 
 			return FALSE;
 		}
 
-		if(!$this->Employee->login($username, $password))
-		{
+		if (!$this->Employee->login($username, $password)) {
 			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
 
 			return FALSE;
 		}
 
-		return TRUE;		
+		return TRUE;
 	}
-	
+
 	private function _security_check($username, $password)
 	{
 		return FALSE;
 	}
 }
-?>

@@ -175,7 +175,7 @@
                                 </ul>
                             </div>
                             
-                            <p class="text-muted m-0">Administrator</p>
+                            <p class="text-muted m-0"><?php echo $user_role . '/' . $branch; ?></p>
                         </div>
                     </div>
                     <!--- Divider -->

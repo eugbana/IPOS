@@ -4,8 +4,8 @@
 	dialog_support.init("a.modal-dlg");
 </script>
 <div class="content-page">
-                <!-- Start content -->
-                <div class="content">
+	<!-- Start content -->
+	<div class="content">
 		<div id="page_title"><?php echo $title ?></div>
 
 		<div id="page_subtitle"><?php echo $subtitle ?></div>
@@ -16,10 +16,9 @@
 
 		<div id="report_summary">
 			<?php
-			foreach($summary_data as $name=>$value)
-			{
-			?>
-				<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.to_currency($value); ?></div>
+			foreach ($summary_data as $name => $value) {
+				?>
+				<div class="summary_row"><?php echo $this->lang->line('reports_' . $name) . ': ' . to_currency($value); ?></div>
 			<?php
 			}
 			?>
@@ -28,8 +27,7 @@
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function()
-	{
+	$(document).ready(function() {
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		$('#table').bootstrapTable({
@@ -39,6 +37,7 @@
 			sortable: true,
 			showExport: true,
 			pagination: true,
+			search: true,
 			showColumns: true,
 			showExport: true,
 			data: <?php echo json_encode($data); ?>,

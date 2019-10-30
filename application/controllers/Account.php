@@ -181,6 +181,7 @@ class Account extends Secure_Controller
 				$sale_info=$this->Item->get_saleinfo($invoice_id);
 			    $sale_id=$data['sale_id']=$sale_info->sale_id;
 				$data['cart'] = $this->sale_lib->get_labcart_reordered($sale_id);
+				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($sale_id);
 				$this->load->view('account/receipt', $data);
 				//$this->load->view('account/receipt', $data);
 				$this->sale_lib->clear_all();

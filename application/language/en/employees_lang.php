@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Information";
 $lang["employees_cannot_be_deleted"] = "Could not terminate selected employees, one or more of the employees has processed sales or you are trying to delete yourself :)";
@@ -7,6 +7,7 @@ $lang["employees_confirm_delete"] = "Are you sure you want to terminate the sele
 $lang["employees_current_password"] = "Current Password";
 $lang["employees_current_password_invalid"] = "Invalid Current Password";
 $lang["employees_employee"] = "Employee";
+$lang["employee_on_receipt"] = "Attendant";
 $lang["employees_roles"] = "Select Role";
 $lang["employees_error_adding_updating"] = "Error adding/updating employee";
 $lang["employees_error_deleting_demo_admin"] = "You can not delete the demo admin user";

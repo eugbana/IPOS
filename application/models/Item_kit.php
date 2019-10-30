@@ -166,7 +166,7 @@ class Item_kit extends CI_Model
 		//KIT #
 		if(stripos($search, 'KIT ') !== FALSE)
 		{
-			$this->db->like('item_kit_id', str_ireplace('KIT ', '', $search));
+			$this->db->like('item_kit_id', str_ireplace('KIT ', '', $search),'after');
 			$this->db->order_by('item_kit_id', 'asc');
 
 			foreach($this->db->get()->result() as $row)
@@ -176,7 +176,7 @@ class Item_kit extends CI_Model
 		}
 		else
 		{
-			$this->db->like('name', $search);
+			$this->db->like('name', $search,'after');
 			$this->db->order_by('name', 'asc');
 
 			foreach($this->db->get()->result() as $row)
@@ -234,4 +234,3 @@ class Item_kit extends CI_Model
 		return $this->db->get()->num_rows();
 	}
 }
-?>

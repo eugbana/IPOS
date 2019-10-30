@@ -373,23 +373,28 @@
                             
                             <p class="text-muted m-0">
 								<?php //$user_info->role Administrator
-									if ( ($user_info->role) == 3 ) {
-										echo "Administrator";
+									/*if ( ($user_info->role) == 3 ) {
+										echo "Super Admin/".$branch;;
 									} else if( ($user_info->role) == 7 ){
-										echo "Cashier / ".$branch;
+										echo "Lab. Receptionist / ".$branch;
 									} else if( ($user_info->role) == 4 ){
-										echo "Inventory / ".$branch;
+										echo "Inventory Officer/ ".$branch;
 									} else if( ($user_info->role) == 6 ){
-										echo "Accountant / ". $branch;
+										echo "Lab. Accountant / ". $branch;
 									} else if( ($user_info->role) == 9 ){
-										echo "Scientist / ".$branch;
+										echo "Lab. Scientist / ".$branch;
 									} else if( ($user_info->role) == 5 ){
-										echo "Cashier / ".$branch;
+										echo "Sales Officer / ".$branch;
 									} else if( ($user_info->role) == 10 ){
-										echo "Executive";
+										echo "CEO/".$branch;
+									} else if( ($user_info->role) == 12 ){
+										echo "Accountant/".$branch;
+									} else if( ($user_info->role) == 13 ){
+										echo "Manager/".$branch;
 									} else {
-										
-									}
+										echo "Admin/".$branch;
+									} */
+									echo $user_role.'/'.$branch;
 								?>
 							</p>
                         </div>

@@ -127,7 +127,7 @@
 						<?php } else {
 							foreach (array_reverse($cart, TRUE) as $line => $item) {
 								?>
-
+							<?php echo form_open($controller_name . "/edit_item/$line", array('class' => 'form-horizontal', 'id' => 'cart_' . $line)); ?>
 							<?php
 									if ($item['in_stock'] <= 0) { ?>
 
@@ -139,7 +139,6 @@
 										header('Location:' . $webe . '/');
 									} else {	?>
 								<?php if ($item['reference'] == 0) { ?>
-									<?php echo form_open($controller_name . "/edit_item/$line", array('class' => 'form-horizontal', 'id' => 'cart_' . $line)); ?>
 									<tr>
 										<td><?php echo anchor($controller_name . "/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>'); ?></td>
 										<td><?php echo $item['item_number']; ?></td>
@@ -198,14 +197,12 @@
 															echo anchor($controller_name . "/add_sale_pill/$piller", '<span class="glyphicon glyphicon-time"></span>'); ?></td>
 										<?php ?>
 									</tr>
+
+
 									<?php echo form_close(); ?>
-
-
-
 									<?php foreach ($cart as $let => $unline) { ?>
-
+										<?php echo form_open($controller_name . "/edit_salepill_item/$let", array('class' => 'form-horizontal', 'id' => 'cart_' . $let)); ?>
 										<?php if ($unline['item_id'] == $item['item_id'] && $unline['reference'] == 1) { ?>
-											<?php echo form_open($controller_name . "/edit_salepill_item/$let", array('class' => 'form-horizontal', 'id' => 'cart_' . $let)); ?>
 											<tr>
 												<td><?php echo anchor($controller_name . "/delete_item/$let", '<span class="glyphicon glyphicon-trash"></span>'); ?></td>
 												<td><?php echo 'Pill Reminder'; ?>
@@ -255,7 +252,6 @@
 
 												</td>
 												<td><?php echo to_currency($unline['price'] * $unline['reminder_value'] * $unline['no_of_days']); ?></td>
-
 											</tr>
 
 							<?php
@@ -617,7 +613,7 @@
 		});
 		$("#item").autocomplete({
 			source: '<?php echo site_url($controller_name . "/item_search"); ?>',
-			minChars: 1,
+			minChars: 0,
 			autoFocus: false,
 			delay: 500,
 			select: function(a, ui) {
@@ -647,16 +643,13 @@
 		};
 
 		$("#customer").autocomplete({
-			source: '<?php //echo site_url("customers/suggest"); 
-						echo site_url($controller_name . "/customer_search");
-						?>',
-			minChars: 1,
+			source: '<?php echo site_url("customers/suggest"); ?>',
+			minChars: 0,
 			delay: 10,
 			select: function(a, ui) {
 				$(this).val(ui.item.value);
 				$("#select_customer_form").submit();
 			}
-
 		});
 
 		$(".giftcard-input").autocomplete({

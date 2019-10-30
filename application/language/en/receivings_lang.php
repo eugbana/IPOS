@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Cancel";
 $lang["receivings_cannot_be_deleted"] = "Receiving(s) could not be deleted";
@@ -31,7 +31,7 @@ $lang["receivings_new_supplier"] = "New Supplier";
 $lang["receivings_one_or_multiple"] = "receiving(s)";
 $lang["receivings_print_after_sale"] = "Print after sale";
 $lang["receivings_quantity"] = "Qty.";
-$lang["receivings_receipt"] = "ITEMS DISPATCH REPORT";
+$lang["receivings_receipt"] = "STOCK INTAKE REPORT"; //change from ITEMS DISPATCH REPORT
 $lang["receivings_receipt_number"] = "Receiving #";
 $lang["receivings_receiving"] = "Receive";
 $lang["receivings_reference"] = "Reference";

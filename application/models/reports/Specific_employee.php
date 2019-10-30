@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Report.php");
 
@@ -29,7 +29,8 @@ class Specific_employee extends Report
 				array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
 				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
 				array('payment_type' => $this->lang->line('reports_payment_type')),
-				array('comments' => $this->lang->line('reports_comments'))),
+				array('comments' => $this->lang->line('reports_comments'))
+			),
 			'details' => array(
 				$this->lang->line('reports_name'),
 				$this->lang->line('reports_category'),
@@ -41,10 +42,12 @@ class Specific_employee extends Report
 				$this->lang->line('reports_total'),
 				$this->lang->line('reports_cost'),
 				$this->lang->line('reports_profit'),
-				$this->lang->line('reports_discount')),
+				$this->lang->line('reports_discount')
+			),
 			'details_rewards' => array(
 				$this->lang->line('reports_used'),
-				$this->lang->line('reports_earned'))
+				$this->lang->line('reports_earned')
+			)
 		);
 	}
 
@@ -64,30 +67,36 @@ class Specific_employee extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->where('employee_id', $inputs['employee_id']);
 
-		if($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		if ($inputs['sale_type'] == 'sales') {
+			$this->db->where('quantity_purchased > 0');
+		} elseif ($inputs['sale_type'] == 'returns') {
+			$this->db->where('quantity_purchased < 0');
+		}
 
 		$this->db->group_by('sale_id');
 		$this->db->order_by('MAX(sale_date)');
 
 		$data = array();
+
 		$data['summary'] = $this->db->get()->result_array();
+
+
+
 		$data['details'] = array();
 		$data['rewards'] = array();
-		
+
 		// return $this->db->last_query();
-		foreach($data['summary'] as $key => $value)
-		{
-			$this->db->select('cost_price, sales_items_temp.name, sales_items_temp.category, serialnumber, sales_items_temp.description, quantity_purchased, subtotal, tax, total, cost, profit, discount_percent');
+
+
+		foreach ($data['summary'] as $key => $value) {
+			$this->db->distinct('items.item_id');
+			$this->db->select('cost_price, items.item_id, sales_items_temp.name, sales_items_temp.category, serialnumber, sales_items_temp.description, quantity_purchased, subtotal, tax, total, cost, profit, discount_percent');
 			$this->db->from('sales_items_temp');
 			$this->db->join('items', 'items.name = sales_items_temp.name');
+
+
 			$this->db->where('sale_id', $value['sale_id']);
+
 			$data['details'][$key] = $this->db->get()->result_array();
 			$this->db->select('used, earned');
 			$this->db->from('sales_reward_points');
@@ -103,12 +112,9 @@ class Specific_employee extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->where('employee_id', $inputs['employee_id']);
 
-		if($inputs['sale_type'] == 'sales')
-		{
+		if ($inputs['sale_type'] == 'sales') {
 			$this->db->where('quantity_purchased > 0');
-		}
-		elseif($inputs['sale_type'] == 'returns')
-		{
+		} elseif ($inputs['sale_type'] == 'returns') {
 			$this->db->where('quantity_purchased < 0');
 		}
 
@@ -129,7 +135,8 @@ class Specific_employee extends Report
 				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
 				array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
 				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
-				array('payment_type' => $this->lang->line('reports_payment_type')))
+				array('payment_type' => $this->lang->line('reports_payment_type'))
+			)
 		);
 	}
 
@@ -154,4 +161,3 @@ class Specific_employee extends Report
 		return $this->db->get()->result();
 	}
 }
-?>

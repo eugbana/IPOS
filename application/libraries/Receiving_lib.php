@@ -353,5 +353,3 @@ class Receiving_lib
 		return $total;
 	}
 }
-
-?>

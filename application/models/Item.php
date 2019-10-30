@@ -6,12 +6,10 @@ class Item extends CI_Model
 	*/
 	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
-		if (ctype_digit($item_id))
-		{
+		if (ctype_digit($item_id)) {
 			$this->db->from('items');
 			$this->db->where('item_id', (int) $item_id);
-			if ($ignore_deleted == FALSE)
-			{
+			if ($ignore_deleted == FALSE) {
 				$this->db->where('deleted', $deleted);
 			}
 
@@ -31,11 +29,10 @@ class Item extends CI_Model
 		$this->db->select('location_id');
 		$this->db->from('stock_locations');
 		$this->db->where('location_name', $location_name);
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			return $row->location_id;
 		}
-		
+
 
 		//return $suggestions['location_id'];
 		//return 1;
@@ -45,8 +42,7 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->where('item_number', (string) $item_number);
-		if(ctype_digit($item_id))
-		{
+		if (ctype_digit($item_id)) {
 			$this->db->where('item_id !=', (int) $item_id);
 		}
 
@@ -214,177 +210,160 @@ class Item extends CI_Model
 	}*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
-		if($filters['expiry'] == FALSE){
-				$this->db->select('MAX(items.name) as name');
-				$this->db->select('MAX(items.category) as category');
-				$this->db->select('MAX(items.supplier_id) as supplier_id');
-				$this->db->select('MAX(items.item_number) as item_number');
-				$this->db->select('MAX(items.description) as description');
-				$this->db->select('MAX(items.cost_price) as cost_price');
-				$this->db->select('MAX(items.unit_price) as unit_price');
-				$this->db->select('MAX(items.reorder_level) as reorder_level');
-				$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
-				$this->db->select('items.item_id as item_id');
-				$this->db->select('MAX(items.pic_filename) as pic_filename');
-				$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
-				$this->db->select('MAX(items.is_serialized) as is_serialized');
-				$this->db->select('MAX(items.deleted) as deleted');
-				$this->db->select('MAX(items.expiry_days) as expiry_days');
-				$this->db->select('MAX(items.pack) as pack');
-				//$this->db->select('MAX(items.custom3) as custom3');
-				//$this->db->select('MAX(items.custom4) as custom4');
-				$this->db->select('MAX(items.custom5) as custom5');
-				$this->db->select('MAX(items.custom6) as custom6');
-				$this->db->select('MAX(items.custom7) as custom7');
-				$this->db->select('MAX(items.custom8) as custom8');
-				$this->db->select('MAX(items.custom9) as custom9');
-				$this->db->select('MAX(items.custom10) as custom10');
+		if ($filters['expiry'] == FALSE) {
+			$this->db->select('MAX(items.name) as name');
+			$this->db->select('MAX(items.category) as category');
+			$this->db->select('MAX(items.supplier_id) as supplier_id');
+			$this->db->select('MAX(items.item_number) as item_number');
+			$this->db->select('MAX(items.description) as description');
+			$this->db->select('MAX(items.cost_price) as cost_price');
+			$this->db->select('MAX(items.unit_price) as unit_price');
+			$this->db->select('MAX(items.reorder_level) as reorder_level');
+			$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
+			$this->db->select('items.item_id as item_id');
+			$this->db->select('MAX(items.pic_filename) as pic_filename');
+			$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
+			$this->db->select('MAX(items.is_serialized) as is_serialized');
+			$this->db->select('MAX(items.deleted) as deleted');
+			$this->db->select('MAX(items.expiry_days) as expiry_days');
+			$this->db->select('MAX(items.pack) as pack');
+			//$this->db->select('MAX(items.custom3) as custom3');
+			//$this->db->select('MAX(items.custom4) as custom4');
+			$this->db->select('MAX(items.custom5) as custom5');
+			$this->db->select('MAX(items.custom6) as custom6');
+			$this->db->select('MAX(items.custom7) as custom7');
+			$this->db->select('MAX(items.custom8) as custom8');
+			$this->db->select('MAX(items.custom9) as custom9');
+			$this->db->select('MAX(items.custom10) as custom10');
 
-				$this->db->select('MAX(suppliers.person_id) as person_id');
-				$this->db->select('MAX(suppliers.company_name) as company_name');
-				$this->db->select('MAX(suppliers.agency_name) as agency_name');
-				$this->db->select('MAX(suppliers.account_number) as account_number');
-				$this->db->select('MAX(suppliers.deleted) as deleted');
+			$this->db->select('MAX(suppliers.person_id) as person_id');
+			$this->db->select('MAX(suppliers.company_name) as company_name');
+			$this->db->select('MAX(suppliers.agency_name) as agency_name');
+			$this->db->select('MAX(suppliers.account_number) as account_number');
+			$this->db->select('MAX(suppliers.deleted) as deleted');
 
-				$this->db->select('MAX(inventory.trans_id) as trans_id');
-				$this->db->select('MAX(inventory.trans_items) as trans_items');
-				$this->db->select('MAX(inventory.trans_user) as trans_user');
-				$this->db->select('MAX(inventory.trans_date) as trans_date');
-				$this->db->select('MAX(inventory.trans_comment) as trans_comment');
-				$this->db->select('MAX(inventory.trans_location) as trans_location');
-				$this->db->select('MAX(inventory.trans_inventory) as trans_inventory');
-				
+			$this->db->select('MAX(inventory.trans_id) as trans_id');
+			$this->db->select('MAX(inventory.trans_items) as trans_items');
+			$this->db->select('MAX(inventory.trans_user) as trans_user');
+			$this->db->select('MAX(inventory.trans_date) as trans_date');
+			$this->db->select('MAX(inventory.trans_comment) as trans_comment');
+			$this->db->select('MAX(inventory.trans_location) as trans_location');
+			$this->db->select('MAX(inventory.trans_inventory) as trans_inventory');
 
-				if($filters['stock_location_id'] > -1)
-				{
-					//$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
-					$this->db->select('MAX(item_quantities.location_id) as location_id');
-					$this->db->select('MAX(item_quantities.quantity) as quantity');
-					if($filters['expiry'] != FALSE){
-					  $this->db->select('MAX(item_expiry.batch_no) as batch');
-					}
+
+			if ($filters['stock_location_id'] > -1) {
+				//$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
+				$this->db->select('MAX(item_quantities.location_id) as location_id');
+				$this->db->select('MAX(item_quantities.quantity) as quantity');
+				if ($filters['expiry'] != FALSE) {
+					$this->db->select('MAX(item_expiry.batch_no) as batch');
 				}
+			}
 
-				$this->db->from('items as items');
-				//$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
-				$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-				$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
-				
-				
+			$this->db->from('items as items');
+			//$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
+			$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+			$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
 
-				if($filters['stock_location_id'] > -1)
-				{
-					$this->db->join('item_quantities as item_quantities', 'item_quantities.item_id = items.item_id');
-					
-					$this->db->where('location_id', $filters['stock_location_id']);
-				
-					
-				}
 
-				if(empty($this->config->item('date_or_time_format')))
-				{
-					$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-				}
-				else
-				{
-					$this->db->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
-				}
 
-				if(!empty($search))
-				{
-					if($filters['search_custom'] == FALSE)
-					{
-						$this->db->group_start();
-							//$trinog=substr($search, 0, 1, 'utf-8');
-							$this->db->like('name', $search);
-									//$this->db->like('name', $search);
-							$this->db->or_like('items.item_number', $search);
-							$this->db->or_like('items.item_id', $search);
-							$this->db->or_like('company_name', $search);
-							$this->db->or_like('category', $search);
-							
-						$this->db->group_end();
-					}
-					else
-					{
-						$this->db->group_start();
-							$this->db->like('expiry_days', $search);
-							$this->db->or_like('custom2', $search);
-							$this->db->or_like('custom3', $search);
-							$this->db->or_like('custom4', $search);
-							$this->db->or_like('custom5', $search);
-							$this->db->or_like('custom6', $search);
-							$this->db->or_like('custom7', $search);
-							$this->db->or_like('custom8', $search);
-							$this->db->or_like('custom9', $search);
-							$this->db->or_like('custom10', $search);
-						$this->db->group_end();
-					}
-				}
+			if ($filters['stock_location_id'] > -1) {
+				$this->db->join('item_quantities as item_quantities', 'item_quantities.item_id = items.item_id');
 
-				$this->db->where('items.deleted', $filters['is_deleted']);
-
-				if($filters['empty_upc'] != FALSE)
-				{
-					$this->db->where('item_number', NULL);
-				}
-				if($filters['low_inventory'] != FALSE)
-				{
-					$this->db->where('quantity <=', 'reorder_level');
-				}
-				if($filters['is_serialized'] != FALSE)
-				{
-					$this->db->where('is_serialized', 1);
-				}
-				if($filters['no_description'] != FALSE)
-				{
-					$this->db->where('items.description', '');
-				}
-				if ($filters['apply_vat'] != FALSE)
-				{
-					$this->db->where('items.apply_vat', 'YES');
-				}
-
-				// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
-				$this->db->group_by('items.item_id');
-
-				// order by name of item
-				$this->db->order_by($sort, $order);
-		}else{
-			$this->db->select('items.name as name');
-				$this->db->select('items.category as category');
-				// $this->db->select('MAX(items.supplier_id) as supplier_id');
-				// $this->db->select('MAX(items.item_number) as item_number');
-				// $this->db->select('MAX(items.description) as description');
-				 $this->db->select('items.cost_price as cost_price');
-				 $this->db->select('items.unit_price as unit_price');
-				
-				 $this->db->select('items.item_id as item_id');
-				// $this->db->select('MAX(items.pic_filename) as pic_filename');
-				// $this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
-				// $this->db->select('MAX(items.is_serialized) as is_serialized');
-				// $this->db->select('MAX(items.deleted) as deleted');
-				// $this->db->select('MAX(items.expiry_days) as expiry_days');
-				 $this->db->select('items.pack as pack');
-				
-				$this->db->select('item_expiry.location_id as location_id');
-				$this->db->select('item_expiry.batch_no as batch');
-				$this->db->select('item_expiry.expiry as expiry_date');
-				$this->db->select('items.expiry_days as expiretime');
-				$this->db->select('items.period as period');
-
-				$this->db->from('items as items');
-				//$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
-				$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-				//$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
-				
-				$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
 				$this->db->where('location_id', $filters['stock_location_id']);
-		}
-		
+			}
 
-		if($rows > 0)
-		{
+			if (empty($this->config->item('date_or_time_format'))) {
+				$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			} else {
+				$this->db->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			}
+
+			if (!empty($search)) {
+				if ($filters['search_custom'] == FALSE) {
+					$this->db->group_start();
+					//$trinog=substr($search, 0, 1, 'utf-8');
+					$this->db->like('name', $search);
+					//$this->db->like('name', $search);
+					$this->db->or_like('items.item_number', $search);
+					$this->db->or_like('items.item_id', $search);
+					$this->db->or_like('company_name', $search);
+					$this->db->or_like('category', $search);
+
+					$this->db->group_end();
+				} else {
+					$this->db->group_start();
+					$this->db->like('expiry_days', $search);
+					$this->db->or_like('custom2', $search);
+					$this->db->or_like('custom3', $search);
+					$this->db->or_like('custom4', $search);
+					$this->db->or_like('custom5', $search);
+					$this->db->or_like('custom6', $search);
+					$this->db->or_like('custom7', $search);
+					$this->db->or_like('custom8', $search);
+					$this->db->or_like('custom9', $search);
+					$this->db->or_like('custom10', $search);
+					$this->db->group_end();
+				}
+			}
+
+			$this->db->where('items.deleted', $filters['is_deleted']);
+
+			if ($filters['empty_upc'] != FALSE) {
+				$this->db->where('item_number', NULL);
+			}
+			if ($filters['low_inventory'] != FALSE) {
+				$this->db->where('quantity <=', 'reorder_level');
+			}
+			if ($filters['is_serialized'] != FALSE) {
+				$this->db->where('is_serialized', 1);
+			}
+			if ($filters['no_description'] != FALSE) {
+				$this->db->where('items.description', '');
+			}
+			if ($filters['apply_vat'] != FALSE) {
+				$this->db->where('items.apply_vat', 'YES');
+			}
+
+			// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
+			$this->db->group_by('items.item_id');
+
+			// order by name of item
+			$this->db->order_by($sort, $order);
+		} else {
+			$this->db->select('items.name as name');
+			$this->db->select('items.category as category');
+			// $this->db->select('MAX(items.supplier_id) as supplier_id');
+			// $this->db->select('MAX(items.item_number) as item_number');
+			// $this->db->select('MAX(items.description) as description');
+			$this->db->select('items.cost_price as cost_price');
+			$this->db->select('items.unit_price as unit_price');
+
+			$this->db->select('items.item_id as item_id');
+			// $this->db->select('MAX(items.pic_filename) as pic_filename');
+			// $this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
+			// $this->db->select('MAX(items.is_serialized) as is_serialized');
+			// $this->db->select('MAX(items.deleted) as deleted');
+			// $this->db->select('MAX(items.expiry_days) as expiry_days');
+			$this->db->select('items.pack as pack');
+
+			$this->db->select('item_expiry.location_id as location_id');
+			$this->db->select('item_expiry.batch_no as batch');
+			$this->db->select('item_expiry.expiry as expiry_date');
+			$this->db->select('items.expiry_days as expiretime');
+			$this->db->select('items.period as period');
+
+			$this->db->from('items as items');
+			//$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
+			$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+			//$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
+
+			$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
+			$this->db->where('location_id', $filters['stock_location_id']);
+		}
+
+
+		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
 		}
 
@@ -400,8 +379,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 
-		if($stock_location_id > -1)
-		{
+		if ($stock_location_id > -1) {
 			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $stock_location_id);
 		}
@@ -411,8 +389,7 @@ class Item extends CI_Model
 		// order by name of item
 		$this->db->order_by('items.name', 'asc');
 
-		if($rows > 0)
-		{
+		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
 		}
 
@@ -425,11 +402,12 @@ class Item extends CI_Model
 		$this->db->select('laboratory_invoice_item.*');
 		$this->db->from('laboratory_invoice_item');
 		$this->db->where('invoice_id', $invoice_id);
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$suggestions[] = array('item_id' => $row->item_id,
-									'test_type' => $row->test_type);
+
+		foreach ($this->db->get()->result() as $row) {
+			$suggestions[] = array(
+				'item_id' => $row->item_id,
+				'test_type' => $row->test_type
+			);
 		}
 
 
@@ -449,18 +427,14 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
-		}
-		else
-		{
+		} else {
 			//Get empty base parent object, as $item_id is NOT an item
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('items') as $field)
-			{
+			foreach ($this->db->list_fields('items') as $field) {
 				$item_obj->$field = '';
 			}
 
@@ -477,8 +451,8 @@ class Item extends CI_Model
 		//$this->db->where('item_id', $item_id);
 
 
-		foreach($this->db->get()->result() as $row){
-			$suggestions[] = array('location_id' => $row->location_id,'location_name' => $row->location_name,'sales_amount' => $row->sales_amount);
+		foreach ($this->db->get()->result() as $row) {
+			$suggestions[] = array('location_id' => $row->location_id, 'location_name' => $row->location_name, 'sales_amount' => $row->sales_amount);
 		}
 
 
@@ -494,7 +468,7 @@ class Item extends CI_Model
 		$this->db->where('location_id', $location);
 
 
-		foreach($this->db->get()->result() as $row){
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('name' => $row->name);
 		}
 
@@ -512,7 +486,7 @@ class Item extends CI_Model
 		$this->db->where('quantity', 0);
 
 
-		foreach($this->db->get()->result() as $row){
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('name' => $row->name);
 		}
 
@@ -531,15 +505,15 @@ class Item extends CI_Model
 		$this->db->where('quantity <=', 'reorder_level');
 
 
-		foreach($this->db->get()->result() as $row){
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('name' => $row->name);
 		}
 
 
 		return $suggestions;
 	}
-	
-	
+
+
 	public function get_expiry_total($location)
 	{
 		$this->db->select('items.name');
@@ -553,8 +527,8 @@ class Item extends CI_Model
 		$this->db->where('location_id', $location);
 
 
-		foreach($this->db->get()->result() as $row){
-			$suggestions[] = array('name' => $row->name,'period' => $row->period,'expiry_days' => $row->expiry_days,'expiry' => $row->expiry);
+		foreach ($this->db->get()->result() as $row) {
+			$suggestions[] = array('name' => $row->name, 'period' => $row->period, 'expiry_days' => $row->expiry_days, 'expiry' => $row->expiry);
 		}
 
 
@@ -568,18 +542,14 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
-		}
-		else
-		{
+		} else {
 			//Get empty base parent object, as $item_id is NOT an item
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('laboratory_results') as $field)
-			{
+			foreach ($this->db->list_fields('laboratory_results') as $field) {
 				$item_obj->$field = '';
 			}
 
@@ -592,13 +562,12 @@ class Item extends CI_Model
 
 		$this->db->where('item_id', (int) $item_id);
 
-			
-		
+
+
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
 		}
 
@@ -612,18 +581,14 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
-		}
-		else
-		{
+		} else {
 			//Get empty base parent object, as $item_id is NOT an item
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('laboratory_test') as $field)
-			{
+			foreach ($this->db->list_fields('laboratory_test') as $field) {
 				$item_obj->$field = '';
 			}
 
@@ -638,18 +603,14 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
-		}
-		else
-		{
+		} else {
 			//Get empty base parent object, as $item_id is NOT an item
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('laboratory_category') as $field)
-			{
+			foreach ($this->db->list_fields('laboratory_category') as $field) {
 				$item_obj->$field = '';
 			}
 
@@ -658,193 +619,175 @@ class Item extends CI_Model
 	}
 	public function lab_category_save($lab_category_name, $lab_category_id = FALSE)
 	{
-		if(!$lab_category_id || !$this->exists($lab_category_id, TRUE))
-		{
-				$item_data = array(
-					'lab_category_name' => $lab_category_name,
-					
-				);
-				
-				$this->db->trans_start();
+		if (!$lab_category_id || !$this->exists($lab_category_id, TRUE)) {
+			$item_data = array(
+				'lab_category_name' => $lab_category_name,
 
-				$this->db->insert('laboratory_category', $item_data);
-				$lab_category_id = $this->db->insert_id();
-				
-				$this->db->trans_complete();
+			);
 
-		if($this->db->trans_status() === FALSE)
-		{
-			return -1;
+			$this->db->trans_start();
+
+			$this->db->insert('laboratory_category', $item_data);
+			$lab_category_id = $this->db->insert_id();
+
+			$this->db->trans_complete();
+
+			if ($this->db->trans_status() === FALSE) {
+				return -1;
+			}
+			return $lab_category_id;
+			//return TRUE;
 		}
-		return $lab_category_id;
-		//return TRUE;
-	}
-	
-				$this->db->where('lab_category_id', $lab_category_id);
 
-				return $this->db->update('laboratory_category', $item_data);
+		$this->db->where('lab_category_id', $lab_category_id);
+
+		return $this->db->update('laboratory_category', $item_data);
 	}
 
 	public function category_get_all($limit_from = 0, $rows = 0)
-		{
-			$this->db->from('laboratory_category');		
-			$this->db->where('deleted', 0);
-			$this->db->order_by('lab_category_name', 'asc');
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
-
-			return $this->db->get();		
+	{
+		$this->db->from('laboratory_category');
+		$this->db->where('deleted', 0);
+		$this->db->order_by('lab_category_name', 'asc');
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
 		}
-		
-		
-		public function labtestunit_info($lab_testunit_id)
-		{
-			$this->db->select('laboratory_testunit.*');
-			$this->db->from('laboratory_testunit');
-			$this->db->where('lab_testunit_id', $lab_testunit_id);
 
-			$query = $this->db->get();
+		return $this->db->get();
+	}
 
-			if($query->num_rows() == 1)
-			{
-				return $query->row();
+
+	public function labtestunit_info($lab_testunit_id)
+	{
+		$this->db->select('laboratory_testunit.*');
+		$this->db->from('laboratory_testunit');
+		$this->db->where('lab_testunit_id', $lab_testunit_id);
+
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 1) {
+			return $query->row();
+		} else {
+			//Get empty base parent object, as $item_id is NOT an item
+			$item_obj = new stdClass();
+
+			//Get all the fields from items table
+			foreach ($this->db->list_fields('laboratory_testunit') as $field) {
+				$item_obj->$field = '';
 			}
-			else
-			{
-				//Get empty base parent object, as $item_id is NOT an item
-				$item_obj = new stdClass();
 
-				//Get all the fields from items table
-				foreach($this->db->list_fields('laboratory_testunit') as $field)
-				{
-					$item_obj->$field = '';
-				}
-
-				return $item_obj;
-			}
+			return $item_obj;
 		}
-		public function labtestsubgroup_info($lab_subgroup_id)
-		{
-			$this->db->select('laboratory_subgroup.*');
-			$this->db->from('laboratory_subgroup');
-			$this->db->where('lab_subgroup_id', $lab_subgroup_id);
+	}
+	public function labtestsubgroup_info($lab_subgroup_id)
+	{
+		$this->db->select('laboratory_subgroup.*');
+		$this->db->from('laboratory_subgroup');
+		$this->db->where('lab_subgroup_id', $lab_subgroup_id);
 
-			$query = $this->db->get();
+		$query = $this->db->get();
 
-			if($query->num_rows() == 1)
-			{
-				return $query->row();
+		if ($query->num_rows() == 1) {
+			return $query->row();
+		} else {
+			//Get empty base parent object, as $item_id is NOT an item
+			$item_obj = new stdClass();
+
+			//Get all the fields from items table
+			foreach ($this->db->list_fields('laboratory_subgroup') as $field) {
+				$item_obj->$field = '';
 			}
-			else
-			{
-				//Get empty base parent object, as $item_id is NOT an item
-				$item_obj = new stdClass();
 
-				//Get all the fields from items table
-				foreach($this->db->list_fields('laboratory_subgroup') as $field)
-				{
-					$item_obj->$field = '';
-				}
-
-				return $item_obj;
-			}
+			return $item_obj;
 		}
+	}
 	public function lab_testunit_save($lab_testunit_name, $lab_testunit_id = FALSE)
 	{
-		if(!$lab_testunit_id || !$this->exists($lab_testunit_id, TRUE))
-		{
-				$item_data = array(
-					'lab_testunit_name' => $lab_testunit_name,
-					
-				);
-				
-				$this->db->trans_start();
+		if (!$lab_testunit_id || !$this->exists($lab_testunit_id, TRUE)) {
+			$item_data = array(
+				'lab_testunit_name' => $lab_testunit_name,
 
-				$this->db->insert('laboratory_testunit', $item_data);
-				$lab_testunit_id = $this->db->insert_id();
-				
-				$this->db->trans_complete();
+			);
 
-		if($this->db->trans_status() === FALSE)
-		{
-			return -1;
+			$this->db->trans_start();
+
+			$this->db->insert('laboratory_testunit', $item_data);
+			$lab_testunit_id = $this->db->insert_id();
+
+			$this->db->trans_complete();
+
+			if ($this->db->trans_status() === FALSE) {
+				return -1;
+			}
+			return $lab_testunit_id;
+			//return TRUE;
 		}
-		return $lab_testunit_id;
-		//return TRUE;
-	}
-	
-				$this->db->where('lab_testunit_id', $lab_testunit_id);
 
-				return $this->db->update('laboratory_testunit', $item_data);
+		$this->db->where('lab_testunit_id', $lab_testunit_id);
+
+		return $this->db->update('laboratory_testunit', $item_data);
 	}
-	
+
 	public function lab_testsubgroup_save($lab_subgroup_name, $lab_subgroup_id = FALSE)
 	{
-		if(!$lab_subgroup_id || !$this->exists($lab_subgroup_id, TRUE))
-		{
-				$item_data = array(
-					'lab_subgroup_name' => $lab_subgroup_name,
-					
-				);
-				
-				$this->db->trans_start();
+		if (!$lab_subgroup_id || !$this->exists($lab_subgroup_id, TRUE)) {
+			$item_data = array(
+				'lab_subgroup_name' => $lab_subgroup_name,
 
-				$this->db->insert('laboratory_subgroup', $item_data);
-				$lab_subgroup_id = $this->db->insert_id();
-				
-				$this->db->trans_complete();
+			);
 
-		if($this->db->trans_status() === FALSE)
-		{
-			return -1;
+			$this->db->trans_start();
+
+			$this->db->insert('laboratory_subgroup', $item_data);
+			$lab_subgroup_id = $this->db->insert_id();
+
+			$this->db->trans_complete();
+
+			if ($this->db->trans_status() === FALSE) {
+				return -1;
+			}
+			return $lab_subgroup_id;
+			//return TRUE;
 		}
-		return $lab_subgroup_id;
-		//return TRUE;
-	}
-	
-				$this->db->where('lab_subgroup_id', $lab_subgroup_id);
 
-				return $this->db->update('laboratory_testunit', $item_data);
+		$this->db->where('lab_subgroup_id', $lab_subgroup_id);
+
+		return $this->db->update('laboratory_testunit', $item_data);
 	}
 
 	public function testunit_get_all($limit_from = 0, $rows = 0)
-		{
-			$this->db->from('laboratory_testunit');		
-			$this->db->where('deleted', 0);
-			$this->db->order_by('lab_testunit_name', 'asc');
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
-
-			return $this->db->get();		
+	{
+		$this->db->from('laboratory_testunit');
+		$this->db->where('deleted', 0);
+		$this->db->order_by('lab_testunit_name', 'asc');
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
 		}
-		public function testsubgroup_get_all($limit_from = 0, $rows = 0)
-		{
-			$this->db->from('laboratory_subgroup');		
-			$this->db->where('deleted', 0);
-			$this->db->order_by('lab_subgroup_name', 'asc');
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
 
-			return $this->db->get();		
+		return $this->db->get();
+	}
+	public function testsubgroup_get_all($limit_from = 0, $rows = 0)
+	{
+		$this->db->from('laboratory_subgroup');
+		$this->db->where('deleted', 0);
+		$this->db->order_by('lab_subgroup_name', 'asc');
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
 		}
-		public function testkind_get_all($limit_from = 0, $rows = 0)
-		{
-			$this->db->from('laboratory_kind');		
-			$this->db->where('deleted', 0);
-			$this->db->order_by('lab_testkind_name', 'asc');
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
 
-			return $this->db->get();		
+		return $this->db->get();
+	}
+	public function testkind_get_all($limit_from = 0, $rows = 0)
+	{
+		$this->db->from('laboratory_kind');
+		$this->db->where('deleted', 0);
+		$this->db->order_by('lab_testkind_name', 'asc');
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
 		}
+
+		return $this->db->get();
+	}
 
 
 
@@ -855,15 +798,12 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 
-		if (ctype_digit($item_id))
-		{
+		if (ctype_digit($item_id)) {
 			$this->db->group_start();
-				$this->db->where('item_id', (int) $item_id);
-				$this->db->or_where('items.item_number', $item_id);
+			$this->db->where('item_id', (int) $item_id);
+			$this->db->or_where('items.item_number', $item_id);
 			$this->db->group_end();
-		}
-		else
-		{
+		} else {
 			$this->db->where('item_number', $item_id);
 		}
 
@@ -871,8 +811,7 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
 		}
 
@@ -882,15 +821,12 @@ class Item extends CI_Model
 	{
 		$this->db->from('pill_reminder');
 
-		if (ctype_digit($reminder_id))
-		{
+		if (ctype_digit($reminder_id)) {
 			$this->db->group_start();
-				$this->db->where('reminder_id', (int) $reminder_id);
-				$this->db->or_where('pill_reminder.reminder_id', $reminder_id);
+			$this->db->where('reminder_id', (int) $reminder_id);
+			$this->db->or_where('pill_reminder.reminder_id', $reminder_id);
 			$this->db->group_end();
-		}
-		else
-		{
+		} else {
 			$this->db->where('reminder_id', $reminder_id);
 		}
 
@@ -898,8 +834,7 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
 		}
 
@@ -914,10 +849,8 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		
-			return $query->row();
-		
 
+		return $query->row();
 	}
 	public function get_info_batch($id)
 	{
@@ -928,10 +861,8 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		
-			return $query->row();
-		
 
+		return $query->row();
 	}
 	public function get_info_role($id)
 	{
@@ -942,15 +873,13 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		
-			return $query->row();
-		
 
+		return $query->row();
 	}
 	public function get_balanceinfo($employeeID)
 	{
-		$date_entered=date('Y-m-d');
-		$status=1;
+		$date_entered = date('Y-m-d');
+		$status = 1;
 		$this->db->from('open_register');
 
 
@@ -960,10 +889,8 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		
-			return $query->row();
-		
 
+		return $query->row();
 	}
 	public function get_info_branch($location_id)
 	{
@@ -974,10 +901,8 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		
-			return $query->row();
-		
 
+		return $query->row();
 	}
 	public function get_info_transfer($transfer_id)
 	{
@@ -988,10 +913,8 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		
-			return $query->row();
-		
 
+		return $query->row();
 	}
 	public function get_saleinfo($invoice_id)
 	{
@@ -1002,10 +925,8 @@ class Item extends CI_Model
 
 		$query = $this->db->get();
 
-		
-			return $query->row();
-		
 
+		return $query->row();
 	}
 
 	/*
@@ -1016,15 +937,13 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_number', $item_number);
-		if($ignore_deleted == FALSE)
-		{
+		if ($ignore_deleted == FALSE) {
 			$this->db->where('items.deleted', $deleted);
 		}
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row()->item_id;
 		}
 
@@ -1046,10 +965,8 @@ class Item extends CI_Model
 	}
 	public function save(&$item_data, $item_id = FALSE)
 	{
-		if(!$item_id || !$this->exists($item_id, TRUE))
-		{
-			if($this->db->insert('items', $item_data))
-			{
+		if (!$item_id || !$this->exists($item_id, TRUE)) {
+			if ($this->db->insert('items', $item_data)) {
 				$item_data['item_id'] = $this->db->insert_id();
 
 				return TRUE;
@@ -1068,10 +985,8 @@ class Item extends CI_Model
 	*/
 	public function save_category(&$item_data, $item_id = FALSE)
 	{
-		if(!$item_id || !$this->exists($item_id, TRUE))
-		{
-			if($this->db->insert('categories', $item_data))
-			{
+		if (!$item_id || !$this->exists($item_id, TRUE)) {
+			if ($this->db->insert('categories', $item_data)) {
 				$item_data['item_id'] = $this->db->insert_id();
 
 				return TRUE;
@@ -1084,79 +999,77 @@ class Item extends CI_Model
 
 		return $this->db->update('categories', $item_data);
 	}
-	
-	public function lab_save($test_code,$test_name,$test_amount,$test_type,$test_unit,$test_subgroup,$test_kind, $item_id = FALSE)
+
+	public function lab_save($test_code, $test_name, $test_amount, $test_type, $test_unit, $test_subgroup, $test_kind, $item_id = FALSE)
 	{
-					if(!$item_id || !$this->exists($item_id, TRUE))
-					{
-							$item_data = array(
-								'name' => $test_name,
-								'description' => '',
-								'category' => 'Laboratory',
-								'expiry_days' => 0,
-								'pack' => '',
-								'item_type' => '0',
-								'stock_type' => '1',
-								'supplier_id' => NULL,
-								'item_number' => NULL,
-								'cost_price' => 0,
-								'unit_price' => $test_amount,
-								'reorder_level' => 0,
-								'receiving_quantity' => 0,
-								'allow_alt_description' => 0,
-								'is_serialized' => 0,
-								'deleted' => 0,
-								
-								'custom5' => '',
-								'custom6' => '',
-								'custom7' => '',
-								'custom8' => '',
-								'custom9' => '',
-								'custom10' => ''
-							);
-							
-							$this->db->trans_start();
+		if (!$item_id || !$this->exists($item_id, TRUE)) {
+			$item_data = array(
+				'name' => $test_name,
+				'description' => '',
+				'category' => 'Laboratory',
+				'expiry_days' => 0,
+				'pack' => '',
+				'item_type' => '0',
+				'stock_type' => '1',
+				'supplier_id' => NULL,
+				'item_number' => NULL,
+				'cost_price' => 0,
+				'unit_price' => $test_amount,
+				'reorder_level' => 0,
+				'receiving_quantity' => 0,
+				'allow_alt_description' => 0,
+				'is_serialized' => 0,
+				'deleted' => 0,
 
-							$this->db->insert('items', $item_data);
-							$item_id = $this->db->insert_id();
-							
-							$labitem_data = array(
-								'item_id' => $item_id,
-								'test_code' => $test_code,
-								'test_name' => $test_name,
-								'test_amount' => $test_amount,
-								'test_type' => $test_type,
-								'test_subgroup' => $test_subgroup,
-								'test_kind' => $test_kind,
-								'test_unit'	=> $test_unit
-							);
-							$this->db->insert('laboratory_test', $labitem_data);
-							
-							$this->db->trans_complete();
+				'custom5' => '',
+				'custom6' => '',
+				'custom7' => '',
+				'custom8' => '',
+				'custom9' => '',
+				'custom10' => ''
+			);
 
-					if($this->db->trans_status() === FALSE)
-					{
-						return -1;
-					}
-					return $item_id;
-					//return TRUE;
-				}
-				$labitem_data = array(
-								'item_id' => $item_id,
-								'test_code' => $test_code,
-								'test_name' => $test_name,
-								'test_amount' => $test_amount,
-								'test_type' => $test_type,
-								'test_subgroup' => $test_subgroup,
-								'test_kind' => $test_kind,
-								'test_unit'	=> $test_unit
-							);
-				$this->db->where('item_id', $item_id);
-				$this->db->update('items', $item_data);
+			$this->db->trans_start();
 
-				return $this->db->update('laboratory_test', $labitem_data);
+			$this->db->insert('items', $item_data);
+			$item_id = $this->db->insert_id();
+
+			$labitem_data = array(
+				'item_id' => $item_id,
+				'test_code' => $test_code,
+				'test_name' => $test_name,
+				'test_amount' => $test_amount,
+				'test_type' => $test_type,
+				'test_subgroup' => $test_subgroup,
+				'test_kind' => $test_kind,
+				'test_unit'	=> $test_unit
+			);
+			$this->db->insert('laboratory_test', $labitem_data);
+
+			$this->db->trans_complete();
+
+			if ($this->db->trans_status() === FALSE) {
+				return -1;
+			}
+			return $item_id;
+			//return TRUE;
+		}
+		$labitem_data = array(
+			'item_id' => $item_id,
+			'test_code' => $test_code,
+			'test_name' => $test_name,
+			'test_amount' => $test_amount,
+			'test_type' => $test_type,
+			'test_subgroup' => $test_subgroup,
+			'test_kind' => $test_kind,
+			'test_unit'	=> $test_unit
+		);
+		$this->db->where('item_id', $item_id);
+		$this->db->update('items', $item_data);
+
+		return $this->db->update('laboratory_test', $labitem_data);
 	}
-	
+
 	/*
 	Updates multiple items at once
 	*/
@@ -1178,7 +1091,7 @@ class Item extends CI_Model
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity($item_id);
 		$this->db->where('item_id', $item_id);
-		$success = $this->db->update('items', array('deleted'=>1));
+		$success = $this->db->update('items', array('deleted' => 1));
 		$success &= $this->Inventory->reset_quantity($item_id);
 
 		$this->db->trans_complete();
@@ -1195,7 +1108,7 @@ class Item extends CI_Model
 	{
 		$this->db->where('item_id', $item_id);
 
-		return $this->db->update('items', array('deleted'=>0));
+		return $this->db->update('items', array('deleted' => 0));
 	}
 
 	/*
@@ -1209,10 +1122,9 @@ class Item extends CI_Model
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity_list($item_ids);
 		$this->db->where_in('item_id', $item_ids);
-		$success = $this->db->update('items', array('deleted'=>1));
+		$success = $this->db->update('items', array('deleted' => 1));
 
-		foreach($item_ids as $item_id)
-		{
+		foreach ($item_ids as $item_id) {
 			$success &= $this->Inventory->reset_quantity($item_id);
 		}
 
@@ -1227,32 +1139,33 @@ class Item extends CI_Model
 	{
 		$suggestions = array();
 
-		$this->db->select('item_id, name');
+		$this->db->select('items.item_id, name, quantity');
 		$this->db->from('items');
+		$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 		$this->db->where("stock_type = '0'");
-		$this->db->like('name', $search);
+		$this->db->like('name', $search, 'after'); //it could be 'after'
+
 		$this->db->order_by('name', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+
+		$this->db->limit($limit);
+		foreach ($this->db->get()->result() as $row) {
+			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name . '(Qty:' . number_format($row->quantity) . ')');
 		}
 
-		$this->db->select('item_id, item_number');
+		/*$this->db->select('item_id, item_number');
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 		$this->db->where("stock_type = '0'");
-		$this->db->like('item_number', $search);
+		$this->db->like('item_number', $search, 'after');
 		$this->db->order_by('item_number', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
 
-		if(!$unique)
-		{
+		if (!$unique) {
 			//Search by category
 			$this->db->select('category');
 			$this->db->from('items');
@@ -1260,25 +1173,23 @@ class Item extends CI_Model
 			$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 			$this->db->where("stock_type = '0'");
 			$this->db->distinct();
-			$this->db->like('category', $search);
+			$this->db->like('category', $search, 'after');
 			$this->db->order_by('category', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$suggestions[] = array('label' => $row->category);
 			}
 
 			//Search by supplier
 			$this->db->select('company_name');
 			$this->db->from('suppliers');
-			$this->db->like('company_name', $search);
+			$this->db->like('company_name', $search, 'after');
 			// restrict to non deleted companies only if is_deleted is FALSE
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 			$this->db->where("stock_type = '0'");
 			$this->db->distinct();
 			$this->db->order_by('company_name', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$suggestions[] = array('label' => $row->company_name);
 			}
 
@@ -1288,48 +1199,45 @@ class Item extends CI_Model
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 			$this->db->where("stock_type = '0'");
-			$this->db->like('description', $search);
+			$this->db->like('description', $search, 'after');
 			$this->db->order_by('description', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$entry = array('value' => $row->item_id, 'label' => $row->name);
-				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
-				{
+				if (!array_walk($suggestions, function ($value, $label) use ($entry) {
+					return $entry['label'] != $label;
+				})) {
 					$suggestions[] = $entry;
 				}
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] != FALSE)
-			{
+			if ($filters['search_custom'] != FALSE) {
 				$this->db->from('items');
 				$this->db->group_start();
-					$this->db->like('expiry_days', $search);
-					$this->db->or_like('custom2', $search);
-					$this->db->or_like('custom3', $search);
-					$this->db->or_like('custom4', $search);
-					$this->db->or_like('custom5', $search);
-					$this->db->or_like('custom6', $search);
-					$this->db->or_like('custom7', $search);
-					$this->db->or_like('custom8', $search);
-					$this->db->or_like('custom9', $search);
-					$this->db->or_like('custom10', $search);
+				$this->db->like('expiry_days', $search, 'after');
+				$this->db->or_like('custom2', $search, 'after');
+				$this->db->or_like('custom3', $search, 'after');
+				$this->db->or_like('custom4', $search, 'after');
+				$this->db->or_like('custom5', $search, 'after');
+				$this->db->or_like('custom6', $search, 'after');
+				$this->db->or_like('custom7', $search, 'after');
+				$this->db->or_like('custom8', $search, 'after');
+				$this->db->or_like('custom9', $search, 'after');
+				$this->db->or_like('custom10', $search, 'after');
 				$this->db->group_end();
 				$this->db->where('deleted', $filters['is_deleted']);
 				$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 				$this->db->where("stock_type = '0'");
-				foreach($this->db->get()->result() as $row)
-				{
+				foreach ($this->db->get()->result() as $row) {
 					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 				}
 			}
 		}
-
+		*/
 
 		//only return $limit suggestions
-		if(count($suggestions > $limit))
-		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+		if (count($suggestions > $limit)) {
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
@@ -1342,17 +1250,15 @@ class Item extends CI_Model
 		$this->db->from('item_expiry');
 		$this->db->like('batch_no', $search);
 		$this->db->order_by('batch_no', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('value' => $row->id, 'label' => $row->batch_no);
 		}
 
 
 
 		//only return $limit suggestions
-		if(count($suggestions > $limit))
-		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+		if (count($suggestions > $limit)) {
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
@@ -1371,8 +1277,7 @@ class Item extends CI_Model
 		$this->db->where("stock_type != '1'"); // stocked items only
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 		}
 
@@ -1383,13 +1288,11 @@ class Item extends CI_Model
 		$this->db->where("stock_type != '1'"); // stocked items only
 		$this->db->like('item_number', $search);
 		$this->db->order_by('item_number', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
 
-		if(!$unique)
-		{
+		if (!$unique) {
 			//Search by category
 			$this->db->select('category');
 			$this->db->from('items');
@@ -1399,8 +1302,7 @@ class Item extends CI_Model
 			$this->db->distinct();
 			$this->db->like('category', $search);
 			$this->db->order_by('category', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$suggestions[] = array('label' => $row->category);
 			}
 
@@ -1412,8 +1314,7 @@ class Item extends CI_Model
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
 			$this->db->order_by('company_name', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$suggestions[] = array('label' => $row->company_name);
 			}
 
@@ -1425,18 +1326,17 @@ class Item extends CI_Model
 			$this->db->where("stock_type != '1'"); // stocked items only
 			$this->db->like('description', $search);
 			$this->db->order_by('description', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$entry = array('value' => $row->item_id, 'label' => $row->name);
-				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
-				{
+				if (!array_walk($suggestions, function ($value, $label) use ($entry) {
+					return $entry['label'] != $label;
+				})) {
 					$suggestions[] = $entry;
 				}
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] != FALSE)
-			{
+			if ($filters['search_custom'] != FALSE) {
 				$this->db->from('items');
 				$this->db->group_start();
 				$this->db->like('expiry_days', $search);
@@ -1453,8 +1353,7 @@ class Item extends CI_Model
 				$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 				$this->db->where("stock_type != '1'"); // stocked items only
 				$this->db->where('deleted', $filters['is_deleted']);
-				foreach($this->db->get()->result() as $row)
-				{
+				foreach ($this->db->get()->result() as $row) {
 					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 				}
 			}
@@ -1462,9 +1361,8 @@ class Item extends CI_Model
 
 
 		//only return $limit suggestions
-		if(count($suggestions > $limit))
-		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+		if (count($suggestions > $limit)) {
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
@@ -1477,9 +1375,8 @@ class Item extends CI_Model
 		$this->db->from('item_quantities');
 		$this->db->where('item_id', $item_id);
 		$this->db->where("quantity != '0'"); // standard, exclude kit items since kits will be picked up later
-		
-		foreach($this->db->get()->result() as $row)
-		{
+
+		foreach ($this->db->get()->result() as $row) {
 			$items_global[] = array('item_id' => $row->item_id, 'location_id' => $row->location_id, 'qty' => $row->quantity);
 		}
 
@@ -1492,17 +1389,17 @@ class Item extends CI_Model
 
 		$this->db->select('item_id,test_code,test_name, test_amount,test_type');
 		$this->db->from('laboratory_test');
-		
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('item_id' => $row->item_id, 'test_code' => $row->test_code, 'test_name' => $row->test_name, 'test_amount' => $row->test_amount, 'test_type' => $row->test_type,'edit' => '<span class="glyphicon glyphicon-edit update" id="'.$row->item_id.'" name="edit" title = "update" data-toggle="modal" data-target="#userModal"></span>');
+
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('item_id' => $row->item_id, 'test_code' => $row->test_code, 'test_name' => $row->test_name, 'test_amount' => $row->test_amount, 'test_type' => $row->test_type, 'edit' => '<span class="glyphicon glyphicon-edit update" id="' . $row->item_id . '" name="edit" title = "update" data-toggle="modal" data-target="#userModal"></span>');
 		}
 		$results = array(
 			"sEcho" => 1,
-        "iTotalRecords" => count($lab_items),
-        "iTotalDisplayRecords" => count($lab_items),
-          "aaData"=>$lab_items);
+			"iTotalRecords" => count($lab_items),
+			"iTotalDisplayRecords" => count($lab_items),
+			"aaData" => $lab_items
+		);
 
 
 		return $results;
@@ -1514,12 +1411,11 @@ class Item extends CI_Model
 		$this->db->select('invoice_id,person_id,doctor_name, status');
 		$this->db->from('laboratory_invoice');
 		$this->db->order_by('invoice_id', 'asc');
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'doctor_name' => $row->doctor_name, 'status' => $row->status,'edit' =>$row->status==0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>': '<button class="btn btn-info btn-sm pull-left modal-dlg" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'doctor_name' => $row->doctor_name, 'status' => $row->status, 'edit' => $row->status == 0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>' : '<button class="btn btn-info btn-sm pull-left modal-dlg" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
 		}
-		
+
 
 
 		return $lab_items;
@@ -1532,12 +1428,11 @@ class Item extends CI_Model
 		$this->db->from('laboratory_invoice');
 		$this->db->order_by('invoice_id', 'desc');
 		$this->db->where('status', 0);
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'doctor_name' => $row->doctor_name, 'status' => $row->status,'edit' =>$row->status==0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>': '<button class="btn btn-info btn-sm pull-left modal-dlg" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'doctor_name' => $row->doctor_name, 'status' => $row->status, 'edit' => $row->status == 0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>' : '<button class="btn btn-info btn-sm pull-left modal-dlg" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
 		}
-		
+
 
 
 		return $lab_items;
@@ -1549,12 +1444,11 @@ class Item extends CI_Model
 		$this->db->select('id,name');
 		$this->db->from('categories');
 		$this->db->order_by('id', 'asc');
-		
-		foreach($this->db->get()->result() as $row)
-		{
+
+		foreach ($this->db->get()->result() as $row) {
 			$lab_items[] = array('id' => $row->id, 'name' => $row->name);
 		}
-		
+
 
 
 		return $lab_items;
@@ -1567,12 +1461,11 @@ class Item extends CI_Model
 		$this->db->from('laboratory_invoice');
 		$this->db->where('status', 1);
 		$this->db->order_by('invoice_id', 'asc');
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'doctor_name' => $row->doctor_name, 'status' => $row->status,'edit' =>$row->status==0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>': '<button class="btn btn-info btn-sm pull-left modal-dlg" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'doctor_name' => $row->doctor_name, 'status' => $row->status, 'edit' => $row->status == 0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>' : '<button class="btn btn-info btn-sm pull-left modal-dlg" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
 		}
-		
+
 
 
 		return $lab_items;
@@ -1583,12 +1476,11 @@ class Item extends CI_Model
 
 		$this->db->select('sale_id,invoice_id,customer_id,doctor_name');
 		$this->db->from('laboratory_results');
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('sale_id' => $row->sale_id,'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>','print' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg " id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
-		
+
 
 
 		return $lab_items;
@@ -1599,13 +1491,12 @@ class Item extends CI_Model
 
 		$this->db->select('sale_id,invoice_id,customer_id,doctor_name');
 		$this->db->from('laboratory_results');
-		$this->db->where('status',1);
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('sale_id' => $row->sale_id,'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>','print' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg " id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+		$this->db->where('status', 1);
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
-		
+
 
 
 		return $lab_items;
@@ -1616,13 +1507,12 @@ class Item extends CI_Model
 
 		$this->db->select('sale_id,invoice_id,customer_id,doctor_name');
 		$this->db->from('laboratory_results');
-		$this->db->where('status',2);
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('sale_id' => $row->sale_id,'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>','print' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg " id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+		$this->db->where('status', 2);
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
-		
+
 
 
 		return $lab_items;
@@ -1633,32 +1523,30 @@ class Item extends CI_Model
 
 		$this->db->select('sale_id,invoice_id,customer_id,doctor_name');
 		$this->db->from('laboratory_results');
-		$this->db->where('status',3);
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$lab_items[] = array('sale_id' => $row->sale_id,'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>','print' =>'<button class="btn btn-danger btn-sm pull-left modal-dlg " id="'.$row->invoice_id.'" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+		$this->db->where('status', 3);
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
-		
+
 
 
 		return $lab_items;
 	}
-	
-	
+
+
 	public function global_transfer_items($transfer_branch_id)
 	{
 		$items_transfer = array();
 
-		$this->db->select('transfer_id,transfer_type,transfer_time, status');	
+		$this->db->select('transfer_id,transfer_type,transfer_time, status');
 		$this->db->from('item_transfer');
-		$this->db->where('request_to_branch_id',$transfer_branch_id); // standard, exclude kit items since kits will be picked up later
+		$this->db->where('request_to_branch_id', $transfer_branch_id); // standard, exclude kit items since kits will be picked up later
 		$this->db->where("status = '0'");
 		$this->db->order_by('transfer_id', 'desc');
-		
-		foreach($this->db->get()->result() as $row)
-		{
-			$items_transfer[] = array('transfer_id' => $row->transfer_id, 'status' => $row->status,'transfer_type' => $row->transfer_type, 'transfer_time' => $row->transfer_time,'request_from_branch_id' => $row->request_from_branch_id);
+
+		foreach ($this->db->get()->result() as $row) {
+			$items_transfer[] = array('transfer_id' => $row->transfer_id, 'status' => $row->status, 'transfer_type' => $row->transfer_type, 'transfer_time' => $row->transfer_time, 'request_from_branch_id' => $row->request_from_branch_id);
 		}
 
 
@@ -1668,29 +1556,27 @@ class Item extends CI_Model
 	{
 		$items_transfer = array();
 
-		$this->db->select('permission_id');	
+		$this->db->select('permission_id');
 		$this->db->from('permissions');
-		$this->db->where('module_id',$module_id); // standard, exclude kit items since kits will be picked up later
-		
-		foreach($this->db->get()->result() as $row)
-		{
+		$this->db->where('module_id', $module_id); // standard, exclude kit items since kits will be picked up later
+
+		foreach ($this->db->get()->result() as $row) {
 			$items_transfer[] = array('permission_id' => $row->permission_id);
 		}
 
 
 		return $items_transfer;
 	}
-	public function find_permission($module_id,$location_id)
+	public function find_permission($module_id, $location_id)
 	{
 		$items_transfer = array();
 
-		$this->db->select('permission_id');	
+		$this->db->select('permission_id');
 		$this->db->from('permissions');
-		$this->db->where('module_id',$module_id); // standard, exclude kit items since kits will be picked up later
-		$this->db->where('location_id',$location_id);
-		
-		foreach($this->db->get()->result() as $row)
-		{
+		$this->db->where('module_id', $module_id); // standard, exclude kit items since kits will be picked up later
+		$this->db->where('location_id', $location_id);
+
+		foreach ($this->db->get()->result() as $row) {
 			$items_transfer[] = array('permission_id' => $row->permission_id);
 		}
 
@@ -1703,9 +1589,8 @@ class Item extends CI_Model
 
 		$this->db->select('item_id,test_code, test_name, test_amount');
 		$this->db->from('laboratory_test');
-		
-		foreach($this->db->get()->result() as $row)
-		{
+
+		foreach ($this->db->get()->result() as $row) {
 			$items_transfer[] = array('item_id' => $row->item_id, 'test_code' => $row->test_code, 'test_name' => $row->test_name, 'test_amount' => $row->test_amount, 'test_type' => $row->test_type);
 		}
 
@@ -1726,8 +1611,7 @@ class Item extends CI_Model
 		$this->db->where("stock_type = '0'");
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 		}
 
@@ -1736,13 +1620,11 @@ class Item extends CI_Model
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->like('item_number', $search);
 		$this->db->order_by('item_number', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
 
-		if(!$unique)
-		{
+		if (!$unique) {
 			//Search by category
 			$this->db->select('category');
 			$this->db->from('items');
@@ -1750,8 +1632,7 @@ class Item extends CI_Model
 			$this->db->distinct();
 			$this->db->like('category', $search);
 			$this->db->order_by('category', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$suggestions[] = array('label' => $row->category);
 			}
 
@@ -1763,8 +1644,7 @@ class Item extends CI_Model
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
 			$this->db->order_by('company_name', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$suggestions[] = array('label' => $row->company_name);
 			}
 
@@ -1774,18 +1654,17 @@ class Item extends CI_Model
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->like('description', $search);
 			$this->db->order_by('description', 'asc');
-			foreach($this->db->get()->result() as $row)
-			{
+			foreach ($this->db->get()->result() as $row) {
 				$entry = array('value' => $row->item_id, 'label' => $row->name);
-				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
-				{
+				if (!array_walk($suggestions, function ($value, $label) use ($entry) {
+					return $entry['label'] != $label;
+				})) {
 					$suggestions[] = $entry;
 				}
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] != FALSE)
-			{
+			if ($filters['search_custom'] != FALSE) {
 				$this->db->from('items');
 				$this->db->group_start();
 				$this->db->like('expiry_days', $search);
@@ -1800,17 +1679,15 @@ class Item extends CI_Model
 				$this->db->or_like('custom10', $search);
 				$this->db->group_end();
 				$this->db->where('deleted', $filters['is_deleted']);
-				foreach($this->db->get()->result() as $row)
-				{
+				foreach ($this->db->get()->result() as $row) {
 					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 				}
 			}
 		}
 
 		//only return $limit suggestions
-		if(count($suggestions > $limit))
-		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+		if (count($suggestions > $limit)) {
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
@@ -1825,8 +1702,7 @@ class Item extends CI_Model
 		$this->db->like('category', $search);
 		$this->db->where('deleted', 0);
 		$this->db->order_by('category', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('label' => $row->category);
 		}
 
@@ -1842,8 +1718,7 @@ class Item extends CI_Model
 		$this->db->like('location', $search);
 		$this->db->where('deleted', 0);
 		$this->db->order_by('location', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('label' => $row->location);
 		}
 
@@ -1854,15 +1729,14 @@ class Item extends CI_Model
 	{
 		$suggestions = array();
 		$this->db->distinct();
-		$this->db->select('custom'.$field_no);
+		$this->db->select('custom' . $field_no);
 		$this->db->from('items');
-		$this->db->like('custom'.$field_no, $search);
+		$this->db->like('custom' . $field_no, $search);
 		$this->db->where('deleted', 0);
-		$this->db->order_by('custom'.$field_no, 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
+		$this->db->order_by('custom' . $field_no, 'asc');
+		foreach ($this->db->get()->result() as $row) {
 			$row_array = (array) $row;
-			$suggestions[] = array('label' => $row_array['custom'.$field_no]);
+			$suggestions[] = array('label' => $row_array['custom' . $field_no]);
 		}
 
 		return $suggestions;
@@ -1893,8 +1767,7 @@ class Item extends CI_Model
 	 */
 	public function change_cost_price($item_id, $items_received, $new_price, $old_price = null)
 	{
-		if($old_price === null)
-		{
+		if ($old_price === null) {
 			$item_info = $this->get_info($item_id);
 			$old_price = $item_info->cost_price;
 		}
@@ -1914,46 +1787,45 @@ class Item extends CI_Model
 		return $this->save($data, $item_id);
 	}
 
-	public function get_item_category_by_name($name) {
+	public function get_item_category_by_name($name)
+	{
 		$this->db->select('categories.*');
 		$this->db->from('categories');
 		$this->db->where('name', $name);
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1) {
+		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
 			return FALSE;
 		}
-
 	}
 
-	public function get_item_by_item_number($item_number) {
+	public function get_item_by_item_number($item_number)
+	{
 		$this->db->from('items');
 		$this->db->where('item_number', $item_number);
 		$this->db->where('items.deleted', 0);
 
 		$query = $this->db->get();
 
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->result();
 		}
 
-		return FALSE;	
+		return FALSE;
 	}
 
-	public function get_customer_pos_ids($customerID) {
+	public function get_customer_pos_ids($customerID)
+	{
 		$this->db->select('laboratory_results.*');
 		$this->db->from('laboratory_results');
 		$this->db->where('customer_id', $customerID);
 		$query = $this->db->get();
-		if($query->num_rows() >= 1)
-		{
+		if ($query->num_rows() >= 1) {
 			return $query->result();
 		}
-		return FALSE;	
+		return FALSE;
 	}
 }
-?>

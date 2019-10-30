@@ -90,7 +90,7 @@
 							</div>
 						</div>
 					<?php
-						print_r($final_check);
+						//sprint_r($final_check);
 						
 					?>
 				</div>

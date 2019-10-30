@@ -21,17 +21,13 @@ class Receiving extends CI_Model
 
 	public function is_valid_receipt($receipt_receiving_id)
 	{
-		if(!empty($receipt_receiving_id))
-		{
+		if (!empty($receipt_receiving_id)) {
 			//RECV #
 			$pieces = explode(' ', $receipt_receiving_id);
 
-			if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[0]))
-			{
+			if (count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[0])) {
 				return $this->exists($pieces[1]);
-			}
-			else
-			{
+			} else {
 				return $this->get_receiving_by_reference($receipt_receiving_id)->num_rows() > 0;
 			}
 		}
@@ -44,7 +40,7 @@ class Receiving extends CI_Model
 		$this->db->from('receivings');
 		$this->db->where('receiving_id', $receiving_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($this->db->get()->num_rows() >= 1);
 	}
 
 	public function update($receiving_data, $receiving_id)
@@ -62,8 +58,7 @@ class Receiving extends CI_Model
 
 	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE)
 	{
-		if(count($items) == 0)
-		{
+		if (count($items) == 0) {
 			return -1;
 		}
 
@@ -82,8 +77,7 @@ class Receiving extends CI_Model
 		$this->db->insert('receivings', $receivings_data);
 		$receiving_id = $this->db->insert_id();
 
-		foreach($items as $line=>$item)
-		{
+		foreach ($items as $line => $item) {
 			$cur_item_info = $this->Item->get_info($item['item_id']);
 
 			$receivings_items_data = array(
@@ -105,15 +99,16 @@ class Receiving extends CI_Model
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted
-			if($cur_item_info->cost_price != $item['price'] && $this->config->item('receiving_calculate_average_price') != FALSE)
-			{
+			if ($cur_item_info->cost_price != $item['price'] && $this->config->item('receiving_calculate_average_price') != FALSE) {
 				$this->Item->change_cost_price($item['item_id'], $items_received, $item['price'], $cur_item_info->cost_price);
 			}
 
 			//Update stock quantity
 			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-			$this->Item_quantity->save(array('quantity' => $item_quantity->quantity + $items_received, 'item_id' => $item['item_id'],
-											  'location_id' => $item['item_location']), $item['item_id'], $item['item_location']);
+			$this->Item_quantity->save(array(
+				'quantity' => $item_quantity->quantity + $items_received, 'item_id' => $item['item_id'],
+				'location_id' => $item['item_location']
+			), $item['item_id'], $item['item_location']);
 
 			$recv_remarks = 'RECV ' . $receiving_id;
 			$inv_data = array(
@@ -126,13 +121,13 @@ class Receiving extends CI_Model
 			);
 
 			$this->Inventory->insert($inv_data);
-			if($item['batch_no']!=''){
+			if ($item['batch_no'] != '') {
 				$expiry_data = array(
 					'item_id' => $item['item_id'],
 					'batch_no' => $item['batch_no'],
 					'location_id' => $item['item_location'],
 					'expiry' => $item['expiry'],
-					
+
 				);
 
 				$this->db->insert('item_expiry', $expiry_data);
@@ -143,8 +138,7 @@ class Receiving extends CI_Model
 
 		$this->db->trans_complete();
 
-		if($this->db->trans_status() === FALSE)
-		{
+		if ($this->db->trans_status() === FALSE) {
 			return -1;
 		}
 
@@ -158,8 +152,7 @@ class Receiving extends CI_Model
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
 
-		foreach($receiving_ids as $receiving_id)
-		{
+		foreach ($receiving_ids as $receiving_id) {
 			$success &= $this->delete($receiving_id, $employee_id, $update_inventory);
 		}
 
@@ -176,13 +169,11 @@ class Receiving extends CI_Model
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
 
-		if($update_inventory)
-		{
+		if ($update_inventory) {
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
 			$items = $this->get_receiving_items($receiving_id)->result_array();
-			foreach($items as $item)
-			{
+			foreach ($items as $item) {
 				// create query to update inventory tracking
 				$inv_data = array(
 					'trans_date' => date('Y-m-d H:i:s'),
@@ -207,7 +198,7 @@ class Receiving extends CI_Model
 
 		// execute transaction
 		$this->db->trans_complete();
-	
+
 		return $this->db->trans_status();
 	}
 
@@ -218,7 +209,7 @@ class Receiving extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	public function get_supplier($receiving_id)
 	{
 		$this->db->from('receivings');
@@ -242,24 +233,19 @@ class Receiving extends CI_Model
 	*/
 	public function create_temp_table(array $inputs)
 	{
-		if(empty($inputs['receiving_id']))
-		{
-			if(empty($this->config->item('date_or_time_format')))
-			{
+		if (empty($inputs['receiving_id'])) {
+			if (empty($this->config->item('date_or_time_format'))) {
 				$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-			}
-			else
-			{
+			} else {
 				$where = 'WHERE receiving_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 			}
-		}
-		else
-		{
+		} else {
 			$where = 'WHERE receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
 		}
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') .
-			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
+		$this->db->query(
+			'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') .
+				' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(
 				SELECT 
 					MAX(DATE(receiving_time)) AS receiving_date,
@@ -297,32 +283,34 @@ class Receiving extends CI_Model
 		);
 	}
 
-	public function get_all_receivings($search = '', $limit = 0, $offset = 0, $sort = 'receivings.receiving_id', $order = 'desc', $filters) {
+	public function get_all_receivings($search = '', $limit = 0, $offset = 0, $sort = 'receivings.receiving_id', $order = 'desc', $filters)
+	{
 		$this->db->from('receivings');
 		$this->db->select('receivings.receiving_id as receiving_id');
 		$this->db->select('receivings.reference as reference');
 		$this->db->select('receivings.payment_type as payment_type');
+		$this->db->select('receivings.receiving_time as receiving_time');
 		$this->db->select('suppliers.company_name as company_name');
 		$this->db->select('suppliers.company_name as company_name');
 		$this->db->select('people.first_name as first_name');
 		$this->db->select('people.last_name as last_name');
 		$this->db->join('suppliers', 'suppliers.person_id = receivings.supplier_id', 'LEFT');
 		$this->db->join('people', 'people.person_id = receivings.employee_id', 'LEFT');
-		if ( !empty($search) ) {
+		if (!empty($search)) {
 			$this->db->group_start();
-				$this->db->like('receivings.reference', $search);
-				$this->db->or_like('people.first_name', $search);
-				$this->db->or_like('people.last_name', $search);
-				$this->db->or_like('suppliers.company_name', $search);
-				$this->db->or_like('receivings.receiving_id', $search);
+			$this->db->like('receivings.reference', $search);
+			$this->db->or_like('people.first_name', $search);
+			$this->db->or_like('people.last_name', $search);
+			$this->db->or_like('suppliers.company_name', $search);
+			$this->db->or_like('receivings.receiving_id', $search);
 			$this->db->group_end();
 		}
-		if ( empty($this->config->item('date_or_time_format')) ) {
+		if (empty($this->config->item('date_or_time_format'))) {
 			$this->db->where('DATE_FORMAT(receiving_time, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		} else {
 			$this->db->where('receiving_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
-		
+
 		$this->db->order_by($sort, $order);
 		if ($limit > 0) {
 			$this->db->limit($limit, $offset);
@@ -330,26 +318,28 @@ class Receiving extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_all_receivings_count($search = '',  $filters) {
+	public function get_all_receivings_count($search = '',  $filters)
+	{
 		$this->db->from('receivings');
 		$this->db->select('receivings.receiving_id as receiving_id');
 		$this->db->select('receivings.reference as reference');
+		$this->db->select('receivings.receiving_time as receiving_time');
 		$this->db->select('receivings.payment_type as payment_type');
 		$this->db->select('suppliers.company_name as company_name');
 		$this->db->select('people.first_name as first_name');
 		$this->db->select('people.last_name as last_name');
 		$this->db->join('suppliers', 'suppliers.person_id = receivings.supplier_id', 'LEFT');
 		$this->db->join('people', 'people.person_id = receivings.employee_id', 'LEFT');
-		if ( !empty($search) ) {
+		if (!empty($search)) {
 			$this->db->group_start();
-				$this->db->like('receivings.reference', $search);
-				$this->db->or_like('people.first_name', $search);
-				$this->db->or_like('people.last_name', $search);
-				$this->db->or_like('suppliers.company_name', $search);
-				$this->db->or_like('receivings.receiving_id', $search);
+			$this->db->like('receivings.reference', $search);
+			$this->db->or_like('people.first_name', $search);
+			$this->db->or_like('people.last_name', $search);
+			$this->db->or_like('suppliers.company_name', $search);
+			$this->db->or_like('receivings.receiving_id', $search);
 			$this->db->group_end();
 		}
-		if ( empty($this->config->item('date_or_time_format')) ) {
+		if (empty($this->config->item('date_or_time_format'))) {
 			$this->db->where('DATE_FORMAT(receiving_time, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		} else {
 			$this->db->where('receiving_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
@@ -358,7 +348,8 @@ class Receiving extends CI_Model
 		return $query->num_rows();
 	}
 
-	public function get_receiving_by_receiving_id($id) {
+	public function get_receiving_by_receiving_id($id)
+	{
 		$this->db->from('receivings');
 		$this->db->select('receivings.*');
 		$this->db->select('suppliers.company_name as company_name');
@@ -371,7 +362,8 @@ class Receiving extends CI_Model
 		return $this->db->limit(1)->get();
 	}
 
-	public function get_receiving_items_data_by_receiving_id($id) {
+	public function get_receiving_items_data_by_receiving_id($id)
+	{
 		$this->db->from('receivings_items');
 		$this->db->select('receivings_items.*');
 		$this->db->select('items.*');
@@ -382,4 +374,3 @@ class Receiving extends CI_Model
 		return $this->db->get();
 	}
 }
-?>

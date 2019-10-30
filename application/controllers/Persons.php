@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -12,6 +12,7 @@ abstract class Persons extends Secure_Controller
 	public function index()
 	{
 		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
+
 
 		$this->load->view('people/manage', $data);
 	}
@@ -44,29 +45,25 @@ abstract class Persons extends Secure_Controller
 	returns John O'Grady-Smith
 	*/
 	protected function nameize($str, $a_char = array("'", "-", " "))
-	{	
+	{
 		// $str contains the complete raw name string
 		// $a_char is an array containing the characters we use as separators for capitalization. If you don't pass anything, there are three in there as default.
 		$string = strtolower($str);
 
-		foreach($a_char as $temp)
-		{
+		foreach ($a_char as $temp) {
 			$pos = strpos($string, $temp);
-			if($pos)
-			{
+			if ($pos) {
 				// we are in the loop because we found one of the special characters in the array, so lets split it up into chunks and capitalize each one.
 				$mend = '';
 				$a_split = explode($temp, $string);
-				foreach($a_split as $temp2)
-				{
+				foreach ($a_split as $temp2) {
 					// capitalize each portion of the string which was separated at a special character
-					$mend .= ucfirst($temp2).$temp;
+					$mend .= ucfirst($temp2) . $temp;
 				}
 				$string = substr($mend, 0, -1);
-			}			
+			}
 		}
 
 		return ucfirst($string);
 	}
 }
-?>

@@ -178,7 +178,7 @@
                                     <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                 </ul>
                             </div>
-                            <p class="text-muted m-0">Administrator</p>
+                            <p class="text-muted m-0"><?php echo $user_role . '/' . $branch; ?></p>
                         </div>
                     </div>
                     <!--- Divider -->
