@@ -55,7 +55,7 @@
 						<?php
 						if (!empty($reference)) {
 							?>
-							<div id="reference"><?php echo '<b>' . $this->lang->line('receivings_reference') . "</b>: " . $reference; ?></div>
+							<div id="reference"><?php echo '<b>Supplier/Invoice No</b>: ' . $reference; ?></div>
 						<?php
 						}
 						?>
@@ -65,28 +65,34 @@
 						<div id="sale_id"><?php echo '<b>' . $this->lang->line('receivings_id') . "</b>: " . $receiving_id; ?></div>
 
 						<div id="employee"><?php echo '<b>' . $user_role . "</b>: " . $employee; ?></div>
-						
+						<div id="employee"><?php echo '<b>Mode</b>: ' . ucfirst($mode); ?></div>
+						<div id="employee"><?php echo '<b>Date</b>: ' . ucfirst($transaction_date); ?></div>
+
 					</div>
 				</div>
 			</div>
+			<!--end of general info-->
 			<div class="table-responsive">
 				<table id="receipt_items" class="table">
 					<thead class="thead-light">
 						<tr>
-							<th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo 'Item No.'; ?></th>
-							<th style="width:57%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('items_item'); ?></th>
-							<th style="width:10%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('common_price'); ?></th>
+							<th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo 'S/N.'; ?></th>
+							<th style="width:15%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo 'Item No.'; ?></th>
+							<th style="width:50%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('items_item'); ?></th>
+							<th style="width:10%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php 'Cost'; //echo $this->lang->line('common_price'); 
+																													?></th>
 							<!-- <th style="width:10%;"><?php //echo $this->lang->line('sales_unit_price'); 
 														?></th> -->
-							<th style="width:8%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-							<th style="width:15%;text-align:right;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('sales_total'); ?></th>
+							<th style="width:10%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+							<th style="width:15%;text-align:right;color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo 'Cost Total' ?></th>
 						</tr>
 					</thead>
 					<?php
-
+					$sn = 1;
 					foreach (array_reverse($cart, TRUE) as $line => $item) {
 						?>
 						<tr>
+							<td><?php echo $sn++; ?></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td><?php echo $item['name']; ?>
 							</td>
@@ -94,13 +100,13 @@
 							<!-- <td><?php //echo to_currency($item['unit_price']); 
 											?></td> -->
 							<td>
-								<?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : "");
+								<?php echo to_quantity_decimals(abs($item['quantity'])) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : "");
 									?>&nbsp;&nbsp;&nbsp;
 								<!-- x -->
 								<?php //echo $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1; 
 									?></td>
 							<td>
-								<div class="total-value"><?php echo to_currency($item['total']); ?></div>
+								<div class="total-value"><?php echo to_currency(abs($item['total'])); ?></div>
 							</td>
 						</tr>
 						<!-- <tr>
@@ -119,32 +125,32 @@
 					}
 					?>
 					<tr>
-						<th colspan="3" style='text-align:right;border-top:2px solid #000000;'>Grand Total</th>
+						<th colspan="4" style='text-align:right;border-top:2px solid #000000;'>Grand Cost Total</th>
 						<td colspan="2" style='border-top:2px solid #000000;'>
-							<div class="total-value"><?php echo to_currency($total); ?></div>
+							<div class="total-value"><?php echo to_currency(abs($total)); ?></div>
 						</td>
 					</tr>
 					<?php
 					if ($mode != 'requisition') {
 						?>
 						<tr>
-							<th colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></th>
-							<td colspan="2">
-								<div class="total-value"><?php echo $payment_type; ?></div>
-							</td>
+							<!-- <th colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></th> -->
+							<!-- <td colspan="2"> -->
+							<!-- <div class="total-value"><?php echo $payment_type; ?></div> -->
+							<!-- </td> -->
 						</tr>
 
 						<?php if (isset($amount_change)) {
 								?>
 							<tr>
-								<th colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_amount_tendered'); ?></th>
+								<th colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_amount_tendered'); ?></th>
 								<td colspan="2">
-									<div class="total-value"><?php echo to_currency($amount_tendered); ?></div>
+									<div class="total-value"><?php echo to_currency(abs($amount_tendered)); ?></div>
 								</td>
 							</tr>
 
 							<tr>
-								<th colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></th>
+								<th colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></th>
 								<td colspan="2">
 									<div class="total-value"><?php echo $amount_change; ?></div>
 								</td>

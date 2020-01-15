@@ -1,32 +1,32 @@
 <?php $this->load->view("partial/header_print"); ?>
-    <div class="content-page">
-        <!-- Start content -->
-        <div class="content">
-            <?php
-                if (isset($error_message)) {
-                    echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
-                    exit;
-                }
-            ?>
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <?php
+        if (isset($error_message)) {
+            echo "<div class='alert alert-dismissible alert-danger'>" . $error_message . "</div>";
+            exit;
+        }
+        ?>
 
-            <?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
+        <?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer')); ?>
 
-            <div class="print_hide" id="control_buttons" style="text-align:right">
-                <a href="javascript:window.history.go(-1);">
-                    <div class="btn btn-info btn-sm" id="show_print_button">
-                        <span class="glyphicon glyphicon-arrow-left">&nbsp;Back</span>
-                    </div>
-                </a>
-                <a href="javascript:printdoc();">
-                    <div class="btn btn-info btn-sm" id="show_print_button">
-                        <?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?>
-                    </div>
-                </a>
-            </div>
+        <div class="print_hide" id="control_buttons" style="text-align:right">
+            <a href="javascript:window.history.go(-1);">
+                <div class="btn btn-info btn-sm" id="show_print_button">
+                    <span class="glyphicon glyphicon-arrow-left">&nbsp;Back</span>
+                </div>
+            </a>
+            <a href="javascript:printdoc();">
+                <div class="btn btn-info btn-sm" id="show_print_button">
+                    <?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?>
+                </div>
+            </a>
+        </div>
 
         <div id="receipt_wrapper">
             <div id="receipt_header">
-                <?php if ($this->config->item('company_logo') != '')  { ?>
+                <?php if ($this->config->item('company_logo') != '') { ?>
                     <div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
                 <?php } ?>
                 <?php if ($this->config->item('receipt_show_company_name')) { ?>
@@ -41,31 +41,45 @@
             <table id="receipt_items" class="table table-hover table-bordered">
                 <thead style="background-color: #CCC;color:#FFF;">
                     <tr>
-                        <th>#</th>
+                        <th>S/N</th>
+                        <th>Receipt No.</th>
                         <th>Date</th>
-                        <th>Quantity Purchased</th>
+
+                        <th>Quantity</th>
                         <th>Customer</th>
-                        <th>Sub Total</th>
-                        <th>Tax </th>
-                        <th>Total</th>
-                        <th>Cost</th>
-                        <th>Profit</th>
+
+                        <th>Total Cost</th>
+                        <th>Discounted Total</th>
+                        <th>Total Profit</th>
+
+                        <th>Total Discount</th>
+                        <th>Total Vat</th>
+                        <th>Amount Tendered</th>
+                        <th>Change Due</th>
                         <th>Payment Type</th>
                     </tr>
 
                 </thead>
                 <tbody>
-                    <?php foreach($summary_data as $d): ?>
+                    <?php
+                    $sn = 1;
+                    foreach ($summary_data as $d) : ?>
                         <tr>
+                            <td><?= $sn++; ?></td>
                             <td><?php echo $d['id']; ?></td>
                             <td><?php echo $d['sale_date']; ?></td>
                             <td><?php echo $d['quantity']; ?></td>
+
                             <td><?php echo $d['customer_name'] ? $d['customer_name'] : "N/A"; ?></td>
-                            <td><?php echo $d['subtotal']; ?></td>
-                            <td><?php echo $d['tax']; ?></td>
-                            <td><?php echo $d['total']; ?></td>
+
                             <td><?php echo $d['cost']; ?></td>
+                            <td><?php echo $d['total']; ?></td>
                             <td><?php echo $d['profit']; ?></td>
+
+                            <td><?php echo $d['discount']; ?></td>
+                            <td><?php echo $d['total_vat']; ?></td>
+                            <td><?php echo $d['total_payment']; ?></td>
+                            <td><?php echo $d['change_due']; ?></td>
                             <td><?php echo $d['payment_type']; ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -81,9 +95,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($overall_summary_data as $name=>$value): ?>
+                            <?php foreach ($overall_summary_data as $name => $value) : ?>
                                 <tr>
-                                    <td><?php echo $this->lang->line('reports_'.$name); ?></td>
+                                    <td><?php echo $this->lang->line('reports_' . $name); ?></td>
                                     <td><?php echo to_currency($value); ?></td>
                                 </tr>
                             <?php endforeach; ?>

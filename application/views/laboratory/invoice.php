@@ -1,9 +1,16 @@
-<?php $this->load->view("partial/header"); ?>
+<?php $this->load->view("partial/header_print"); ?>
 
 <?php
 if (isset($error_message))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+	exit;
+}
+?>
+<?php
+if (isset($error))
+{
+	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 	exit;
 }
 ?>
@@ -53,22 +60,23 @@ $(document).ready(function()
 					if(isset($customer))
 					{
 					?>
-						<textarea id="customer" rows="5" cols="6"><?php echo $customer_info; ?></textarea>
+						<textarea id="customer" rows="5" cols="15"><?php echo 'Patient: '.$customer_info; ?></textarea>
 					<?php
 					}
 					?>
 				</div>
 
-				<div id="logo">
+				<div id="logo" style="text-align:center;">
 					<?php
 					if($this->Appconfig->get('company_logo') != '') 
 					{ 
 					?>
-						<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />			
+						<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' .$this->config->item('laboratory_logo'));// $this->Appconfig->get('company_logo')); ?>" alt="company_logo" /></div>			
+						<div id="company_name"><h3><b><?php echo 'Tonia Medical Laboratories Ltd.'; ?></b></h3></div>
 					<?php
 					}
 					?>
-					<div>&nbsp</div>
+					<div>&nbsp;</div>
 					<?php
 					if ($this->Appconfig->get('receipt_show_company_name')) 
 					{ 
@@ -99,7 +107,7 @@ $(document).ready(function()
 				</table>
 			</div>
 
-			<table id="items">
+			<table id="items" class="table-bordered table-hover">
 				<tr>
 					<th><?php echo $this->lang->line('sales_item_number'); ?></th>
 					<th><?php echo $this->lang->line('sales_item_name'); ?></th>
@@ -109,11 +117,12 @@ $(document).ready(function()
 					<th><?php echo $this->lang->line('sales_total'); ?></th>
 				</tr>
 				<?php
+				$sn =1;
 				foreach($cart as $line=>$item)
 				{
 				?>
 					<tr class="item-row">
-						<td><?php echo $item['item_number']; ?></td>
+						<td><?php echo $sn++; ?></td>
 						<td class="item-name"><textarea rows="4" cols="6"><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
 						<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
 						<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
@@ -204,7 +213,7 @@ $(document).ready(function()
 				</div>
 				<div id='barcode'>
 					<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
-					<?php echo $sale_id; ?>
+					<?php echo $invoice_id; ?>
 				</div>
 			</div>
 		</div>

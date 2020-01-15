@@ -3,6 +3,15 @@
 		<!-- Start content -->
 		<div class="content">
 			<div class="container">
+			<div class="row">
+			<div class="col-sm-12">
+				<?php  
+						if(isset($error)){
+							echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
+						}
+				?>
+			</div>
+			</div>
 				<div class="row" style="background-color:#4a48451a;">
 					<div class="col-md-1"></div>
 					<div class="col-md-10">
@@ -242,8 +251,8 @@
 											<?php foreach($laboratory_test as $row=>$value){ ?>
 												<li class="column">
 													<a>
-														<?php echo form_checkbox("grants[]",$value['item_id'], false,array('id'=>'checkbutton','class'=>'module'));?>
-															<span class="medium"><?php echo $value['test_name'];?></span>
+														<?php echo form_checkbox("grants[]",$value['item_id'], false,array('id'=>'checkbutton'.$value['item_id'],'class'=>'module'));?>
+															<label style="font-weight:200;" for="checkbutton<?=$value['item_id']?>" class="medium"><?php echo $value['test_name'];?></label>
 													</a>
 												</li>
 											<?php } ?>
@@ -259,7 +268,7 @@
 			</div>
 		</div>
 	</div>
-<?php print_r($grants_data); ?>
+<?php //print_r($grants_data); ?>
 
 <script>
 	var check_list = [];

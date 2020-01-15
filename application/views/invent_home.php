@@ -23,6 +23,8 @@
     <link href="dist/assets/css/pages.css" rel="stylesheet" type="text/css">
     <link href="dist/assets/css/menu.css" rel="stylesheet" type="text/css">
     <link href="dist/assets/css/responsive.css" rel="stylesheet" type="text/css">
+    <!-- <link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" /> -->
+
 
     <script src="dist/assets/js/modernizr.min.js"></script>
     <!-- <script>
@@ -42,7 +44,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-
+    <?php $this->load->view('partial/header_js'); ?>
 </head>
 
 <body class="fixed-left">
@@ -74,14 +76,14 @@
                         </form>
 
                         <ul class="nav navbar-nav navbar-right pull-right">
-                            <li class="dropdown hidden-xs">
+                            <!-- <li class="dropdown hidden-xs">
                                 <a href="#" data-target="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true">
                                     <i class="md md-notifications"></i> <span class="badge badge-xs badge-danger"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-lg">
                                     <li class="text-center notifi-title">Notification</li>
                                     <li class="list-group">
-                                        <!-- list item-->
+                                       
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -95,7 +97,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- list item-->
+                                       
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -109,7 +111,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- list item-->
+                                       
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -124,7 +126,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- last list item -->
+                                      
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <small>See all notifications</small>
                                         </a>
@@ -136,13 +138,14 @@
                             </li>
                             <li class="hidden-xs">
                                 <a href="#" class="right-bar-toggle waves-effect"><i class="md md-chat"></i></a>
-                            </li>
+                            </li> -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/user-default.png" alt="user-img" class="img-circle"> </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
-                                    <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                    <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password')));
+                                        ?></li>
+                                    <!-- <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
+                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                     <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                 </ul>
                             </li>
@@ -165,9 +168,11 @@
                         <div class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><?= $user_info->first_name . ' ' . $user_info->last_name;  ?> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
+                                <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li>
+
+                                <!-- <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
                                 <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                 <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                             </ul>
                         </div>
@@ -183,42 +188,7 @@
                         <li>
                             <a href="<?php echo site_url(); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/home") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-home"></i><span> Dashboard </span></a>
                         </li>
-                        <?php foreach ($allowed_modules->result() as $module) { ?>
-                            <?php if ($this->lang->line("module_" . $module->module_id) == "Items") { ?>
-                                <li class="has_sub">
-                                    <a href="#" <?php if ($_SERVER['REQUEST_URI'] == "/items" || $_SERVER['REQUEST_URI'] == "/items/categories") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-mail"></i><span>Inventory </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a href="<?php echo site_url("$module->module_id"); ?>"><?php echo $this->lang->line("module_" . $module->module_id) ?></a>
-                                        </li>
-                                        <li>
-                                            <a href="<?php echo site_url("items/categories"); ?>">Categories</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has_sub">
-                                    <a href="#" class="waves-effect waves-light"><i class="md md-redeem"></i><span>Receiving </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                    <ul class="list-unstyled">
-                                        <li><a href="<?php echo site_url("receivings"); ?>">Update Inventory</a></li>
-                                        <li><a href="<?php echo site_url("receivings/history"); ?>">Inventory History</a></li>
-                                        <li><a href="<?php echo site_url("receivings"); ?>">Returns</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="<?php echo site_url("suppliers"); ?>" class="waves-effect waves-light"><i class="md md-invert-colors-on"></i><span>Suppliers</span></a>
-                                </li>
-                        <?php
-                            }
-                        }
-                        ?>
-
-
-
-
-
-
-                    </ul>
-                    </li>
+                        <?php $this->load->view("sidebars/inventory")  ?>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -250,36 +220,43 @@
 
                     <!-- Start Widget -->
                     <div class="row">
-                        <div class="col-md-6 col-sm-6 col-lg-3">
-                            <div class="mini-stat clearfix bx-shadow bg-info">
-                                <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></span>
-                                <div class="mini-stat-info text-right">
-                                    <span class="counter"><?php echo $inventory_total; ?></span>
-                                    Total Inventory
-                                </div>
-                                <div class="tiles-progress">
-                                    <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right">1</span></h5>
+                        <a href="<?php echo site_url('items') ?>">
+                            <div class="col-md-6 col-sm-6 col-lg-3">
+                                <div class="mini-stat clearfix bx-shadow bg-info">
+                                    <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></span>
+                                    <div class="mini-stat-info text-right">
+                                        <!-- <span class="counter"><?php echo $inventory_total; ?></span>
+                                    Total Inventory -->
+                                        Items
+                                    </div>
+                                    <div class="tiles-progress">
+                                        <div class="m-t-20">
+                                            <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-lg-3">
-                            <div class="mini-stat clearfix bg-purple bx-shadow">
-                                <span class="mini-stat-icon"><i class="ion-ios7-cart"></i></span>
-                                <div class="mini-stat-info text-right">
-                                    <span class="counter"><?php echo $stock_total; ?> </span>
-                                    Out of Stock
-                                </div>
-                                <div class="tiles-progress">
-                                    <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0"><span class="pull-right">2</span></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </a>
+                        <a href="<?php echo site_url('receivings') ?>">
 
-                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="col-md-6 col-sm-6 col-lg-3">
+                                <div class="mini-stat clearfix bg-purple bx-shadow">
+                                    <span class="mini-stat-icon"><i class="ion-ios7-cart"></i></span>
+                                    <div class="mini-stat-info text-right">
+                                        New Inventory
+                                        <!-- <span class="counter"><?php echo $stock_total; ?> </span>
+                                            Out of Stock -->
+                                    </div>
+                                    <div class="tiles-progress">
+                                        <div class="m-t-20">
+                                            <h5 class="text-uppercase text-white m-0"><span class="pull-right"></span></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- <div class="col-md-6 col-sm-6 col-lg-3">
                             <div class="mini-stat clearfix bg-success bx-shadow">
                                 <span class="mini-stat-icon"><i class="ion-eye"></i></span>
                                 <div class="mini-stat-info text-right">
@@ -288,13 +265,13 @@
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right">3</span></h5>
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-6 col-sm-6 col-lg-3">
+                        <!-- <div class="col-md-6 col-sm-6 col-lg-3">
                             <div class="mini-stat clearfix bg-primary bx-shadow">
                                 <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
                                 <div class="mini-stat-info text-right">
@@ -307,31 +284,189 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
+
+
+                    </div> <!-- End row -->
+
+                </div>
+                <!-- End row-->
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <div class="cal1 cal_2">
+                            <div class="clndr">
+                                <div class="clndr-controls">
+                                    <div class="clndr-control-button">
+                                        <p class="clndr-previous-button">previous</p>
+                                    </div>
+                                    <div class="month">July 2015</div>
+                                    <div class="clndr-control-button rightalign">
+                                        <p class="clndr-next-button">next</p>
+                                    </div>
+                                </div>
+                                <table class="clndr-table" border="0" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr class="header-days">
+                                            <td class="header-day">S</td>
+                                            <td class="header-day">M</td>
+                                            <td class="header-day">T</td>
+                                            <td class="header-day">W</td>
+                                            <td class="header-day">T</td>
+                                            <td class="header-day">F</td>
+                                            <td class="header-day">S</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="day adjacent-month last-month calendar-day-2015-06-28">
+                                                <div class="day-contents">28</div>
+                                            </td>
+                                            <td class="day adjacent-month last-month calendar-day-2015-06-29">
+                                                <div class="day-contents">29</div>
+                                            </td>
+                                            <td class="day adjacent-month last-month calendar-day-2015-06-30">
+                                                <div class="day-contents">30</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-01">
+                                                <div class="day-contents">1</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-02">
+                                                <div class="day-contents">2</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-03">
+                                                <div class="day-contents">3</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-04">
+                                                <div class="day-contents">4</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day calendar-day-2015-07-05">
+                                                <div class="day-contents">5</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-06">
+                                                <div class="day-contents">6</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-07">
+                                                <div class="day-contents">7</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-08">
+                                                <div class="day-contents">8</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-09">
+                                                <div class="day-contents">9</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-10">
+                                                <div class="day-contents">10</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-11">
+                                                <div class="day-contents">11</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day calendar-day-2015-07-12">
+                                                <div class="day-contents">12</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-13">
+                                                <div class="day-contents">13</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-14">
+                                                <div class="day-contents">14</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-15">
+                                                <div class="day-contents">15</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-16">
+                                                <div class="day-contents">16</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-17">
+                                                <div class="day-contents">17</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-18">
+                                                <div class="day-contents">18</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day calendar-day-2015-07-19">
+                                                <div class="day-contents">19</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-20">
+                                                <div class="day-contents">20</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-21">
+                                                <div class="day-contents">21</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-22">
+                                                <div class="day-contents">22</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-23">
+                                                <div class="day-contents">23</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-24">
+                                                <div class="day-contents">24</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-25">
+                                                <div class="day-contents">25</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="day calendar-day-2015-07-26">
+                                                <div class="day-contents">26</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-27">
+                                                <div class="day-contents">27</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-28">
+                                                <div class="day-contents">28</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-29">
+                                                <div class="day-contents">29</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-30">
+                                                <div class="day-contents">30</div>
+                                            </td>
+                                            <td class="day calendar-day-2015-07-31">
+                                                <div class="day-contents">31</div>
+                                            </td>
+                                            <td class="day adjacent-month next-month calendar-day-2015-08-01">
+                                                <div class="day-contents">1</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <!-- End row-->
+
+                    </div> <!-- end col -->
+
+                    <div class="col-lg-4">
+
+                    </div> <!-- end col-->
+                </div>
 
 
 
 
 
 
-                </div> <!-- container -->
+            </div> <!-- container -->
 
-            </div> <!-- content -->
-
-            <footer class="footer text-right">
-                2018 © InfoStrategy.
-            </footer>
-
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Right content here -->
-        <!-- ============================================================== -->
+        </div> <!-- content -->
 
 
+        <footer class="footer text-right">
+            2018 © InfoStrategy.
+        </footer>
 
-        <!-- /Right-bar -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Right content here -->
+    <!-- ============================================================== -->
+
+
+
+    <!-- /Right-bar -->
 
     </div>
     <!-- END wrapper -->
@@ -381,9 +516,11 @@
     <script src="dist/assets/js/moment-2.2.1.js" type="text/javascript"></script>
     <script src="dist/assets/js/clndr.js" type="text/javascript"></script>
     <script src="dist/assets/js/site.js" type="text/javascript"></script>
+    <!-- <script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script> -->
 
     <!-- todos app  -->
     <script src="dist/assets/pages/jquery.todo.js"></script>
+    <!-- <script type="text/javascript" src="js/manage_tables.js"></script> -->
 
     <!-- chat app  -->
     <script src="dist/assets/pages/jquery.chat.js"></script>

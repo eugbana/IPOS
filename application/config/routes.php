@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -64,10 +64,16 @@ $route['reports/(inventory_:any)/([^/]+)'] = 'reports/$1/$2';
 $route['reports/inventory_summary'] = 'reports/inventory_summary_input';
 $route['reports/(inventory_summary)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2';
 
+//$route['items/category_apply_vat/(:any)'] = 'items/category_apply_vat/$i';
+
 $route['reports/(detailed_sales)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
 $route['reports/detailed_sales'] = 'reports/date_input_sales';
-$route['reports/(detailed_receivings)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
+$route['reports/(detailed_receivings)/([^/]+)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4/$5';
 $route['reports/detailed_receivings'] = 'reports/date_input_recv';
+
+$route['reports/(detailed_transfers)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
+$route['reports/detailed_transfers'] = 'reports/date_input_trans';
+
 $route['reports/(specific_:any)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
 $route['reports/specific_customer'] = 'reports/specific_customer_input';
 $route['reports/specific_expiry'] = 'reports/date_input_recv1';

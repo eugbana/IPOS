@@ -325,11 +325,12 @@ class Customer extends Person
 			$this->db->group_start();
 			$this->db->like('people.phone_number', $inputs['search']);
 			$this->db->or_like('people.last_name', $inputs['search']);
+			$this->db->or_like('people.first_name', $inputs['search']);
 			$this->db->or_like('people.email', $inputs['search']);
 			$this->db->group_end();
 		}
 		$this->db->where('deleted', 0);
-		$this->db->group_by($inputs['sort'], $inputs['order']);
+		//$this->db->group_by($inputs['sort'], $inputs['order']);
 		if ($inputs['limit'] > 0) {
 			$this->db->limit($inputs['limit'], $inputs['offset']);
 		}
@@ -344,6 +345,7 @@ class Customer extends Person
 			$this->db->group_start();
 			$this->db->like('people.phone_number', $inputs['search']);
 			$this->db->or_like('people.last_name', $inputs['search']);
+			$this->db->or_like('people.first_name', $inputs['search']);
 			$this->db->or_like('people.email', $inputs['search']);
 			$this->db->group_end();
 		}

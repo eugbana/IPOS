@@ -19,17 +19,17 @@ class Sale extends CI_Model
 			)'
 		);
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
-
-		if ($this->config->item('tax_included')) {
+		$sale_price = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
+		$sale_total = 'SUM(' . $sale_price . ' + sales_items.vat)';
+		/*if ($this->config->item('tax_included')) {
 			$sale_total = 'SUM(' . $sale_price . ')';
 			$sale_subtotal = 'SUM(' . $sale_price . ' - sales_items_taxes.tax)';
 		} else {
 			$sale_total = 'SUM(' . $sale_price . ' + sales_items_taxes.tax)';
 			$sale_subtotal = 'SUM(' . $sale_price . ')';
-		}
+		} */
 
-		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)'; //this is not true for wholesale sales
 
 		$decimals = totals_decimals();
 
@@ -66,10 +66,12 @@ class Sale extends CI_Model
 				MAX(customer_p.last_name) AS last_name,
 				MAX(customer_p.email) AS email,
 				MAX(customer_p.comments) AS comments,
+				
+				
 				' . "
-				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
-				MAX(payments.sale_payment_amount) AS amount_tendered,
-				(MAX(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
+				ROUND($sale_total, $decimals) AS amount_due,
+				ROUND(SUM(payments.sale_payment_amount),2) AS amount_tendered,
+				ROUND(SUM(payments.sale_payment_amount) - $sale_total,2) AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type
 		');
@@ -480,6 +482,7 @@ class Sale extends CI_Model
 
 		$transfer_data = array(
 			'transfer_time'	 => date('Y-m-d H:i:s'),
+			'employee_id' => $this->CI->Employee->get_logged_in_employee_info()->person_id,
 			'transfer_type' => $transfer_type,
 			'request_from_branch_id' => $push_from_branch,
 			'request_to_branch_id' => $pushed_to_branch,
@@ -490,28 +493,60 @@ class Sale extends CI_Model
 		$this->db->trans_start();
 
 		$this->db->insert('item_transfer', $transfer_data);
-		$transfer_id = $this->db->insert_id();
+		//Get the id of the last inserted transfer
+		$trans_id = $this->db->insert_id();
 
 		foreach ($push_items as $line => $item) {
-			if ($pushed_to_branch == $item['branch_transfer']) {
-				$push_items_data = array(
-					'transfer_id'		=> $transfer_id,
-					'item_id'		 => $item['item_id'],
-					'line'		 => $item['line'],
-					'pushed_quantity'	=> $item['quantity'],
-					'request_from_branch_id' => $push_from_branch,
-					'request_to_branch_id' => $item['branch_transfer'],
-					'reference' => $item['reference'],
-					'batch_no' => $item['batch_no'],
-					'expiry' => $item['expiry'] == '' ? date('Y-m-d H:i:s') : $item['expiry'],
-					'received_quantity'		=> 0,
-					'pulled_quantity'		=> 0,
-					'unaccounted'		=> 0
 
-				);
+			$push_items_data = array(
+				'transfer_id'		=> $trans_id,
+				'item_id'		 => $item['item_id'],
+				'line'		 => $item['line'],
+				'pushed_quantity'	=> $item['quantity'],
+				'request_from_branch_id' => $push_from_branch,
+				'request_to_branch_id' => $pushed_to_branch, //$item['branch_transfer'],
+				'reference' => $item['reference'],
+				'batch_no' => $item['batch_no'],
+				'item_cost_price' => $item['cost_price'],
+				'item_unit_price' => $item['unit_price'],
+				'expiry' => $item['expiry'] == '' ? NULL : $item['expiry'],
+				'received_quantity'		=> 0,
+				'pulled_quantity'		=> 0,
+				'unaccounted'		=> 0
 
-				$this->db->insert('items_push', $push_items_data);
+			);
+
+			$this->db->insert('items_push', $push_items_data);
+
+			//Since this is push , item are reduced from this branch
+			//See the change_quantity on Item_quantity model to know the item quantity is mutliply by negative one. i.e substraction
+			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+			$quantity = $item['quantity'];
+			if ($transfer_type == "PUSH") {
+				$quantity = $item['quantity'] * -1; //push transfer lead to depletion of stock for the transfering branch
 			}
+			$this->CI->Item_quantity->change_quantity($item['item_id'], $push_from_branch, $quantity);
+
+			//make sure to increase quantity for the transfer_to branch when it is hosted
+
+			//Add this to inventory
+			// Inventory Count Details
+			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+			$rem_quantity = $item_quantity->quantity - $item['quantity']; //inventory is depleting
+
+
+			$transfer_remarks = $transfer_type . ' ' . $trans_id;
+			$employee_id = $this->CI->Employee->get_logged_in_employee_info()->person_id;
+			$inv_data = array(
+				'trans_date'		=> date('Y-m-d H:i:s'),
+				'trans_items'		=> $item['item_id'],
+				'trans_user'		=> $employee_id,
+				'trans_location'	=> $push_from_branch, //$item['item_location'],
+				'trans_comment'		=> $transfer_remarks,
+				'trans_inventory'	=> ($transfer_type == "PUSH") ? -$item['quantity'] : $item['quantity'],
+				'trans_remaining' => $rem_quantity
+			);
+			$this->Inventory->insert($inv_data);
 		}
 
 		$this->db->trans_complete();
@@ -520,7 +555,7 @@ class Sale extends CI_Model
 			return -1;
 		}
 
-		return $transfer_id;
+		return $trans_id;
 	}
 
 	public function save_pull_transfer($push_items, $items, $transfer_type, $push_from_branch, $pushed_to_branch, $status, $transfer_id = FALSE)
@@ -539,12 +574,12 @@ class Sale extends CI_Model
 		$this->db->trans_start();
 
 		$this->db->insert('item_transfer', $transfer_data);
-		$transfer_id = $this->db->insert_id();
+		$trans_id = $this->db->insert_id();
 
 		foreach ($push_items as $line => $item) {
 			if ($pushed_to_branch == $item['branch_transfer']) {
 				$push_items_data = array(
-					'transfer_id'		=> $transfer_id,
+					'transfer_id'		=> $trans_id,
 					'item_id'		 => $item['item_id'],
 					'line'		 => $item['line'],
 					'pushed_quantity'	=> 0,
@@ -552,7 +587,7 @@ class Sale extends CI_Model
 					'request_to_branch_id' => $item['branch_transfer'],
 					'reference' => $item['reference'],
 					'batch_no' => $item['batch_no'],
-					'expiry' => $item['expiry'] == '' ? date('Y-m-d H:i:s') : $item['expiry'],
+					'expiry' => $item['expiry'] == '' ? NULL : $item['expiry'],
 					'received_quantity'		=> 0,
 					'pulled_quantity'		=> $item['quantity'],
 					'unaccounted'		=> 0
@@ -560,6 +595,25 @@ class Sale extends CI_Model
 				);
 
 				$this->db->insert('items_push', $push_items_data);
+				//Since this is pull , item are added to this branch
+				//We can't change quantity here
+				//$this->CI->Item_quantity->change_quantity($item['item_id'], $push_from_branch, $item['quantity']);
+
+				//make sure to increase quantity for the transfer_to branch when it is hosted
+
+				//Add this to inventory. Inventory is not needed here since it's just a request that's being made
+				// Inventory Count Details
+				/* $transfer_remarks = 'PULL ' . $trans_id;
+				$employee_id = $this->CI->Employee->get_logged_in_employee_info()->person_id;
+				$inv_data = array(
+					'trans_date'		=> date('Y-m-d H:i:s'),
+					'trans_items'		=> $item['item_id'],
+					'trans_user'		=> $employee_id,
+					'trans_location'	=> $item['item_location'],
+					'trans_comment'		=> $transfer_remarks,
+					'trans_inventory'	=> $item['quantity']
+				);
+				$this->Inventory->insert($inv_data); */
 			}
 		}
 
@@ -569,7 +623,7 @@ class Sale extends CI_Model
 			return -1;
 		}
 
-		return $transfer_id;
+		return $trans_id;
 	}
 	public function save_laboratory_invoice($lab_items, $test_type, $customer_id, $invoice_id = false)
 	{
@@ -637,6 +691,7 @@ class Sale extends CI_Model
 
 		$auth_code = $this->sale_lib->get_auth_code();
 
+
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
@@ -650,6 +705,8 @@ class Sale extends CI_Model
 			'sale_status'	 => $sale_status,
 			'auth_code'		 => $auth_code
 		);
+
+
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
@@ -714,21 +771,32 @@ class Sale extends CI_Model
 				'quantity_purchased' => $item['quantity'],
 				'discount_percent'	=> $item['discount'],
 				'item_cost_price'	=> $cur_item_info->cost_price,
+				'pack'	=> $cur_item_info->pack,
 				'item_unit_price'	=> $item['price'],
 				'item_location'		=> $item['item_location'],
 				'qty_selected'		=> $item['qty_selected'],
 				'reference'		=> $item['reference'],
-				'print_option'		=> $item['print_option']
+				'print_option'		=> $item['print_option'],
+				'apply_vat' => $item['apply_vat'],
+				'vat' => round($item['vat'], 2)
 			);
 
 			$this->db->insert('sales_items', $sales_items_data);
 
 			if ($item['reference'] == 0) {
-				if ($cur_item_info->stock_type === '0') {
-					// Update stock quantity if item type is not non-stock
+
+				$rem_quantity = 0;
+				if ($cur_item_info->stock_type === '0' && $sale_status != '1') {
+					// Update stock quantity if item type is not non-stock(stock_type =1 is for laboratory items) and sale is not being suspended
+					//note that laboratory items are non-stock
 					$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+					$rem_quantity = $item_quantity->quantity - $item['quantity']; //for retail
+					if ($item['qty_selected'] == 'wholesale') {
+						$rem_quantity = $item_quantity->quantity - ($item['quantity'] * $cur_item_info->pack);
+					}
+
 					$this->Item_quantity->save(array(
-						'quantity'		=> $item_quantity->quantity - $item['quantity'],
+						'quantity'		=> $rem_quantity,
 						'item_id'		=> $item['item_id'],
 						'location_id'	=> $item['item_location']
 					), $item['item_id'], $item['item_location']);
@@ -737,21 +805,33 @@ class Sale extends CI_Model
 
 				// if an items was deleted but later returned it's restored with this rule
 
-				if ($item['quantity'] < 0) {
-					$this->Item->undelete($item['item_id']);
-				}
+				// if ($item['quantity'] < 0) {
+				// 	$this->Item->undelete($item['item_id']);
+				// }
 
 				// Inventory Count Details
 				$sale_remarks = 'POS ' . $sale_id;
+				$sold_qty = $item['quantity'];
+
+				//for wholesale
+				if ($item['qty_selected'] == 'wholesale') {
+					$sold_qty = $item['quantity'] * $cur_item_info->pack;
+				}
+
+				$sold_qty = -1 * $sold_qty; //the negative sign shows item is sold
 				$inv_data = array(
 					'trans_date'		=> date('Y-m-d H:i:s'),
 					'trans_items'		=> $item['item_id'],
 					'trans_user'		=> $employee_id,
 					'trans_location'	=> $item['item_location'],
 					'trans_comment'		=> $sale_remarks,
-					'trans_inventory'	=> -$item['quantity']
+					'trans_inventory'	=> $sold_qty,
+					'trans_remaining' => $rem_quantity
 				);
-				$this->Inventory->insert($inv_data);
+				//Don't insert suspended sales in the inventory
+				if ($sale_status != '1') {
+					$this->Inventory->insert($inv_data);
+				}
 			}
 
 			// Calculate taxes and save the tax information for the sale.  Return the result for printing
@@ -1314,7 +1394,7 @@ class Sale extends CI_Model
 				'print_option' => $item['print_option'],
 			);
 			//$sale_id = $this->db->insert_id();
-			if ($this->result_exists($item['line'], $sale_id)) {
+			if ($this->result_exists($item['line'], $sale_id, $item['test_name'])) {
 				$this->db->where('line', $item['line']);
 				$this->db->where('sale_id', $sale_id);
 				$this->db->update('laboratory_results_saved', $sales_items_data);
@@ -1347,11 +1427,14 @@ class Sale extends CI_Model
 
 		return TRUE;
 	}
-	public function result_exists($line, $sale_id)
+	public function result_exists($line, $sale_id, $test_name = 'none')
 	{
 		$this->db->from('laboratory_results_saved');
 		$this->db->where('line', $line);
 		$this->db->where('sale_id', $sale_id);
+		if ($test_name != 'none') {
+			$this->db->where('test_name', $test_name);
+		}
 
 		return ($this->db->get()->num_rows() == 1);
 	}
@@ -1635,7 +1718,7 @@ class Sale extends CI_Model
 			o_name,
 			h_name,
 			print_option');
-		$this->db->from('laboratory_results_items as laboratory_results_items');
+		$this->db->from('laboratory_results_items');
 		$this->db->where('sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
@@ -1716,7 +1799,9 @@ class Sale extends CI_Model
 			item_type,
 			stock_type,
 			qty_selected,
-			reference');
+			reference,
+			sales_items.apply_vat AS apply_vat,
+			vat');
 		$this->db->from('sales_items as sales_items');
 		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
 		$this->db->where('sale_id', $sale_id);
@@ -1868,38 +1953,23 @@ class Sale extends CI_Model
 			$where = 'sales.sale_id = ' . $this->db->escape($inputs['sale_id']);
 		}
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		//$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = '(sales_items.item_unit_price * sales_items.quantity_purchased )';
+		$discount_items = 'sales_items.item_unit_price * sales_items.quantity_purchased * (sales_items.discount_percent / 100)';
+		//the above line is not errorneous because, it uses both item_unit_price(which is wholesale price for wholesale sales and unit sale price for retail sales) for both wholesale and retail sales
+		//while for quantity purchased, 1 for wholesales means total pack no for item
 
-		if ($this->config->item('tax_included')) {
-			$sale_total = 'SUM(' . $sale_price . ')';
-			$sale_subtotal = 'SUM(' . $sale_price . ' - sales_items_taxes.tax)';
-		} else {
-			$sale_total = 'SUM(' . $sale_price . ' + sales_items_taxes.tax)';
-			$sale_subtotal = 'SUM(' . $sale_price . ')';
-		}
+		//$sale_total = 'SUM(' . $sale_price . ')';
+		//$discount = 'SUM(' . $discount_items . ')';
 
-		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+		//sales_items_taxes
+		//$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+		$cost_price_retail = 'items.cost_price * sales_items.quantity_purchased'; ///only for retails
+		$cost_price_wholesale = 'items.cost_price * sales_items.quantity_purchased * items.pack';
 
 		$decimals = totals_decimals();
 
-		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query(
-			'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-				' (INDEX(sale_id), INDEX(item_id))
-			(
-				SELECT sales_items_taxes.sale_id AS sale_id,
-					sales_items_taxes.item_id AS item_id,
-					sales_items_taxes.line AS line,
-					SUM(sales_items_taxes.item_tax_amount) as tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
-					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
-					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE sales.sale_status = 0 AND ' . $where . '
-				GROUP BY sale_id, item_id, line
-			)'
-		);
+
 
 		// create a temporary table to contain all the payment types and amount
 		$this->db->query(
@@ -1922,41 +1992,52 @@ class Sale extends CI_Model
 				' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(
 				SELECT
-					MAX(DATE(sales.sale_time)) AS sale_date,
-					MAX(sales.sale_time) AS sale_time,
+					DATE(sales.sale_time) AS sale_date,
+					sales.sale_time AS sale_time,
 					sales.sale_id AS sale_id,
-					MAX(sales.comment) AS comment,
-					MAX(sales.invoice_number) AS invoice_number,
-					MAX(sales.quote_number) AS quote_number,
-					MAX(sales.customer_id) AS customer_id,
-					MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
-					MAX(customer_p.first_name) AS customer_first_name,
-					MAX(customer_p.last_name) AS customer_last_name,
-					MAX(customer_p.email) AS customer_email,
-					MAX(customer_p.comments) AS customer_comments,
-					MAX(customer.company_name) AS customer_company_name,
-					MAX(sales.employee_id) AS employee_id,
-					MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
+					sales.comment AS comment,
+					sales.invoice_number AS invoice_number,
+					sales.quote_number AS quote_number,
+					sales.customer_id AS customer_id,
+					CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
+					customer_p.first_name AS customer_first_name,
+					customer_p.last_name AS customer_last_name,
+					customer_p.email AS customer_email,
+					customer_p.comments AS customer_comments,
+					customer.company_name AS customer_company_name,
+					sales.employee_id AS employee_id,
+					CONCAT(employee.first_name, " ", employee.last_name) AS employee_name,
 					items.item_id AS item_id,
-					MAX(items.name) AS name,
-					MAX(items.category) AS category,
-					MAX(items.supplier_id) AS supplier_id,
-					MAX(sales_items.quantity_purchased) AS quantity_purchased,
-					MAX(sales_items.item_cost_price) AS item_cost_price,
-					MAX(sales_items.item_unit_price) AS item_unit_price,
-					MAX(sales_items.discount_percent) AS discount_percent,
+					items.name AS name,
+					items.category AS category,
+					items.supplier_id AS supplier_id,
+					items.pack AS pack,
+					sales_items.quantity_purchased AS quantity_purchased,
+					sales_items.item_cost_price AS item_cost_price,
+					sales_items.item_unit_price AS item_unit_price,
+					sales_items.discount_percent AS discount_percent,
+					
+					sales_items.vat AS vat,
 					sales_items.line AS line,
-					MAX(sales_items.serialnumber) AS serialnumber,
-					MAX(sales_items.item_location) AS item_location,
-					MAX(sales_items.description) AS description,
-					MAX(payments.payment_type) AS payment_type,
-					MAX(payments.sale_payment_amount) AS sale_payment_amount,
+					sales_items.qty_selected AS qty_selected,
+					items.item_number AS serialnumber,
+					sales_items.item_location AS item_location,
+					sales_items.description AS description,
+					payments.payment_type AS payment_type,
+					payments.sale_payment_amount AS sale_payment_amount,
+
+
 					' . "
-					IFNULL(ROUND($sale_subtotal, $decimals), ROUND($sale_total - IFNULL(SUM(sales_items_taxes.tax), 0), $decimals)) AS subtotal,
-					IFNULL(ROUND(SUM(sales_items_taxes.tax), $decimals), 0) AS tax,
-					IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
-					IFNULL(ROUND($sale_cost, $decimals), 0) AS cost,
-					IFNULL(ROUND($sale_total - IFNULL(SUM(sales_items_taxes.tax), 0) - $sale_cost, $decimals), ROUND($sale_subtotal - $sale_cost, $decimals)) AS profit
+					IFNULL((ROUND($sale_price, $decimals) - ROUND($discount_items, $decimals)),0)AS total,
+					
+					
+					IFNULL(ROUND($cost_price_retail, $decimals), 0) AS cost_retail,
+					IFNULL(ROUND($cost_price_wholesale, $decimals), 0) AS cost_wholesale,
+					IFNULL((ROUND($sale_price, $decimals) - ROUND($cost_price_retail,$decimals) - ROUND($discount_items, $decimals)),0) AS profit_retail,
+					IFNULL((ROUND($sale_price, $decimals) - ROUND($cost_price_wholesale,$decimals) - ROUND($discount_items, $decimals)),0) AS profit_wholesale,
+					IFNULL(ROUND($discount_items, $decimals), 0) AS discount
+
+					
 					" . '
 				FROM ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
@@ -1973,16 +2054,14 @@ class Sale extends CI_Model
 					ON sales.customer_id = customer.person_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('people') . ' AS employee
 					ON sales.employee_id = employee.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes_temp') . ' AS sales_items_taxes
-					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
+				
 				WHERE sales.sale_status = 0 AND ' . $where . '
-				GROUP BY sale_id, item_id, line
+				
 			)'
 		);
 
 		// drop the temporary table to contain memory consumption as it's no longer required
 		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp'));
 	}
 
 	/*
@@ -2079,7 +2158,7 @@ class Sale extends CI_Model
 			$where = 'expiry_table.expiry_id = ' . $this->db->escape($inputs['expiry_id']);
 		}
 
-
+		//sales_items_taxes
 		$this->db->query(
 			'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payment_temp') .
 				' (PRIMARY KEY(expiry_id), INDEX(expiry_id))

@@ -1,11 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
 <div class="content-page">
-                <!-- Start content -->
-                <div class="content">
+	<!-- Start content -->
+	<div class="content">
 		<div id="page_title">
-			<?php echo $title ?>
+			<?php echo $title  ?>
 			<p style="font-size:16px;">
-				<a href="<?php echo site_url('reports/print_filtered_report/' . $start . '/' . $end . '/' . $employee_id . '/' . $sale_type); ?>">Print all</a> | 
+				<a href="<?php echo site_url('reports/print_filtered_report/' . $start . '/' . $end . '/' . $employee_id . '/' . $sale_type); ?>">Print all</a> |
 				<a href="<?php echo site_url('reports/print_filtered_report_items/' . $start . '/' . $end . '/' . $employee_id . '/' . $sale_type); ?>">Print all items</a>
 			</p>
 		</div>
@@ -18,10 +18,9 @@
 
 		<div id="report_summary">
 			<?php
-			foreach($overall_summary_data as $name=>$value)
-			{
-			?>
-				<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.to_currency($value); ?></div>
+			foreach ($overall_summary_data as $name => $value) {
+				?>
+				<div class="summary_row"><?php echo $this->lang->line('reports_' . $name) . ': ' . to_currency($value); ?></div>
 			<?php
 			}
 			?>
@@ -30,26 +29,22 @@
 </div>
 
 <script type="text/javascript">
-
-	$(document).ready(function()
-	{
-	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+	$(document).ready(function() {
+		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		var detail_data = <?php echo json_encode($details_data); ?>;
 		<?php
-		if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
-		{
-		?>
+		if ($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards)) {
+			?>
 			var details_data_rewards = <?php echo json_encode($details_data_rewards); ?>;
 		<?php
 		}
 		?>
-		var init_dialog = function()
-		{
+		var init_dialog = function() {
 
-			<?php if (isset($editable)): ?>
-			table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
-			dialog_support.init("a.modal-dlg");
+			<?php if (isset($editable)) : ?>
+				table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row") ?>');
+				dialog_support.init("a.modal-dlg");
 			<?php endif; ?>
 		};
 
@@ -66,21 +61,20 @@
 			iconSize: 'sm',
 			paginationVAlign: 'bottom',
 			detailView: true,
-			uniqueId: 'id',
+
 			escape: false,
 			onPageChange: init_dialog,
 			onPostBody: function() {
 				dialog_support.init("a.modal-dlg");
 			},
-			onExpandRow: function (index, row, $detail) {
+			onExpandRow: function(index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
 					data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 				});
 				<?php
-				if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
-				{
-				?>
+				if ($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards)) {
+					?>
 					$detail.append('<table></table>').find("table").bootstrapTable({
 						columns: <?php echo transform_headers_readonly($headers['details_rewards']); ?>,
 						data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]

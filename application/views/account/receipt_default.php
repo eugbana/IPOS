@@ -13,14 +13,14 @@
 		if ($this->config->item('receipt_show_company_name')) 
 		{ 
 		?>
-			<div id="company_name"><?php echo 'Tonia Laboratories';?></div>
+			<div id="company_name"><?php echo 'Tonia Medical Laboratories LTD';?></div>
 		<?php
 		}
 		?>
 
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
 		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
-		<div id="sale_receipt"><?php echo $receipt_title; ?></div>
+		<div id="sale_receipt"><h4><?php echo $receipt_title; ?></h4></div>
 		<div id="sale_time"><?php echo $transaction_time ?></div>
 		
 	</div>
@@ -30,7 +30,7 @@
 		if(isset($customer))
 		{
 		?>
-			<div id="customer"><?php echo $this->lang->line('customers_customer').": ".$customer; ?></div>
+			<div id="customer"><?php echo $this->lang->line('customers_lab').": ".$customer; ?></div>
 		<?php
 		}
 		?>
@@ -47,6 +47,7 @@
 		?>
 
 		<div id="employee"><?php echo $user_role.": ".$employee; ?></div>
+		
 	</div>
 
 	<table id="receipt_items">

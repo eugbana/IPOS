@@ -77,14 +77,14 @@
                             </form>
 
                             <ul class="nav navbar-nav navbar-right pull-right">
-                                <li class="dropdown hidden-xs">
+                              <!--  <li class="dropdown hidden-xs">
                                     <a href="#" data-target="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true">
                                         <i class="md md-notifications"></i> <span class="badge badge-xs badge-danger"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-lg">
                                         <li class="text-center notifi-title">Notification</li>
                                         <li class="list-group">
-                                           <!-- list item-->
+                                          
                                            <a href="javascript:void(0);" class="list-group-item">
                                               <div class="media">
                                                  <div class="pull-left">
@@ -98,7 +98,7 @@
                                                  </div>
                                               </div>
                                            </a>
-                                           <!-- list item-->
+                                         
                                             <a href="javascript:void(0);" class="list-group-item">
                                               <div class="media">
                                                  <div class="pull-left">
@@ -112,7 +112,7 @@
                                                  </div>
                                               </div>
                                             </a>
-                                            <!-- list item-->
+                                          
                                             <a href="javascript:void(0);" class="list-group-item">
                                               <div class="media">
                                                  <div class="pull-left">
@@ -127,7 +127,7 @@
                                                  </div>
                                               </div>
                                             </a>
-                                           <!-- last list item -->
+                                          
                                             <a href="javascript:void(0);" class="list-group-item">
                                               <small>See all notifications</small>
                                             </a>
@@ -139,14 +139,14 @@
                                 </li>
                                 <li class="hidden-xs">
                                     <a href="#" class="right-bar-toggle waves-effect"><i class="md md-chat"></i></a>
-                                </li>
+                                </li> -->
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/user-default.png" alt="user-img" class="img-circle"> </a>
                                     <ul class="dropdown-menu">
 									
-                                        <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
-                                        <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                        <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                    <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li>
+                                        <!-- <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
+                                        <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                         <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                     </ul>
                                 </li>
@@ -171,9 +171,9 @@
                             <div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><?= $user_info->first_name . ' ' . $user_info->last_name;  ?> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
-                                    <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                <!-- <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li> -->
+                                    <!-- <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
+                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                     <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                 </ul>
                             </div>
@@ -188,36 +188,9 @@
                             <li>
                                 <a href="<?php echo site_url();?>" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
                             </li>
-							<?php
-								foreach($allowed_modules->result() as $module)
-								{
-								?>
-								<?php if($this->lang->line("module_".$module->module_id)=="Sales"){?>
-													
-														<li class="has_sub">
-															<a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-															<ul class="list-unstyled">
-                                                                <li><a href="<?php echo site_url("sales");?>">New Sale</a></li>
-																<li><a href="<?php echo site_url("sales/manage");?>">Sale Transaction</a></li>																
-															</ul>
-														</li>
-														
-										<?php }elseif($this->lang->line("module_".$module->module_id)=="Customers"){?>
-					
-										<?php }else{?>
-									<li class="has_sub">
-										
-										<a href="<?php echo site_url("$module->module_id");?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-											
-									</li>
-										<?php
-										}
-								}
-								?>
-
+                         
+                            <?php $this->load->view("sidebars/sale_officer");  ?>
                             
-
-                          
 
                             
                                 </ul>
@@ -255,14 +228,14 @@
                         <div class="row">
                             <div class="col-md-6 col-sm-6 col-lg-3">
                                 <div class="mini-stat clearfix bx-shadow bg-primary">
-                                    <span class="mini-stat-icon"><img src="<?php echo base_url().'images/images.ico';?>" width="30" height="30"/></i></span>
+                                <a href="<?php echo site_url("sales/manage");?>"><span class="mini-stat-icon"><img src="<?php echo base_url().'images/images.ico';?>" width="30" height="30"/></i></span></a>
                                     <div class="mini-stat-info text-right">
                                         <span class="counter"></span>
-                                        Total Sales
+                                        Sales History
                                     </div>
                                     <div class="tiles-progress">
                                         <div class="m-t-20">
-                                            <h5 class="text-uppercase text-white m-0">Sales <span class="pull-right">235</span></h5>
+                                            <h5 class="text-uppercase text-white m-0">Sales <span class="pull-right"></span></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +255,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-6 col-sm-6 col-lg-3">
+                            <!-- <div class="col-md-6 col-sm-6 col-lg-3">
                                 <div class="mini-stat clearfix bx-shadow" style="background-color: #C0C0C0;">
                                     <a href="<?php echo site_url("sales/manage");?>"><span class="mini-stat-icon bg-danger"><i class="ion-eye"></i></span></a>
                                     <div class="mini-stat-info text-right">
@@ -295,9 +268,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="col-md-6 col-sm-6 col-lg-3">
+                            <!-- <div class="col-md-6 col-sm-6 col-lg-3">
                                 <div class="mini-stat clearfix bg-primary bx-shadow">
                                     <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
                                     <div class="mini-stat-info text-right">
@@ -306,11 +279,11 @@
                                     </div>
                                     <div class="tiles-progress">
                                         <div class="m-t-20">
-                                            <h5 class="text-uppercase text-white m-0">Online Sales <span class="pull-right">136</span></h5>
+                                            <h5 class="text-uppercase text-white m-0">Online Sales <span class="pull-right"></span></h5>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div> 
                         <!-- End row-->
 

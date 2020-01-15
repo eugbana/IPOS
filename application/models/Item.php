@@ -210,6 +210,9 @@ class Item extends CI_Model
 	}*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
+		$cats = $this->categories_list();
+
+
 		if ($filters['expiry'] == FALSE) {
 			$this->db->select('MAX(items.name) as name');
 			$this->db->select('MAX(items.category) as category');
@@ -227,8 +230,8 @@ class Item extends CI_Model
 			$this->db->select('MAX(items.deleted) as deleted');
 			$this->db->select('MAX(items.expiry_days) as expiry_days');
 			$this->db->select('MAX(items.pack) as pack');
-			//$this->db->select('MAX(items.custom3) as custom3');
-			//$this->db->select('MAX(items.custom4) as custom4');
+			$this->db->select('MAX(items.custom3) as custom3');
+			$this->db->select('MAX(items.custom4) as custom4');
 			$this->db->select('MAX(items.custom5) as custom5');
 			$this->db->select('MAX(items.custom6) as custom6');
 			$this->db->select('MAX(items.custom7) as custom7');
@@ -242,28 +245,24 @@ class Item extends CI_Model
 			$this->db->select('MAX(suppliers.account_number) as account_number');
 			$this->db->select('MAX(suppliers.deleted) as deleted');
 
-			$this->db->select('MAX(inventory.trans_id) as trans_id');
+			/*$this->db->select('MAX(inventory.trans_id) as trans_id');
 			$this->db->select('MAX(inventory.trans_items) as trans_items');
 			$this->db->select('MAX(inventory.trans_user) as trans_user');
 			$this->db->select('MAX(inventory.trans_date) as trans_date');
 			$this->db->select('MAX(inventory.trans_comment) as trans_comment');
 			$this->db->select('MAX(inventory.trans_location) as trans_location');
-			$this->db->select('MAX(inventory.trans_inventory) as trans_inventory');
+			$this->db->select('MAX(inventory.trans_inventory) as trans_inventory'); */
 
 
 			if ($filters['stock_location_id'] > -1) {
-				//$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
+				$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
 				$this->db->select('MAX(item_quantities.location_id) as location_id');
 				$this->db->select('MAX(item_quantities.quantity) as quantity');
-				if ($filters['expiry'] != FALSE) {
-					$this->db->select('MAX(item_expiry.batch_no) as batch');
-				}
 			}
 
 			$this->db->from('items as items');
-			//$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
 			$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-			$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
+			//$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
 
 
 
@@ -273,18 +272,18 @@ class Item extends CI_Model
 				$this->db->where('location_id', $filters['stock_location_id']);
 			}
 
-			if (empty($this->config->item('date_or_time_format'))) {
+			/*if (empty($this->config->item('date_or_time_format'))) {
 				$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 			} else {
 				$this->db->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
-			}
+			}*/
 
 			if (!empty($search)) {
 				if ($filters['search_custom'] == FALSE) {
 					$this->db->group_start();
 					//$trinog=substr($search, 0, 1, 'utf-8');
 					$this->db->like('name', $search);
-					//$this->db->like('name', $search);
+
 					$this->db->or_like('items.item_number', $search);
 					$this->db->or_like('items.item_id', $search);
 					$this->db->or_like('company_name', $search);
@@ -294,7 +293,7 @@ class Item extends CI_Model
 				} else {
 					$this->db->group_start();
 					$this->db->like('expiry_days', $search);
-					$this->db->or_like('custom2', $search);
+
 					$this->db->or_like('custom3', $search);
 					$this->db->or_like('custom4', $search);
 					$this->db->or_like('custom5', $search);
@@ -325,6 +324,15 @@ class Item extends CI_Model
 				$this->db->where('items.apply_vat', 'YES');
 			}
 
+			//Notice the cats is already fetched at the start of this function,
+			//to prevent fetching the db while constructing queries;
+			foreach ($cats as $row => $value) {
+				if ($filters[str_replace(' ', '_', $value['name'])] != FALSE) {
+					$this->db->where('items.category', $value['name']);
+				}
+			}
+
+
 			// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
 			$this->db->group_by('items.item_id');
 
@@ -333,18 +341,18 @@ class Item extends CI_Model
 		} else {
 			$this->db->select('items.name as name');
 			$this->db->select('items.category as category');
-			// $this->db->select('MAX(items.supplier_id) as supplier_id');
-			// $this->db->select('MAX(items.item_number) as item_number');
-			// $this->db->select('MAX(items.description) as description');
+			$this->db->select('MAX(items.supplier_id) as supplier_id');
+			$this->db->select('MAX(items.item_number) as item_number');
+			$this->db->select('MAX(items.description) as description');
 			$this->db->select('items.cost_price as cost_price');
 			$this->db->select('items.unit_price as unit_price');
 
 			$this->db->select('items.item_id as item_id');
-			// $this->db->select('MAX(items.pic_filename) as pic_filename');
-			// $this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
-			// $this->db->select('MAX(items.is_serialized) as is_serialized');
-			// $this->db->select('MAX(items.deleted) as deleted');
-			// $this->db->select('MAX(items.expiry_days) as expiry_days');
+			$this->db->select('MAX(items.pic_filename) as pic_filename');
+			$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
+			$this->db->select('MAX(items.is_serialized) as is_serialized');
+			$this->db->select('MAX(items.deleted) as deleted');
+			$this->db->select('MAX(items.expiry_days) as expiry_days');
 			$this->db->select('items.pack as pack');
 
 			$this->db->select('item_expiry.location_id as location_id');
@@ -360,6 +368,15 @@ class Item extends CI_Model
 
 			$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
+			$this->db->where('expiry_date <=', date("Y-m-d H:i:s"));
+
+			$this->db->where('items.deleted', $filters['is_deleted']);
+
+			// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
+			$this->db->group_by('items.item_id');
+
+			// order by name of item
+			$this->db->order_by($sort, $order);
 		}
 
 
@@ -555,6 +572,37 @@ class Item extends CI_Model
 
 			return $item_obj;
 		}
+	}
+	public function get_labtest_info($sale_id, $status = 3)
+	{
+		$query = null;
+
+		if ($status == 2) {
+
+			$this->db->select('laboratory_results_saved.*');
+			$this->db->from('laboratory_results_saved');
+			$this->db->where('sale_id', $sale_id);
+
+			$query = $this->db->get();
+		} else {
+			$this->db->select('laboratory_results_items.*');
+			$this->db->from('laboratory_results_items');
+			$this->db->where('sale_id', $sale_id);
+
+			$query = $this->db->get();
+		}
+		//fetch unique test names and item_id which will be used to select results to print at once
+		$test_names = array();
+		$unique_tests  = array();
+
+		foreach ($query->result_array() as $row) {
+			$name = $row['test_name'];
+			if (!in_array($name, $test_names)) {
+				$test_names[] = $name;
+				$unique_tests[] = array('test_name' => $name, 'item_id' => $row['item_id']);
+			}
+		}
+		return $unique_tests;
 	}
 	public function get_labinfo_by_id_or_number($item_id)
 	{
@@ -810,15 +858,24 @@ class Item extends CI_Model
 		$this->db->where('items.deleted', 0);
 
 		$query = $this->db->get();
+		$num = $query->num_rows();
+		if ($num == 1) {
 
-		if ($query->num_rows() == 1) {
 			return $query->row();
+		} elseif ($num > 1) {
+			foreach ($query->result() as $row) {
+				if ($row->item_id == $item_id) {
+					return $row;
+				}
+			}
 		}
 
 		return '';
 	}
+
 	public function get_info_pill($reminder_id)
 	{
+
 		$this->db->from('pill_reminder');
 
 		if (ctype_digit($reminder_id)) {
@@ -979,6 +1036,12 @@ class Item extends CI_Model
 
 		return $this->db->update('items', $item_data);
 	}
+	public function save_custom($item_data)
+	{
+
+		$this->db->insert_batch('items', $item_data);
+		return true; //$this->db->insert_id();
+	}
 
 	/*
 	Inserts or updates a item
@@ -998,6 +1061,17 @@ class Item extends CI_Model
 		$this->db->where('id', $item_id);
 
 		return $this->db->update('categories', $item_data);
+	}
+	public function update_category($item_data, $cate_name)
+	{
+		//update category table
+		$this->db->where('name', $cate_name);
+		$this->db->update('categories', $item_data);
+
+		//update Item table
+		$cate = array('category' => $item_data['name']);
+		$this->db->where('category', $cate_name);
+		return $this->db->update('items', $cate);
 	}
 
 	public function lab_save($test_code, $test_name, $test_amount, $test_type, $test_unit, $test_subgroup, $test_kind, $item_id = FALSE)
@@ -1064,9 +1138,11 @@ class Item extends CI_Model
 			'test_kind' => $test_kind,
 			'test_unit'	=> $test_unit
 		);
+		$item_data = array('unit_price' => $test_amount);
 		$this->db->where('item_id', $item_id);
 		$this->db->update('items', $item_data);
 
+		$this->db->where('item_id', $item_id);
 		return $this->db->update('laboratory_test', $labitem_data);
 	}
 
@@ -1134,8 +1210,32 @@ class Item extends CI_Model
 
 		return $success;
 	}
+	/*
+	Apply Vat to A list of Items
+	*/
+	public function apply_vat_to_list($item_ids)
+	{
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->trans_start();
 
-	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+
+		$this->db->where_in('item_id', $item_ids);
+		$this->db->where('apply_vat', 'NO');
+		$success = $this->db->update('items', array('apply_vat' => 'YES'));
+
+		$this->db->where_in('item_id', $item_ids);
+		$this->db->where('apply_vat', 'YES');
+		$success &= $this->db->update('items', array('apply_vat' => 'NO'));
+
+
+		$this->db->trans_complete();
+
+		$success &= $this->db->trans_status();
+
+		return $success;
+	}
+
+	public function get_search_suggestions($search, $filters = array('is_deleted' => 0, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();
 
@@ -1145,7 +1245,8 @@ class Item extends CI_Model
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 		$this->db->where("stock_type = '0'");
-		$this->db->like('name', $search, 'after'); //it could be 'after'
+		$this->db->like('name', $search); //it could be 'after'
+		//$this->db->or_like('name',$search);
 
 		$this->db->order_by('name', 'asc');
 
@@ -1154,18 +1255,18 @@ class Item extends CI_Model
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name . '(Qty:' . number_format($row->quantity) . ')');
 		}
 
-		/*$this->db->select('item_id, item_number');
+		$this->db->select('item_id, item_number');
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 		$this->db->where("stock_type = '0'");
-		$this->db->like('item_number', $search, 'after');
+		$this->db->like('item_number', $search);
 		$this->db->order_by('item_number', 'asc');
 		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
 
-		if (!$unique) {
+		/*if (!$unique) {
 			//Search by category
 			$this->db->select('category');
 			$this->db->from('items');
@@ -1232,8 +1333,8 @@ class Item extends CI_Model
 					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 				}
 			}
-		}
-		*/
+		} */
+
 
 		//only return $limit suggestions
 		if (count($suggestions > $limit)) {
@@ -1424,13 +1525,13 @@ class Item extends CI_Model
 	{
 		$lab_items = array();
 
-		$this->db->select('invoice_id,person_id,doctor_name, status');
+		$this->db->select('invoice_id,person_id,invoice_time,doctor_name, status');
 		$this->db->from('laboratory_invoice');
 		$this->db->order_by('invoice_id', 'desc');
 		$this->db->where('status', 0);
 
 		foreach ($this->db->get()->result() as $row) {
-			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'doctor_name' => $row->doctor_name, 'status' => $row->status, 'edit' => $row->status == 0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>' : '<button class="btn btn-info btn-sm pull-left modal-dlg" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
+			$lab_items[] = array('invoice_id' => $row->invoice_id, 'person_id' => $row->person_id, 'invoice_time' => date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($row->invoice_time)), 'doctor_name' => $row->doctor_name, 'status' => $row->status, 'edit' => $row->status == 0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>' : '<button class="btn btn-info btn-sm pull-left modal-dlg" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>');
 		}
 
 
@@ -1453,6 +1554,7 @@ class Item extends CI_Model
 
 		return $lab_items;
 	}
+
 	public function processed_account_items()
 	{
 		$lab_items = array();
@@ -1489,12 +1591,12 @@ class Item extends CI_Model
 	{
 		$lab_items = array();
 
-		$this->db->select('sale_id,invoice_id,customer_id,doctor_name');
+		$this->db->select('sale_id,invoice_id,result_time,customer_id,doctor_name');
 		$this->db->from('laboratory_results');
 		$this->db->where('status', 1);
 
 		foreach ($this->db->get()->result() as $row) {
-			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'result_time' => date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($row->result_time)), 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
 
 
@@ -1505,12 +1607,12 @@ class Item extends CI_Model
 	{
 		$lab_items = array();
 
-		$this->db->select('sale_id,invoice_id,customer_id,doctor_name');
+		$this->db->select('sale_id,invoice_id,result_time,customer_id,doctor_name');
 		$this->db->from('laboratory_results');
 		$this->db->where('status', 2);
 
 		foreach ($this->db->get()->result() as $row) {
-			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'result_time' => date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($row->result_time)), 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
 
 
@@ -1521,12 +1623,12 @@ class Item extends CI_Model
 	{
 		$lab_items = array();
 
-		$this->db->select('sale_id,invoice_id,customer_id,doctor_name');
+		$this->db->select('sale_id,invoice_id,result_time,customer_id,doctor_name');
 		$this->db->from('laboratory_results');
 		$this->db->where('status', 3);
 
 		foreach ($this->db->get()->result() as $row) {
-			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+			$lab_items[] = array('sale_id' => $row->sale_id, 'invoice_id' => $row->invoice_id, 'customer_id' => $row->customer_id, 'result_time' => date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($row->result_time)), 'doctor_name' => $row->doctor_name, 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $row->invoice_id . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
 
 

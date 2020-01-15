@@ -52,6 +52,11 @@
 		?>
 
 		<div id="employee"><b><?php echo $user_role . ": " . $employee; ?></b></div>
+
+		<?php if (isset($mode)) { ?>
+			<div id="employee"><b><?php echo "Mode : " . ucfirst($mode); ?></b></div>
+		<?php } ?>
+		<div id="employee"><b>Date: <?php echo $transaction_date; ?></b></div>
 	</div>
 	<?php // print_r($cart);
 	?>
@@ -67,7 +72,8 @@
 		<?php
 		foreach ($cart as $line => $item) {
 			?>
-			<?php if ($item['reference'] == 0) { ?>
+			<?php if ($item['reference'] == 0) { //reference 0 means item is not pill reminder 
+					?>
 				<tr>
 					<td class="first-col">
 						<?php echo ucfirst($item['name']); ?>
@@ -80,12 +86,12 @@
 
 					</td>
 					<td class="third-col">
-						<?php echo to_quantity_decimals($item['quantity']); ?>
+						<?php echo to_quantity_decimals(abs($item['quantity'])) . ((strtolower($item['qty_selected']) == 'wholesale') ? '(' . $item['qty_selected'] . ')' : ""); ?>
 
 
 					</td>
 					<td class="total-value forth-col">
-						<?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?>
+						<?php echo to_currency(abs($item['total'])); ?>
 
 
 					</td>
@@ -100,21 +106,25 @@
 						</tr>
 					<?php } ?>
 				<?php } ?>
-				<tr>
-					<td><b>V.A.T.</b></td>
-					<td class="total-value"><b><?php echo $vat; ?></b></td>
-				</tr>
+
+
+
+
+
 			<?php } ?>
 
-			<tr>
-
-			</tr>
+			<?php if ($item['vat'] > 0) { ?>
+				<tr>
+					<td colspan="3"><b>V.A.T.</b></td>
+					<td><b><?php echo '+' . to_currency($item['vat']); ?></b></td>
+				</tr>
+			<?php } ?>
 			<?php
 				if ($item['discount'] > 0) {
 					?>
 				<tr>
 					<td colspan="3" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included") ?></td>
-					<td class="total-value"><?php echo to_currency($item['discounted_total']); ?></td>
+					<td><?php echo '-' . to_currency(abs($item['total'] - $item['discounted_total'])); ?></td>
 				</tr>
 			<?php
 				}
@@ -122,24 +132,44 @@
 		<?php
 		}
 		?>
-
+		<tr>
+			<td colspan="3" style='text-align:right;border-top:2px solid #000000;font-weight:bold;'>Total:</td>
+			<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($initial_cost); ?></td>
+		</tr>
 		<?php
-		if ($this->config->item('receipt_show_total_discount') && $discount > 0) {
+		if ($discount > 0) {
+			?>
+
+			<tr>
+				<td colspan="3" style="text-align:right;font-weight:bold;" class="total-value">Total Discount:</td>
+				<td class="total-value" style="text-align:right;"><?php echo '-' . to_currency($discount); ?></td>
+			</tr>
+		<?php
+		}
+		?>
+		<?php
+		if ($total_vat > 0) {
 			?>
 			<tr>
-				<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
+				<td colspan="3" style='text-align:right;font-weight:bold;'>Total VAT:</td>
+				<td style="text-align:right;"><?php echo '+' . to_currency($total_vat); ?></td>
 			</tr>
+		<?php
+		}
+		?>
+		<?php
+		if ($discount > 0 || $total_vat > 0) {
+			?>
 			<tr>
-				<td colspan="3" class="total-value"><?php echo $this->lang->line('sales_discount'); ?>:</td>
-				<td class="total-value"><?php echo to_currency($discount * -1); ?></td>
+				<td colspan="3" style='text-align:right;font-weight:bold;'>Grand Total:</td>
+				<td style="text-align:right;"><?php echo to_currency($total + $total_vat); ?></td>
 			</tr>
 		<?php
 		}
 		?>
 
 		<?php
-		if ($this->config->item('receipt_show_taxes')) {
+		if ($this->config->item('receipt_show_taxes')) { //this is not going to used here. but if it's to be used, i will rewrite it
 			?>
 			<tr>
 				<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
@@ -149,7 +179,7 @@
 				foreach ($taxes as $tax_group_index => $sales_tax) {
 					?>
 				<tr>
-					<td colspan="3" class="total-value"><?php echo $sales_tax['tax_group']; ?>:</td>
+					<td colspan="3" style="text-align:right;" class="total-value"><?php echo $sales_tax['tax_group']; ?>:</td>
 					<td class="total-value"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php
@@ -159,14 +189,9 @@
 		}
 		?>
 
-		<tr>
-		</tr>
 
-		<?php $border = (!$this->config->item('receipt_show_taxes') && !($this->config->item('receipt_show_total_discount') && $discount > 0)); ?>
-		<tr>
-			<td colspan="3" style="text-align:right;<?php echo $border ? 'border-top: 2px solid black;' : ''; ?>"><b><?php echo $this->lang->line('sales_total'); ?></b></td>
-			<td style="text-align:right;<?php echo $border ? 'border-top: 2px solid black;' : ''; ?>"><b><?php echo to_currency($total); ?></b></td>
-		</tr>
+
+
 
 		<tr>
 			<td colspan="4">&nbsp;</td>
@@ -186,7 +211,7 @@
 			</tr>
 			<tr>
 				<td><b><?php echo 'Amount Tendered'; ?> </b></td>
-				<td><b><?php echo to_currency($payment['payment_amount']); ?></b></td>
+				<td><b><?php echo to_currency(abs($payment['payment_amount'])); ?></b></td>
 			</tr>
 
 		<?php
@@ -207,16 +232,22 @@
 		<?php
 		}
 		?>
-		<tr>
-			<td> <b><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due'); ?></b> </td>
-			<td><b><?php echo to_currency($amount_change); ?></b></td>
-		</tr>
+		<?php
+		if ($mode != 'return') {
+			?>
+			<tr>
+				<td> <b><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due'); ?></b> </td>
+				<td><b><?php echo to_currency(abs($amount_change)); ?></b></td>
+			</tr>
+		<?php
+		}
+		?>
 	</table>
 
-	<div id="sale_return_policy">
-		<?php // echo nl2br($this->config->item('return_policy')); 
+	<!-- <div id="sale_return_policy">
+		<?php echo nl2br($this->config->item('return_policy'));
 		?>
-	</div>
+	</div> -->
 
 	<div id="barcode">
 		<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
@@ -226,6 +257,7 @@
 		<i><?php echo 'Thank you, please call again'; ?></i>
 	</div>
 	<div id="sale_return_policy">
-		<i><?php echo 'No returns of drugs/items purchased after 24 hours please.'; ?></i>
+		<i><?php //echo 'No returns of drugs/items purchased after 24 hours please.'; 
+			?></i>
 	</div>
 </div>

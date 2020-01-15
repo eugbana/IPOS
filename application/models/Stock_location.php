@@ -61,6 +61,28 @@ class Stock_location extends CI_Model
 		return $stock_locations;
 	}
 
+	public function get_transfer_locations()
+	{
+		$stock = $this->get_undeleted_all('receivings')->result_array();
+		$all = $this->get_all()->result_array();
+		$stock_locations = array();
+		$all_locations = array();
+		foreach ($stock as $location_data) {
+			$stock_locations[$location_data['location_id']] = $location_data['location_name'];
+		}
+		foreach ($all as $all_location_data) {
+			$all_locations[$all_location_data['location_id']] = $all_location_data['location_name'];
+		}
+		$others = array();
+		foreach ($all_locations as $key => $value) {
+			if (!array_key_exists($key, $stock_locations)) {
+				$others[$key] = $value;
+			}
+		}
+
+		return $others;
+	}
+
 	public function is_allowed_location($location_id, $module_id = 'items')
 	{
 		$this->db->from('stock_locations');
@@ -76,13 +98,21 @@ class Stock_location extends CI_Model
 
 	public function get_default_location_id()
 	{
-		$this->db->from('stock_locations');
+		/*$this->db->from('stock_locations');
 		$this->db->join('permissions', 'permissions.location_id = stock_locations.location_id');
 		$this->db->join('grants', 'grants.permission_id = permissions.permission_id');
 		$this->db->where('person_id', $this->session->userdata('person_id'));
 		$this->db->where('deleted', 0);
 		$this->db->limit(1);
-		return $this->db->get()->row()->location_id;
+		return $this->db->get()->row()->location_id;*/
+		/*
+		This is supposed to return the location of the current employee
+		*/
+		$this->db->from('employees');
+		$this->db->where('person_id', $this->session->userdata('person_id'));
+		$this->db->where('deleted', 0);
+		$this->db->limit(1);
+		return $this->db->get()->row()->branch_id;
 	}
 
 	public function get_location_name($location_id)

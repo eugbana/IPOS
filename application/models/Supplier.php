@@ -106,6 +106,36 @@ class Supplier extends Person
 
 		return $this->db->get();
 	}
+	public function get_branch_not($branch_id, $limit_from = 0, $rows = 0)
+	{
+		$this->db->from('branches');
+		$this->db->where('branche_id !=', $branch_id);
+		$this->db->where('deleted', 0);
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+
+		return $this->db->get();
+	}
+	public function get_branch($branch_id)
+	{
+		$this->db->from('branches');
+		$this->db->where('branche_id', $branch_id);
+		$this->db->where('deleted', 0);
+		
+
+		return $this->db->get()->row();
+	}
+	public function get_branches()
+	{
+		$this->db->select("*");
+		$this->db->from('branches');
+		
+		$this->db->where('deleted', 0);
+		
+
+		return $this->db->get()->result_array();
+	}
 
 	/*
 	Gets information about a particular supplier

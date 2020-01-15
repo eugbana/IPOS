@@ -77,76 +77,79 @@
                         </form>
 
                         <ul class="nav navbar-nav navbar-right pull-right">
-                            <li class="dropdown hidden-xs">
+                            <!-- <li class="dropdown hidden-xs">
                                 <a href="#" data-target="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true">
                                     <i class="md md-notifications"></i> <span class="badge badge-xs badge-danger">3</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-lg">
                                     <li class="text-center notifi-title">Notification</li>
                                     <li class="list-group">
-                                        <!-- list item-->
-                                        <a href="javascript:void(0);" class="list-group-item">
-                                            <div class="media">
-                                                <div class="pull-left">
-                                                    <em class="fa fa-user-plus fa-2x text-info"></em>
-                                                </div>
-                                                <div class="media-body clearfix">
-                                                    <div class="media-heading">New user registered</div>
-                                                    <p class="m-0">
-                                                        <small>You have 10 unread messages</small>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- list item-->
-                                        <a href="javascript:void(0);" class="list-group-item">
-                                            <div class="media">
-                                                <div class="pull-left">
-                                                    <em class="fa fa-diamond fa-2x text-primary"></em>
-                                                </div>
-                                                <div class="media-body clearfix">
-                                                    <div class="media-heading">New settings</div>
-                                                    <p class="m-0">
-                                                        <small>There are new settings available</small>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- list item-->
-                                        <a href="javascript:void(0);" class="list-group-item">
-                                            <div class="media">
-                                                <div class="pull-left">
-                                                    <em class="fa fa-bell-o fa-2x text-danger"></em>
-                                                </div>
-                                                <div class="media-body clearfix">
-                                                    <div class="media-heading">Updates</div>
-                                                    <p class="m-0">
-                                                        <small>There are
-                                                            <span class="text-primary">2</span> new updates available</small>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- last list item -->
-                                        <a href="javascript:void(0);" class="list-group-item">
-                                            <small>See all notifications</small>
-                                        </a>
-                                    </li>
-                                </ul>
+                                      
+                            <a href="javascript:void(0);" class="list-group-item">
+                                <div class="media">
+                                    <div class="pull-left">
+                                        <em class="fa fa-user-plus fa-2x text-info"></em>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="media-heading">New user registered</div>
+                                        <p class="m-0">
+                                            <small>You have 10 unread messages</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                           
+                            <a href="javascript:void(0);" class="list-group-item">
+                                <div class="media">
+                                    <div class="pull-left">
+                                        <em class="fa fa-diamond fa-2x text-primary"></em>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="media-heading">New settings</div>
+                                        <p class="m-0">
+                                            <small>There are new settings available</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                           
+                            <a href="javascript:void(0);" class="list-group-item">
+                                <div class="media">
+                                    <div class="pull-left">
+                                        <em class="fa fa-bell-o fa-2x text-danger"></em>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="media-heading">Updates</div>
+                                        <p class="m-0">
+                                            <small>There are
+                                                <span class="text-primary">2</span> new updates available</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <a href="javascript:void(0);" class="list-group-item">
+                                <small>See all notifications</small>
+                            </a>
                             </li>
-                            <li class="hidden-xs">
-                                <a href="#" id="btn-fullscreen" class="waves-effect"><i class="md md-crop-free"></i></a>
-                            </li>
-                            <li class="hidden-xs">
-                                <a href="#" class="right-bar-toggle waves-effect"><i class="md md-chat"></i></a>
-                            </li>
+                        </ul>
+                        </li>
+                        <li class="hidden-xs">
+                            <a href="#" id="btn-fullscreen" class="waves-effect"><i class="md md-crop-free"></i></a>
+                        </li>
+                        <li class="hidden-xs">
+                            <a href="#" class="right-bar-toggle waves-effect"><i class="md md-chat"></i></a>
+                        </li> -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/user-default.png" alt="user-img" class="img-circle"> </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
-                                    <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                    <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); 
+                                        ?></li>
+                                    <!-- <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
+                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                     <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -170,9 +173,11 @@
                         <div class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><?= $user_info->first_name . ' ' . $user_info->last_name;  ?> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
+                                <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); 
+                                    ?></li>
+                                <!-- <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
                                 <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                 <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                             </ul>
                         </div>
@@ -192,37 +197,18 @@
 
                             <a href="<?php echo site_url("reports/account_report"); ?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo 'Reports' ?></span></a>
                         </li>
-                        <?php
-                        foreach ($allowed_modules->result() as $module) {
-                            ?>
-                            <?php if ($this->lang->line("module_" . $module->module_id) == "Account") { ?>
+                        <li>
 
-                                <li class="has_sub">
-                                    <a href="#" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                    <ul class="list-unstyled">
-                                        <li><a href="<?php echo site_url("account/unprocessed_payment"); ?>">UnProcessed Payments</a></li>
-                                        <li><a href="<?php echo site_url("account/processed_payment"); ?>">Processed Payment</a></li>
-                                    </ul>
-                                </li>
 
-                            <?php } elseif ($this->lang->line("module_" . $module->module_id) == "Employees") { ?>
-
-                                <li>
-                                    <a href="<?php echo site_url("$module->module_id"); ?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?></span></a>
-                                </li>
-
-                            <?php } else { ?>
-
-                        <?php
-                            }
-                        }
-                        ?>
+                            <a href="<?php echo site_url("receivings/transfer_history"); ?>" class="waves-effect waves-light"><i class="md md-redeem"></i>Transfers</a>
+                        </li>
 
 
 
 
-                    </ul>
-                    </li>
+
+
+
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -246,7 +232,7 @@
                         <div class="col-sm-12">
                             <h4 class="pull-left page-title">Welcome <?= $user_info->first_name . ' ' . $user_info->last_name;  ?> !</h4>
                             <ol class="breadcrumb pull-right">
-                                <li><a href="#">Moltran</a></li>
+                                <!-- <li><a href="#">Moltran</a></li> -->
                                 <li class="active">Dashboard</li>
                             </ol>
                         </div>
@@ -256,26 +242,36 @@
                     <div class="row">
 
                         <?php $i = 1; ?>
-                        <?php foreach ($sale_stuff as $row => $value) { ?>
-                            <div class="col-md-6 col-sm-6 col-lg-3">
-                                <div class="mini-stat clearfix bx-shadow bg-info">
-                                    <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></span>
-                                    <div class="mini-stat-info text-right">
-                                        <span class="counter"><?php echo $value['sales_amount']; ?></span>
-                                        Today's Sales
-                                    </div>
-                                    <div class="tiles-progress">
-                                        <div class="m-t-20">
-                                            <h5 class="text-uppercase text-white m-0"><?php echo $value['location_name']; ?> <span class="pull-right"><?php echo $i ?></span></h5>
+                        <?php foreach ($sale_stuff as $row => $value) {
+                            if ($value['location_id'] != 2) {
+                                continue;
+                            }
+                            ?>
+                            <a href="<?php echo site_url('reports/account_report') ?>">
+                                <div class="col-md-6 col-sm-6 col-lg-3">
+                                    <div class="mini-stat clearfix bx-shadow bg-info">
+                                        <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></span>
+                                        <div class="mini-stat-info text-right">
+                                            <span class="counter"><?php //echo $value['sales_amount']; 
+                                                                        ?></span>
+                                            Reports
+                                        </div>
+                                        <div class="tiles-progress">
+                                            <div class="m-t-20">
+                                                <h5 class="text-uppercase text-white m-0"><?php //echo $value['location_name']; 
+                                                                                                ?> <span class="pull-right"><?php //echo $i 
+                                                                                                                                ?></span></h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                             <?php $i++; ?>
                         <?php } ?>
 
                     </div>
                     <!-- End row-->
+
 
 
 

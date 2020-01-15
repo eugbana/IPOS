@@ -119,6 +119,8 @@
 					<?php echo anchor('employees/change_password/' . $user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?>
 					<?php echo '  |  ' . ($this->input->get('debug') == 'true' ? $this->session->userdata('session_sha1') . '  |  ' : ''); ?>
 					<?php echo anchor('home/logout', $this->lang->line('common_logout')); ?>
+					<?php echo ' | ';
+					echo anchor('home', 'Dashboard'); ?>
 				</div>
 
 				<div class="navbar-center" style="text-align:center">

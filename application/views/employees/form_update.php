@@ -80,6 +80,7 @@
 								</div>
 							</div>
 						</div>
+						
 					</fieldset>
 				</div>
 				<div class="tab-pane" id="employee_permission_info">

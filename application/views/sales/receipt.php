@@ -73,7 +73,7 @@ if (isset($error_message)) {
 <div class="content-page">
 	<!-- Start content -->
 	<div class="content">
-		<!-- <?php $this->load->view('partial/print_receipt', array('print_after_sale' => $print_after_sale, 'selected_printer' => 'receipt_printer')); ?> -->
+		<?php $this->load->view('partial/print_receipt', array('print_after_sale' => $print_after_sale, 'selected_printer' => 'receipt_printer')); ?>
 
 		<div class="print_hide" id="control_buttons" style="text-align:right">
 			<a href="javascript:printdoc();">

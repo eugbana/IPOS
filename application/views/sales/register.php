@@ -110,7 +110,8 @@
 						<th style="width: 10%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
 						<th style="width: 10%;"><?php echo $this->lang->line('sales_discount'); ?></th>
 						<th style="width: 10%;"><?php echo $this->lang->line('sales_total'); ?></th>
-						<th style="width: 5%;"><?php echo $this->lang->line('sales_update'); ?></th>
+						<th style="width: 5%;"><?php echo 'Sales Type'; //$this->lang->line('sales_update'); 
+												?></th>
 						<th style="width: 3%;"></th>
 					</tr>
 				</thead>
@@ -383,7 +384,7 @@
 					</tr>
 					<tr>
 						<th style="width: 20%;">Total Discount</th>
-						<th style="width: 20%; text-align: right;"><?php echo to_currency($total_discount); ?><p></p>
+						<th style="width: 20%; text-align: right;"><?php echo to_currency($discount); ?><p></p>
 						</th>
 					</tr>
 					<tr>
@@ -400,17 +401,17 @@
 					<?php
 					foreach ($taxes as $tax_group_index => $sales_tax) {
 						?>
-						<tr>
+						<!-- <tr>
 							<th style='width: 20%;'><?php echo $sales_tax['tax_group']; ?></th>
 							<th style="width: 20%; text-align: right;"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></th>
-						</tr>
+						</tr> -->
 					<?php
 					}
 					?>
 
 					<tr>
-						<th style='width: 55%;'><?php echo $this->lang->line('sales_total'); ?></th>
-						<th style="width: 45%; text-align: right;"><span id="sale_total"><?php echo to_currency($total); ?></span></th>
+						<th style='width: 55%;'>Total</th>
+						<th style="width: 45%; text-align: right;"><span id="sale_total"><?php echo to_currency($total + $total_vat); ?></span></th>
 					</tr>
 				</table>
 
@@ -617,7 +618,7 @@
 		});
 		$("#item").autocomplete({
 			source: '<?php echo site_url($controller_name . "/item_search"); ?>',
-			minChars: 1,
+			minChars: 2,
 			autoFocus: false,
 			delay: 500,
 			select: function(a, ui) {
@@ -764,7 +765,8 @@
 							type: 'success'
 						});
 						setTimeout(() => {
-							window.location.reload();
+							//window.location.reload();
+							window.location.href = "<?php echo site_url('sales') ?>";
 						}, 1500);
 					} else {
 						$("#verify_discount").html('<i class="glyphicon glyphicon-credit-card"></i>&nbsp;Approve discount').attr('disabled', false);
@@ -845,7 +847,7 @@
 		var cash_rounding = <?php echo json_encode($cash_rounding); ?>;
 
 		if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>") {
-			$("#sale_total").html("<?php echo to_currency($total); ?>");
+			$("#sale_total").html("<?php echo to_currency($total + $total_vat); ?>");
 			$("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
 			$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
 			$("#amount_tendered:enabled").val('').focus();
@@ -853,7 +855,7 @@
 			$(".non-giftcard-input").attr('disabled', true);
 			$(".giftcard-input:enabled").val('').focus();
 		} else if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding) {
-			$("#sale_total").html("<?php echo to_currency($cash_total); ?>");
+			$("#sale_total").html("<?php echo to_currency($cash_total + $total_vat); ?>");
 			$("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
 			$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
 			$("#amount_tendered:enabled").val('<?php echo to_currency_no_money($cash_amount_due); ?>');

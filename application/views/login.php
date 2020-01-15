@@ -8,7 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="dist/login.css"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>"/>
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" name="viewport">
-	<!-- end css template tags -->
+    <!-- end css template tags -->
+    <link rel="shortcut icon" href="dist/assets/images/favicon_1.ico">
 </head>
 
 <body class="login-page login-page-red-light rtl rtl-inv">

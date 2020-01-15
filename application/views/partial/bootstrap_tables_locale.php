@@ -35,6 +35,9 @@
 		},
 		formatConfirmDelete : function() {
 			return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_delete")?>";
+		},
+		formatConfirmApplyVat : function() {
+			return "<?php echo 'Are you sure you want to apply vat to all the selected items?'; ?>";
 		}
     };
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["reports_all"] = "All";
 $lang["reports_expiry"] = "Product Expiry";
@@ -94,6 +94,7 @@ $lang["reports_supplier"] = "Supplier";
 $lang["reports_suppliers"] = "Suppliers";
 $lang["reports_suppliers_summary_report"] = "Suppliers Summary Report";
 $lang["reports_tax"] = "Tax";
+$lang["reports_vat"] = "VAT";
 $lang["reports_tax_percent"] = "Tax Percent";
 $lang["reports_taxes"] = "Taxes";
 $lang["reports_taxes_summary_report"] = "Taxes Summary Report";

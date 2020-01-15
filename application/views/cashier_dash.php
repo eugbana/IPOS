@@ -143,9 +143,9 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/user-default.png" alt="user-img" class="img-circle"> </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
-                                        <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                        <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                    <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li>
+                                        <!-- <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
+                                        <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                         <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                     </ul>
                                 </li>
@@ -170,9 +170,11 @@
                             <div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><?= $user_info->first_name . ' ' . $user_info->last_name;  ?> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
+                                <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li>
+
+                                    <!-- <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
                                     <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
-                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>
+                                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                     <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                 </ul>
                             </div>
@@ -185,36 +187,10 @@
                         <ul>
 						
                             <li>
-                                <a href="index.html" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
+                                <a href="<?php echo site_url(); ?>" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
                             </li>
-							<?php
-								foreach($allowed_modules->result() as $module)
-								{
-								?>
-								<?php if($this->lang->line("module_".$module->module_id)=="Laboratory"){?>
-													
-                                    <li class="has_sub">
-                                        <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                        <ul class="list-unstyled">
-                                            <li><a href="<?php echo site_url("laboratory");?>">Available Test</a></li>
-                                            <li><a href="<?php echo site_url("laboratory/test_start");?>">New Test</a></li>
-                                            <li id="search"><a>Test Results Status</a></li>
-                                            <li><a href="<?php echo site_url("laboratory/search_patients"); ?>">Search Patient</a></li>
-                                        </ul>
-                                    </li>
-														
-										<?php }elseif($this->lang->line("module_".$module->module_id)=="Customers"){?>
-					
-										<?php }else{?>
-									<li class="has_sub">
-										
-										<a href="<?php echo site_url("$module->module_id");?>" <?php if($_SERVER['REQUEST_URI'] == "/$module->module_id"): ?>class="waves-effect waves-light active"<?php else: ?> class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-											
-									</li>
-										<?php
-										}
-								}
-								?>
+                            <?php $this->load->view("sidebars/lab_receptionist");  ?>
+						
 
                             
 
@@ -246,8 +222,8 @@
                             <div class="col-sm-12">
                                 <h4 class="pull-left page-title">Welcome <?= $user_info->first_name . ' ' . $user_info->last_name;  ?> !</h4>
                                 <ol class="breadcrumb pull-right">
-                                    <li><a href="#">Cashier</a></li>
-                                    <li class="active">Dashboard</li>
+                                    <!-- <li><a href="#">Cashier</a></li>
+                                    <li class="active">Dashboard</li> -->
                                 </ol>
                             </div>
                         </div>

@@ -29,7 +29,7 @@
 		if(isset($customer))
 		{
 		?>
-			<div id="customer"><?php echo $this->lang->line('customers_customer').": ".$customer; ?></div>
+			<div id="customer"><?php echo $this->lang->line('customers_lab').": ".$customer; ?></div>
 		<?php
 		}
 		?>

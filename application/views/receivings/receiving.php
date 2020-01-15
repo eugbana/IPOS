@@ -27,7 +27,7 @@
 						<label class="control-label"><?php echo $this->lang->line('receivings_mode'); ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('mode', $modes, $mode, array('onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit')); ?>
+						<?php echo form_dropdown('mode', $modes, $mode, array('onchange' => "$('#mode_form').submit();", 'id' => 'mode_change', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit')); ?>
 					</li>
 
 					<?php
@@ -95,15 +95,15 @@
 						<th style="width:5%;"><?php echo $this->lang->line('common_delete'); ?></th>
 						<th style="width:10%;">Batch No.</th>
 						<th style="width:25%;"><?php echo $this->lang->line('receivings_item_name'); ?></th>
-						<th style="width:15%;">Expiry</th>
-						<th style="width:10%;"><?php echo $this->lang->line('receivings_company_name'); ?></th>
-						<th style="width:10%;"><?php echo $this->lang->line('receivings_cost'); ?></th>
+						<th style="width:10%;">Expiry</th>
+		
+						<th style="width:15%;"><?php echo $this->lang->line('receivings_cost'); ?></th>
 						<!-- <th style="width:10%;"><?php //echo $this->lang->line('receivings_cost_retail'); 
 													?></th> -->
-						<th style="width:10%;"><?php echo $this->lang->line('receivings_quantity'); ?></th>
-						<th style="width:5%;"></th>
+						<th style="width:15%;"><?php echo $this->lang->line('receivings_quantity'); ?></th>
+						
 
-						<th style="width:10%;"><?php echo $this->lang->line('receivings_total'); ?></th>
+						<th style="width:15%;"><?php echo $this->lang->line('receivings_total'); ?></th>
 
 						<th style="width:5%;"><?php echo $this->lang->line('receivings_update'); ?></th>
 					</tr>
@@ -114,7 +114,7 @@
 					if (count($cart) == 0) {
 						?>
 						<tr>
-							<td colspan='12'>
+							<td colspan='10'>
 								<div class='alert alert-dismissible alert-info'><?php echo $this->lang->line('sales_no_items_in_cart'); ?></div>
 							</td>
 						</tr>
@@ -145,9 +145,7 @@
 												); ?>
 									</div>
 								</td>
-								<td>
-									<?php echo $item['category']; ?>
-								</td>
+								
 
 								<?php
 										if ($items_module_allowed && $mode != 'requisition') {
@@ -168,17 +166,7 @@
 								<!-- <td><?php //echo form_input(array('name'=>'unit_price', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['unit_price']))); 
 													?></td> -->
 								<td><?php echo form_input(array('name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']))); ?></td>
-								<?php
-										if ($item['receiving_quantity'] > 1) {
-											?>
-									<td><?php echo 'x' . to_quantity_decimals($item['receiving_quantity']); ?></td>
-								<?php
-										} else {
-											?>
-									<td></td>
-								<?php
-										}
-										?>
+	
 								<td><?php echo to_currency($item['price'] * $item['quantity'] - $item['price'] * $item['quantity'] * $item['discount'] / 100); ?><?php echo form_hidden('discount', $item['discount']); ?></td>
 								<td><a href="javascript:$('#<?php echo 'cart_' . $line ?>').submit();" title=<?php echo $this->lang->line('receivings_update') ?>><span class="glyphicon glyphicon-refresh"></span></a></td>
 							</tr>
@@ -314,7 +302,8 @@
 											if ($mode == "receive") {
 												?>
 										<tr>
-											<td><?php echo $this->lang->line('receivings_reference'); ?></td>
+											<td><?php echo 'Supplier/Invoice No:'; //$this->lang->line('receivings_reference'); 
+															?></td>
 											<td>
 												<?php echo form_input(array('name' => 'recv_reference', 'id' => 'recv_reference', 'class' => 'form-control input-sm', 'value' => $reference, 'size' => 5)); ?>
 											</td>
@@ -322,12 +311,12 @@
 									<?php
 											}
 											?>
-									<tr>
+									<!-- <tr>
 										<td><?php echo $this->lang->line('sales_payment'); ?></td>
 										<td>
 											<?php echo form_dropdown('payment_type', $payment_options, array(), array('id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'auto')); ?>
 										</td>
-									</tr>
+									</tr> -->
 
 									<tr>
 										<td><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
@@ -422,7 +411,15 @@
 		});
 
 		$("#finish_receiving_button").click(function() {
-			$('#finish_receiving_form').submit();
+			var invoice_no = $("#recv_reference").val(); //not available on
+			var mode_change = $("#mode_change").val().trim();
+
+			if (invoice_no == '' && mode_change == 'receive') {
+				window.alert("Supplier's invoice cannot be empty.");
+			} else {
+
+				$('#finish_receiving_form').submit();
+			}
 		});
 
 		$("#cancel_receiving_button").click(function() {

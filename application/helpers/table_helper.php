@@ -439,6 +439,32 @@ function get_inventory_history_headers()
 	);
 	return transform_headers($headers);
 }
+function get_transfer_history_headers()
+{
+	$CI = &get_instance();
+	$headers = array(
+		array('transfer' 		=> 'Transfer ID'),
+		array('request_to_branch_id' 	=> 'Receiving Branch'),
+		array('employee_id' 	=> 'Transfered By'),
+		
+		array('transfer_time'  => 'Timestamp'),
+	);
+	return transform_headers($headers);
+}
+function get_transfer_item_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'transfer.transfer_id'		=> $id,
+		'transfer'					=> $id,
+		'request_to_branch_id'			=> $item->stock_location,
+		'employee_id'					=> $item->first_name . ' ' . $item->last_name,
+		
+		'transfer_time'				=> $item->transfer_time ? date_formatter($item->transfer_time) : 'N/A',
+		'edit' 							=> anchor($controller_name . "/transfer_reprint/$item->transfer_id", 'view items', 'title="View Transfer Items"')
+	);
+}
 
 function get_vat_headers()
 {
@@ -491,6 +517,7 @@ function get_receiving_item_data_row($item, $id, $controller)
 		'edit' 							=> anchor($controller_name . "/history_view/$item->receiving_id", 'view items', 'title="View Inventory Items"')
 	);
 }
+
 
 function date_formatter($date)
 {
@@ -773,6 +800,7 @@ function get_patients_headers()
 {
 	$CI = &get_instance();
 	$headers = array(
+		
 		array('person_id' 		=> 'Person ID'),
 		array('first_name'		=> 'First Name'),
 		array('last_name'		=> 'Last Name'),
@@ -788,6 +816,7 @@ function get_patients_row($item, $controller)
 	$controller_name = strtolower(get_class($CI));
 	$id = $item['person_id'];
 	return array(
+		'people.person_id'=>$id,
 		'person_id'		=> $id,
 		'first_name'	=> $item['first_name'],
 		'last_name'		=> $item['last_name'],

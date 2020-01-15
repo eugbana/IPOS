@@ -30,7 +30,7 @@
             });
             <?php $this->load->view('partial/bootstrap_tables_locale'); ?>
             table_support.init({
-                resource: '<?php echo site_url('receivings');?>' + '/history_data',
+                resource: '<?php echo site_url($controller_name);?>' + '/history_data',
                 headers: <?php echo $table_headers; ?>,
                 pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
                 uniqueId: 'receivings.receiving_id',

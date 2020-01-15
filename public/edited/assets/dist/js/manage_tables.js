@@ -143,6 +143,7 @@
 	};
 
 	var do_delete = function (url, ids) {
+		
 		if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
 			$.post((url || options.resource) + '/deete', {'ids[]': ids || selected_ids()}, function (response) {
 				//delete was successful, remove checkbox rows

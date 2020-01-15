@@ -10,6 +10,9 @@ class Items extends Secure_Controller
 
 		$this->load->library('item_lib');
 		$this->load->library('sale_lib');
+		$this->load->library('barcode_lib');
+
+		$this->load->library('simplexlsx');
 	}
 
 	public function index()
@@ -44,7 +47,14 @@ class Items extends Secure_Controller
 			'reorder_level' => 'Reorder level items',
 			'expiry' => 'Expiring',
 			'apply_vat' => 'VATable Items'
+
 		);
+		//Add all categories to the filter
+		$cats = $this->Item->categories_list();
+
+		foreach ($cats as $row => $value) {
+			$data['filters'][str_replace(' ', '_', $value['name'])] = $value['name'];
+		}
 
 
 		$this->load->view('items/manage', $data);
@@ -77,14 +87,29 @@ class Items extends Secure_Controller
 	}
 	public function categories()
 	{
-		// Save the data to the sales table
-
-
-
+		$cat_items = array();
+		$dat = $this->Item->categories_list();
+		$categories = array();
+		foreach ($dat as $row => $value) {
+			$categories[] = array('id' => $value['id'], 'name' => $value['name']);
+		}
+		$data['categories'] = $categories;
 
 		$this->load->view('items/category', $data);
 	}
+
+	public function delete_category($id)
+	{
+		$this->db->delete('categories', array('id' => $id));
+		$this->categories();
+	}
 	public function categories_list()
+	{
+
+
+		echo json_encode($this->get_categories());
+	}
+	public function get_categories()
 	{
 		$cat_items = array();
 		$data = $this->Item->categories_list();
@@ -98,8 +123,7 @@ class Items extends Secure_Controller
 			"iTotalDisplayRecords" => count($cat_items),
 			"aaData" => $cat_items
 		);
-
-		echo json_encode($results);
+		return $results;
 	}
 
 	/*
@@ -108,29 +132,43 @@ class Items extends Secure_Controller
 
 	public function global_item_push_transfer()
 	{
+
 		$data = array();
 		$push = array();
-		$unique_location = array();
+
 
 		$push = $this->sale_lib->get_push();
-		$transfer_location = $this->sale_lib->get_sale_location();
-		foreach ($push as $row => $value) {
-			array_push($data, $value['branch_transfer']);
-			//$check[]=$value['location'];
+		$push_from_branch = $this->sale_lib->get_sale_location();
+		$items = 0;
+		$status = 0;
+		$transfer_type = 'PUSH';
+		$pushed_to_branch = $this->input->post('transfer_to_location');
+
+		$transfered = $this->Sale->save_transfer($push, $items, $transfer_type, $push_from_branch, $pushed_to_branch, $status);
+
+		if ($transfered > 0) {
+
+			$data['push'] = $this->sale_lib->get_push();
+
+			//show the receipt
+			$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+			$employee_info = $this->Employee->get_info($employee_id);
+			$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+			$data['receipt_title'] = $this->lang->line('transfer_receipt');
+			$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
+			$data['from_branch'] = $this->CI->Stock_location->get_location_name($push_from_branch);
+			$data['to_branch'] = $this->CI->Stock_location->get_location_name($pushed_to_branch);
+			$data['transfer_id'] = $transfered;
+			$data['print_after_sale'] = 0;
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode('PUSH ' . $transfered);
+
+			$this->load->view("items/transfer_receipt", $data);
+
+			$this->sale_lib->clear_all_push();
+		} else {
+			$data['error_message'] = "Product(s) transfer failed. Check for corrections and try again or contact administrator now!";
+			$this->load->view('items/push', $data);
 		}
-		$unique_location = array_unique($data);
-		foreach ($unique_location as $row => $value) {
-
-			$transfer_data = array();
-			$items = 0;
-			$transfer_type = 'PUSH';
-
-			$pushed_to_branch = $value;
-			$push_from_branch = $transfer_location;
-			$status = 0;
-			$this->Sale->save_transfer($push, $items, $transfer_type, $push_from_branch, $pushed_to_branch, $status, $transfer_id);
-		}
-
 
 		/*$data['sale_id_num'] = $this->Sale->save_transfer($items,$quantity,$request_branch,$transfer_branch,$status, $transfer_id);
 				
@@ -151,10 +189,6 @@ class Items extends Secure_Controller
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_unsuccessfully_updated'), 'id' => $sale_id));
 		}*/
-		$this->sale_lib->clear_all_push();
-		$data['push'] = $this->sale_lib->get_push();
-
-		$this->load->view('items/push', $data);
 	}
 	public function global_item_pull_transfer()
 	{
@@ -235,12 +269,15 @@ class Items extends Secure_Controller
 		$filters = array_merge($filters, $filledup);
 		//$data['table_headers'] = $this->xss_clean(get_items_manage_table_headers($filters));
 
-		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
+		$items = $this->Item->search($search, $filters, 0, $offset)->result();
 
-		$total_rows = $this->Item->get_found_rows($search, $filters);
+		//$total_rows = $this->Item->get_found_rows($search, $filters);
+		$found_items = array_slice($items, $offset, $limit); //limit is usually more than 0
+
+		$total_rows = count($items);
 
 		$data_rows = array();
-		foreach ($items->result() as $item) {
+		foreach ($found_items as $item) {
 			if (count(get_item_data_row($item, $this)) != 0) {
 				$data_rows[] = $this->xss_clean(get_item_data_row($item, $this));
 				if ($item->pic_filename != '') {
@@ -621,6 +658,7 @@ class Items extends Secure_Controller
 	}
 	public function edit_item_received($line_id)
 	{
+
 		$data = array();
 		$no_of_batch = $this->input->post('no_of_batch') == '' ? 0 : $this->input->post('no_of_batch');
 		$value_changed = $this->input->post('value_changed');
@@ -681,25 +719,28 @@ class Items extends Secure_Controller
 
 
 		$item_location = $this->sale_lib->get_sale_location();
-		$locator = array();
+		$locator = array('' => "Select Branch");
 		$selected_locator = array('' => $this->lang->line('items_none'));
 		foreach ($this->Supplier->get_loc($item_location)->result_array() as $row) {
-			$locator[$this->xss_clean($row['location_name'])] = $this->xss_clean($row['location_name']);
+			$locator[$this->xss_clean($row['location_id'])] = $this->xss_clean($row['location_name']);
 			$selected_locator[$this->xss_clean($row['location_id'])] = $this->xss_clean($row['location_id']);
 		}
 		$data['locator'] = $locator;
-		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|callback_numeric');
+		//$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|callback_numeric');
 
 
-		$location = $this->input->post('location');
-		$branch_transfer = $this->sale_lib->get_transfer_branch_id($location);
+		$location = 'not needed'; //$this->input->post('location');
+		$branch_transfer = 0; //$this->sale_lib->get_transfer_branch_id($location); //id of the location you just selected
 		$item_name = $this->input->post('item_name');
 
 		//$quantity = parse_decimals($this->input->post('quantity'));
 		$stockno = parse_decimals($this->input->post('stockno'));
 		$quantit = parse_decimals($this->input->post('quantity'));
 
+
 		$quantity = parse_decimals($this->input->post('quantity'));
+
+		//check whether quantity is normal or above what is present in stock
 
 
 		$item_location = $this->input->post('item_location');
@@ -729,6 +770,15 @@ class Items extends Secure_Controller
 		$item_id = $this->input->post('item_id');
 		//$quantity= $this->input->post('quantity');
 		$request_from_branch_id = $this->input->post('request_from_branch_id');
+		$pack_type = $this->input->post('pack_type');
+		//Check whether the price is not over what is in the stock
+		$item_quant = $this->Item_quantity->get_item_quantity($item_id, $request_from_branch_id)->quantity;
+
+		if ($quantity > $item_quant || $quantity <= 0) {
+			$quantity = 1;
+			$data['warning'] = "Warning, Inputed Product Quantity is Insufficient or invalid,Reduce quantity to process transfer or contact Admin to update inventory";
+		}
+
 		$request_to_branch_id = $this->input->post('request_to_branch_id');
 		$received_quantity = $this->input->post('received_quantity');;
 		$transfer_id = $this->input->post('transfer_id');
@@ -759,7 +809,8 @@ class Items extends Secure_Controller
 		$data['value_changed'] = $value_changed;
 		$data['no_of_batch'] = $no_of_batch;
 		$data['received_quantity'] = $received_quantity;
-		$pack_type = array('single' => 'Single', 'pack' => 'Pack');
+		//$pack_type = array('single' => 'Single', 'pack' => 'Pack');
+		$pack_type = array('single' => 'Single');
 		$data['pack_type'] = $pack_type;
 
 
@@ -912,6 +963,14 @@ class Items extends Secure_Controller
 		$item_id = $this->input->post('item_id');
 		//$quantity= $this->input->post('quantity');
 		$request_from_branch_id = $this->input->post('request_from_branch_id');
+		//Check whether the price is not over what is in the stock
+		$item_quant = $this->Item_quantity->get_item_quantity($item_id, $request_from_branch_id)->quantity;
+
+		if ($quantity > $item_quant || $quantity <= 0) {
+			$quantity = 1;
+			$data['warning'] = "Warning, Inputed Product Quantity is Insufficient or invalid,Reduce quantity to process transfer or contact Admin to update inventory";
+		}
+
 		$request_to_branch_id = $this->input->post('request_to_branch_id');
 		$stock_name = $this->CI->Stock_location->get_location_name($branch_transfer);
 		$in_stock = $this->CI->Item_quantity->get_item_quantity($item_id, $branch_transfer)->quantity;
@@ -970,7 +1029,7 @@ class Items extends Secure_Controller
 	}
 	public function add_push()
 	{
-		$data = array();
+		//$data = array();
 		//$item_inf=array();
 
 
@@ -996,24 +1055,11 @@ class Items extends Secure_Controller
 
 
 		if (!$this->sale_lib->add_item_push($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location)) {
-			$data['error'] = $this->lang->line('sales_unable_to_add_item');
+			$data['error'] = 'Unable to add product item. Item has exhausted or does not exist.'; //$this->lang->line('sales_unable_to_add_item');
+			$this->push(-111); //i will use the number to track the error
+		} else {
+			$this->push();
 		}
-
-		$data['push'] = $this->sale_lib->get_push();
-		//$locator = array('' => $this->lang->line('items_none'));
-		$locator = array('' => $this->lang->line('items_none'));
-		$selected_locator = array('' => $this->lang->line('items_none'));
-		foreach ($this->Supplier->get_loc($item_location)->result_array() as $row) {
-			$locator[$this->xss_clean($row['location_name'])] = $this->xss_clean($row['location_name']);
-			$selected_locator[$this->xss_clean($row['location_id'])] = $this->xss_clean($row['location_id']);
-		}
-		$data['locator'] = $locator;
-
-		$data['selected_locator'] = $selected_locator;
-		$pack_type = array('single' => 'Single', 'pack' => 'Pack');
-		$data['pack_type'] = $pack_type;
-
-		$this->load->view('items/push', $data);
 	}
 	public function add_pull()
 	{
@@ -1042,7 +1088,7 @@ class Items extends Secure_Controller
 
 
 		if (!$this->sale_lib->add_item_push($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location)) {
-			$data['error'] = $this->lang->line('sales_unable_to_add_item');
+			$data['error'] = 'Unable to add product item. Item has exhausted or does not exist.'; //$this->lang->line('sales_unable_to_add_item');
 		}
 
 		$data['pull'] = $this->sale_lib->get_push();
@@ -1080,7 +1126,7 @@ class Items extends Secure_Controller
 		//$quantity = parse_decimals($this->input->post('quantity'));
 		$stockno = parse_decimals($this->input->post('stockno'));
 		$quantit = parse_decimals($this->input->post('quantity'));
-		if ($quantit > $stockno and $mode != 'return') {
+		if ($quantit > $stockno) {
 			$quantity = 1;
 			$data['warning'] = "Warning, Inputed Product Quantity is Insufficient,Reduce quantity to process sale or contact Admin to update inventory";
 		} else {
@@ -1147,7 +1193,7 @@ class Items extends Secure_Controller
 	public function push($item_id = -1)
 	{
 		//$data['cart'] = $this->sale_lib->get_cart();
-		$this->sale_lib->clear_all();
+		//$this->sale_lib->clear_all();
 		$data['push'] = $this->sale_lib->get_push();
 
 		$item_info = $this->Item->get_info($item_id);
@@ -1165,14 +1211,15 @@ class Items extends Secure_Controller
 			$item_info->tax_category_id = 0;
 		}
 
+
 		$data['item_info'] = $item_info;
 
-		$locator = array('' => $this->lang->line('items_none'));
+		$locator = array('' => "Select Receiving Branch");
 
 		$item_location = $this->item_lib->get_item_location();
 		$selected_locator = array('' => $this->lang->line('items_none'));
 		foreach ($this->Supplier->get_loc($item_location)->result_array() as $row) {
-			$locator[$this->xss_clean($row['location_name'])] = $this->xss_clean($row['location_name']);
+			$locator[$this->xss_clean($row['location_id'])] = $this->xss_clean($row['location_name']);
 			$selected_locator[$this->xss_clean($row['location_id'])] = $this->xss_clean($row['location_id']);
 		}
 		$data['locator'] = $locator;
@@ -1190,9 +1237,14 @@ class Items extends Secure_Controller
 			$location_array[$location['location_id']] = array('location_name' => $location['location_name'], 'quantity' => $quantity);
 			$data['stock_locations'] = $location_array;
 		}
-		$pack_type = array('single' => 'Single', 'pack' => 'Pack');
+		//$pack_type = array('single' => 'Single', 'pack' => 'Pack');
+		$pack_type = array('single' => 'Single');
 		$data['pack_type'] = $pack_type;
 
+		if ($item_id == -111) {
+			//there is an error from add_item_push
+			$data['error'] = 'Unable to add product item. Item has exhausted or does not exist.';
+		}
 		// echo '<pre>';
 		// print_r($data);
 		// die;
@@ -1200,6 +1252,8 @@ class Items extends Secure_Controller
 	}
 	public function pull($item_id = -1)
 	{
+		//now available now
+		redirect('items');
 		//$data['cart'] = $this->sale_lib->get_cart();
 		$this->sale_lib->clear_all();
 		$data['push'] = $this->sale_lib->get_push();
@@ -1281,6 +1335,52 @@ class Items extends Secure_Controller
 
 		$this->load->view('items/form_count_details', $data);
 	}
+	public function print_inventory_count($item_id = -1, $current_location_id = 2, $start_date = null, $end_date = null)
+	{
+		// $item_id = $this->input->post('item_id');
+
+		// $start_date = $this->input->post('start_date');
+		// $end_date = $this->input->post('end_date');
+		if ($item_id <= 0) {
+			//redirect to items index page
+			//redirect('items');
+		}
+		if ($start_date != null) {
+			$start_date = $start_date . ' 00:00:00';
+		}
+		if ($end_date != null) {
+			$end_date = $end_date . ' 23:59:59';
+		}
+
+		//$current_location_id = $this->input->post('stock_location');
+		$current_location_name = "";
+		$item_info = $this->Item->get_info($item_id);
+		foreach (get_object_vars($item_info) as $property => $value) {
+			$item_info->$property = $this->xss_clean($value);
+		}
+		$data['item_info'] = $item_info;
+		$data['start_date'] = $start_date;
+		$data['end_date'] = $end_date;
+
+		$data['stock_locations'] = array();
+		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
+		foreach ($stock_locations as $location) {
+			if ($location['location_id'] == $current_location_id) {
+
+				$current_location_name = $location['location_name'];
+			}
+			$location = $this->xss_clean($location);
+			$quantity = $this->xss_clean($this->Item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity);
+
+			$data['stock_locations'][$location['location_id']] = $location['location_name'];
+			$data['item_quantities'][$location['location_id']] = $quantity;
+		}
+		$data['stock_location_id'] = $current_location_id;
+		$data['stock_location_name'] = $current_location_name;
+		$data['print_after_sale'] = 0;
+
+		$this->load->view('items/inventory_count', $data);
+	}
 
 	public function generate_barcodes($item_ids)
 	{
@@ -1351,6 +1451,80 @@ class Items extends Secure_Controller
 
 		$this->load->view('items/category', $data);
 	}
+	public function category_apply_vat($cate)
+	{
+
+		$name = '';
+		$dat = $this->Item->categories_list();
+		$categories = array();
+		foreach ($dat as $row => $value) {
+			if ($value['id'] == $cate) {
+				$name = $value['name'];
+			}
+			$categories[] = array('id' => $value['id'], 'name' => $value['name']);
+		}
+
+
+
+		$this->db->where('category', $name);
+		$this->db->update('items', array('apply_vat' => 'YES'));
+
+		$cat_items = array();
+
+
+		$data['categories'] = $categories;
+		$data['message'] = 'Vat has been applied to all ' . $name . ' Product items';
+
+		$this->load->view('items/category', $data);
+	}
+	public function remove_vat_category($cate)
+	{
+		$name = '';
+		$dat = $this->Item->categories_list();
+		$categories = array();
+		foreach ($dat as $row => $value) {
+			if ($value['id'] == $cate) {
+				$name = $value['name'];
+			}
+			$categories[] = array('id' => $value['id'], 'name' => $value['name']);
+		}
+
+
+
+		$this->db->where('category', $name);
+		$this->db->update('items', array('apply_vat' => 'NO'));
+
+		$cat_items = array();
+
+
+		$data['categories'] = $categories;
+		$data['message'] = 'Vat has removed from all ' . $name . ' Product items';
+
+		$this->load->view('items/category', $data);
+	}
+	public function save_item_category($item_id = -1)
+	{
+
+		//Save item data
+		$category = $this->input->post('category');
+
+		if ($category == '') { //create new category
+			$item_data = array(
+				'name' => $this->input->post('category_name'),
+			);
+
+			$this->Item->save_category($item_data);
+		} else {
+			$new_cate = $this->input->post('category_name');
+			$new_item_data = array(
+				'name' => $new_cate,
+			);
+
+			$this->Item->update_category($new_item_data, $category);
+		}
+
+		redirect('items/categories');
+	}
 
 	public function save($item_id = -1)
 	{
@@ -1390,6 +1564,7 @@ class Items extends Secure_Controller
 			'custom9' => $this->input->post('custom9') == NULL ? '' : $this->input->post('custom9'),
 			'custom10' => $this->input->post('custom10') == NULL ? '' : $this->input->post('custom10')
 		);
+
 
 		$x = $this->input->post('tax_category_id');
 		if (!isset($x)) {
@@ -1621,6 +1796,7 @@ class Items extends Secure_Controller
 		echo !$exists ? 'true' : 'false';
 	}
 
+
 	/*
 	If adding a new item check to see if an item kit with the same name as the item already exists.
 	*/
@@ -1744,6 +1920,17 @@ class Items extends Secure_Controller
 			echo json_encode(array('success' => TRUE, 'message' => $message));
 		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_cannot_be_deleted')));
+		}
+	}
+	public function apply_vat()
+	{
+		$items_to_apply_vat = $this->input->post('ids');
+
+		if ($this->Item->apply_vat_to_list($items_to_apply_vat)) {
+			$message = $this->lang->line('items_successful_apply_vat') . ' ' . count($items_to_apply_vat) . ' ' . $this->lang->line('items_one_or_multiple');
+			echo json_encode(array('success' => TRUE, 'message' => $message));
+		} else {
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_cannot_be_apply_vat')));
 		}
 	}
 
@@ -1940,5 +2127,216 @@ class Items extends Secure_Controller
 				$this->Item->save($item_data, $item->item_id);
 			}
 		}
+	}
+
+
+	public function wilson_index()
+	{
+		$data[] = array();
+
+		$this->load->view('excel_import', $data);
+	}
+
+	public function wilsonimport1()
+	{
+		$quantity = array();
+		$location_id = $this->Stock_location->get_default_location_id();
+		for ($i = 1; $i <= 18206; $i++) {
+			$quantity[] = array(
+				'item_id' => $i,
+				'location_id' => $location_id,
+				'quantity' => 0.00
+			);
+		}
+		$this->Item_quantity->save_multiple($quantity);
+		echo '<pre>';
+		echo count($quantity);
+	}
+	public function wilsonimport5()
+	{
+
+
+		if ($_FILES['excel']['error'] != UPLOAD_ERR_OK) {
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_failed')));
+		} else {
+			$xlsx = SimpleXLSX::parse($_FILES['excel']['tmp_name']);
+			if ($xlsx) {
+				$exists = array();
+				$non_exists = array();
+				$location_id = $this->Stock_location->get_default_location_id();
+
+				foreach ($xlsx->rows() as $index => $value) {
+					/*
+					0. description
+					1. code
+					2. department
+					3. cost
+					4. quantity
+					5. value
+					6. sales_price
+
+					
+
+					if ($this->Item->item_number_exists($value[1])) {
+						$exists[] = array('name' => $value[0], 'item_number' => $value[1]);
+
+					} else {
+						$non_exists[] = array('name' => $value[0], 'item_number' => $value[1]);
+					}
+					*/
+					if (strtolower(trim($value[1])) == 'code') {
+						continue;
+					}
+					if ($value[1] && $value[0]) {
+						$item_id = 1; //$this->Item->save_custom($this->getItem($value));
+						//insert the quantity
+						$quantity = array(
+							'item_id' => $item_id,
+							'location_id' => $location_id,
+							'quantity' => 0.00
+						);
+						//$exists[] = array('name' => $value[0], 'item_number' => $value[1]);
+						$exists[] = $this->getItem($value);
+						//$this->Item_quantity->save($quantity);
+					} else {
+						echo $value[0] . ' ' . $value[1] . '<br>';
+					}
+				}
+				$this->Item->save_custom($exists);
+				echo count($exists) . '<br>';
+				echo '<pre>';
+				//print_r($exists);
+			} else {
+				echo SimpleXLSX::parseError();
+			}
+		}
+	}
+	public function wilsonimportb()
+	{
+
+
+		if ($_FILES['excel']['error'] != UPLOAD_ERR_OK) {
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_failed')));
+		} else {
+			$xlsx = SimpleXLSX::parse($_FILES['excel']['tmp_name']);
+			if ($xlsx) {
+				$exists = array();
+				$non_exists = array();
+				$location_id = $this->Stock_location->get_default_location_id();
+				//echo '<pre>';
+				foreach ($xlsx->rows() as $index => $value) {
+
+
+					//print_r($value);
+					if (strtolower(trim($value[1])) == 'code') {
+						continue;
+					}
+					if ($value[2] && $value[3] && $value[4] && $value[5] && $value[6]) {
+						//$exists[] = $value;
+
+						//check if the item already exists
+						if ($this->Item->item_number_exists(trim($value[1]))) { } else {
+							$exists[] = $this->getItem($value);
+						}
+					}
+				}
+				$this->Item->save_custom($exists);
+				echo count($exists) . '<br>';
+				echo '<pre>';
+				print_r($exists);
+			} else {
+				echo SimpleXLSX::parseError();
+			}
+		}
+	}
+	public function wilsonimport()
+	{
+
+
+		if ($_FILES['excel']['error'] != UPLOAD_ERR_OK) {
+			echo json_encode(array('success' => FALSE, 'message' => 'Excel import failed. ' . $_FILES['excel']['error']));
+			echo '<pre>';
+			print_r($_FILES);
+			die;
+		} else {
+			$xlsx = SimpleXLSX::parse($_FILES['excel']['tmp_name']);
+			if ($xlsx) {
+				$exists = array();
+				$non_exists = array();
+				$location_id = $this->Stock_location->get_default_location_id();
+				//echo '<pre>';
+				foreach ($xlsx->rows() as $index => $value) {
+
+
+					//print_r($value);
+					if ($this->startsWith(strtolower(trim($value[1])), 'department')) {
+						$dept = trim($value[1]);
+						$split = explode('-', $dept);
+						$exists[] = $split[count($split) - 1];
+						continue;
+					}
+					echo '<pre>';
+					print_r($exists);
+					die;
+
+					if ($value[2] && $value[3] && $value[4] && $value[5] && $value[6]) {
+						//$exists[] = $value;
+
+						//check if the item already exists
+						if ($this->Item->item_number_exists(trim($value[1]))) { } else {
+							$exists[] = $this->getItem($value);
+						}
+					}
+				}
+				$this->Item->save_custom($exists);
+				echo count($exists) . '<br>';
+				echo '<pre>';
+				print_r($exists);
+			} else {
+				echo SimpleXLSX::parseError();
+			}
+		}
+	}
+	private function startsWith($string, $startString)
+	{
+		$len  = strlen($startString);
+		return (substr($string, 0, $len) === $startString);
+	}
+	public function getItem($data)
+	{
+		$item_data = array(
+			'name' => $data[0],
+			'description' => '',
+			'category' => '',
+			'company' => '',
+
+			'expiry_days' => 0,
+			'pack' => 0.00,
+			'item_type' => '0',
+			'stock_type' => '0',
+			'item_number' => $data[1],
+			'cost_price' => $data[3],
+			'unit_price' => $data[6],
+			'reorder_level' => 0.00,
+			'receiving_quantity' => 0.00,
+			'allow_alt_description' => 0,
+			'is_serialized' => 0,
+			'tax_category_id' => 0,
+			'deleted' => 0,
+			'created_at' => time(),
+
+			'whole_price' => 0.00,
+			'period' => ' ',
+			'custom3' => ' ',
+			'custom4' => ' ',
+			'custom5' => ' ',
+			'custom6' => ' ',
+			'custom7' => ' ',
+			'custom8' => ' ',
+			'custom9' => ' ',
+			'custom10' => ' '
+
+		);
+		return $item_data;
 	}
 }

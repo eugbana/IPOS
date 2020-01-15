@@ -36,12 +36,12 @@ class Customers extends Persons
 		$order  = $this->input->get('order');
 
 		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
-		//$total_rows = $this->Customer->get_found_rows($search);
-		$total_rows = 0;
+		$total_customers = $this->Customer->search($search, 0, $offset, $sort, $order)->num_rows();
+		
 
 		$data_rows = array();
 		foreach ($customers->result() as $person) {
-			$total_rows++;
+		
 			// retrieve the total amount the customer spent so far together with min, max and average values
 			$stats = $this->Customer->get_stats($person->person_id);
 			//$stats = array();
@@ -61,7 +61,7 @@ class Customers extends Persons
 
 		$data_rows = $this->xss_clean($data_rows);
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode(array('total' => $total_customers, 'rows' => $data_rows));
 	}
 
 	/*

@@ -1,6 +1,6 @@
 <?php
-class Inventory extends CI_Model 
-{	
+class Inventory extends CI_Model
+{
 	public function insert($inventory_data)
 	{
 		return $this->db->insert('inventory', $inventory_data);
@@ -9,33 +9,41 @@ class Inventory extends CI_Model
 	{
 		$this->db->insert('item_expiry', $inventory_data);
 	}
-	
-	public function get_inventory_data_for_item($item_id, $location_id = FALSE)
+
+	public function get_inventory_data_for_item($item_id, $location_id = FALSE, $start = null, $end = null)
 	{
-		$this->db->from('inventory');
+
+		$this->db->select("inventory.*, people.first_name AS firstname, people.last_name AS lastname");
+		$this->db->from('inventory AS inventory');
+		$this->db->join('people AS people', 'people.person_id = inventory.trans_user');
 		$this->db->where('trans_items', $item_id);
-        if($location_id != FALSE)
-        {
-            $this->db->where('trans_location', $location_id);
-        }
+		if ($location_id != FALSE) {
+			$this->db->where('trans_location', $location_id);
+		}
+		if ($start != null) {
+			$this->db->where('trans_date >=', $start);
+		}
+		if ($end != null) {
+			$this->db->where('trans_date <=', $end);
+		}
 		$this->db->order_by('trans_date', 'desc');
 
-		return $this->db->get();		
+		return $this->db->get();
 	}
 
 	public function reset_quantity($item_id)
 	{
 		$inventory_sums = $this->Inventory->get_inventory_sum($item_id);
-		foreach($inventory_sums as $inventory_sum)
-		{
-			if ($inventory_sum['sum'] > 0)
-			{
-				return $this->Inventory->insert(array(
-					'trans_inventory' => -1 * $inventory_sum['sum'],
-					'trans_items' => $item_id,
-					'trans_location' => $inventory_sum['location_id'],
-					'trans_comment' => $this->lang->line('items_is_deleted'),
-					'trans_user' => $this->Employee->get_logged_in_employee_info()->person_id)
+		foreach ($inventory_sums as $inventory_sum) {
+			if ($inventory_sum['sum'] > 0) {
+				return $this->Inventory->insert(
+					array(
+						'trans_inventory' => -1 * $inventory_sum['sum'],
+						'trans_items' => $item_id,
+						'trans_location' => $inventory_sum['location_id'],
+						'trans_comment' => $this->lang->line('items_is_deleted'),
+						'trans_user' => $this->Employee->get_logged_in_employee_info()->person_id
+					)
 				);
 			}
 		}
@@ -52,4 +60,3 @@ class Inventory extends CI_Model
 		return $this->db->get()->result_array();
 	}
 }
-?>

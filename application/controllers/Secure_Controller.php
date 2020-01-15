@@ -10,6 +10,8 @@ class Secure_Controller extends CI_Controller
 	{
 		parent::__construct();
 
+		//$this->load->helper('url');
+
 		$this->CI = &get_instance();
 		$this->load->model('Employee');
 		$model = $this->Employee;
@@ -24,7 +26,10 @@ class Secure_Controller extends CI_Controller
 		if (
 			!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) || (isset($submodule_id) && !$model->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
 		) {
-			redirect('no_access/' . $module_id . '/' . $submodule_id);
+			//Allow accountants to pass when they are accessing anything from receivings
+			if ($module_id != 'receivings' && $logged_in_employee_info->role != 12) {
+				redirect('no_access/' . $module_id . '/' . $submodule_id);
+			}
 		}
 
 		// load up global data visible to all the loaded views
@@ -34,13 +39,13 @@ class Secure_Controller extends CI_Controller
 		$data['user_role'] = $this->Role->get_user_role($logged_in_employee_info->role);
 		$data['sale_stuff'] = $branch_sales = $this->Item->get_sales();
 
-		$data['inventory_total'] = count($this->Item->get_inventory_total($user_info->branch_id));
-		$data['stock_total'] = count($this->Item->get_stock_total($user_info->branch_id));
-		$data['reorder_total'] = count($this->Item->get_reorder_total($user_info->branch_id));
-		$expiry_check = $this->Item->get_expiry_total($user_info->branch_id);
+		$data['inventory_total'] = 0; // count($this->Item->get_inventory_total($user_info->branch_id));
+		$data['stock_total'] = 0; //count($this->Item->get_stock_total($user_info->branch_id));
+		$data['reorder_total'] = 0; // count($this->Item->get_reorder_total($user_info->branch_id));
+		$expiry_check = 0; // $this->Item->get_expiry_total($user_info->branch_id);
 
 
-		$data['expiry_total'] = count($this->check_if_expire($expiry_check));
+		$data['expiry_total'] = 0; // count($this->check_if_expire($expiry_check));
 		$data['branch'] = $this->CI->Stock_location->get_location_name($user_info->branch_id);
 		$data['controller_name'] = $module_id;
 		foreach ($branch_sales as $row => $value) {

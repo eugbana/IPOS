@@ -11,6 +11,7 @@ $lang["customers_cannot_be_deleted"] = "Could not deleted selected customers, on
 $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "Are you sure you want to delete the selected customers?";
 $lang["customers_customer"] = "Customer";
+$lang["customers_lab"] = "Patient";
 $lang["customers_discount"] = "Discount";
 $lang["customers_email_duplicate"] = "The email address is already present in the database";
 $lang["customers_error_adding_updating"] = "Error adding/updating customer";

@@ -32,6 +32,7 @@ $lang["receivings_one_or_multiple"] = "receiving(s)";
 $lang["receivings_print_after_sale"] = "Print after sale";
 $lang["receivings_quantity"] = "Qty.";
 $lang["receivings_receipt"] = "STOCK INTAKE REPORT"; //change from ITEMS DISPATCH REPORT
+$lang["transfer_receipt"] = "PRODUCT TRANSFER REPORT"; //change from ITEMS DISPATCH REPORT
 $lang["receivings_receipt_number"] = "Receiving #";
 $lang["receivings_receiving"] = "Receive";
 $lang["receivings_reference"] = "Reference";

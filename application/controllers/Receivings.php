@@ -14,6 +14,7 @@ class Receivings extends Secure_Controller
 
 	public function index()
 	{
+
 		$this->_reload();
 	}
 
@@ -57,11 +58,13 @@ class Receivings extends Secure_Controller
 		) {
 			$this->receiving_lib->clear_reference();
 			$mode = $this->input->post('mode');
+
 			$this->receiving_lib->set_mode($mode);
 		} elseif ($this->Stock_location->is_allowed_location($stock_source, 'receivings')) {
 			$this->receiving_lib->set_stock_source($stock_source);
 			$this->receiving_lib->set_stock_destination($stock_destination);
 		}
+
 
 		$this->_reload();
 	}
@@ -121,16 +124,30 @@ class Receivings extends Secure_Controller
 		$expiry = $this->input->post('expiry');
 		// $unit_price = parse_decimals($this->input->post('unit_price'));
 
+		if ($this->receiving_lib->get_mode() == 'return' && $quantity > 0) {
+			$quantity = $quantity * -1;
+		}
+		if ($this->receiving_lib->get_mode() == 'receive' && $quantity < 0) {
+			$quantity = $quantity * -1;
+		}
 
+		if ($quantity == 0) {
+			$this->delete_item($item_id);
+			// $quantity = 1;
+			// $data['warning'] = "Quantity cannot be zero. You can remove the item from the cart from cart.";
+		}
 
 		if ($this->form_validation->run() != FALSE) {
 			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $batch_no, $expiry);
 			// $this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $batch_no, $expiry, $unit_price);
 		} else {
+
 			$data['error'] = $this->lang->line('receivings_error_editing_item');
+			$this->_reload($data);
 		}
 
-		$this->_reload($data);
+		//$this->_reload($data);
+		redirect('receivings');
 	}
 
 	public function edit($receiving_id)
@@ -180,7 +197,8 @@ class Receivings extends Secure_Controller
 	{
 		$this->receiving_lib->delete_item($item_number);
 
-		$this->_reload();
+		//$this->_reload();
+		redirect('receivings');
 	}
 
 	public function delete($receiving_id = -1, $update_inventory = TRUE)
@@ -211,8 +229,13 @@ class Receivings extends Secure_Controller
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['receipt_title'] = $this->lang->line('receivings_receipt');
-		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
+		$data['transaction_time'] = date("Y-m-d h:i A");
+		$data['transaction_date'] = date("Y-m-d h:i A");
+
 		$data['mode'] = $this->receiving_lib->get_mode();
+		if ($data['mode'] == 'return') {
+			$data['receipt_title'] = 'STOCK RETURN REPORT';
+		}
 		$data['comment'] = $this->receiving_lib->get_comment();
 		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['payment_type'] = $this->input->post('payment_type');
@@ -286,6 +309,9 @@ class Receivings extends Secure_Controller
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['receipt_title'] = $this->lang->line('receivings_receipt');
+		if ($data['mode'] == 'return') {
+			$data['receipt_title'] = 'STOCK RETURN REPORT';
+		}
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
 		$data['payment_type'] = $receiving_info['payment_type'];
@@ -358,7 +384,7 @@ class Receivings extends Secure_Controller
 			}
 		}
 
-		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
+		$data['print_after_sale'] = 1; //$this->receiving_lib->is_print_after_sale();
 
 		$data = $this->xss_clean($data);
 
@@ -416,6 +442,15 @@ class Receivings extends Secure_Controller
 		$data['table_headers'] = $this->xss_clean(get_inventory_history_headers());
 		$this->load->view("receivings/history", $data);
 	}
+	public function transfer_history()
+	{
+
+
+
+		$data = [];
+		$data['table_headers'] = $this->xss_clean(get_transfer_history_headers());
+		$this->load->view("receivings/transfer_history", $data);
+	}
 
 	public function history_data()
 	{
@@ -431,12 +466,35 @@ class Receivings extends Secure_Controller
 		);
 
 		//$total		= $this->Receiving->get_all_receivings($search, $filters);
-		$total		= $this->Receiving->get_all_receivings($search, $limit, $offset, $sort, $order, $filters)->num_rows();
-		$data		= $this->Receiving->get_all_receivings($search, $limit, $offset, $sort, $order, $filters);
+		$data_all		= $this->Receiving->get_all_receivings($search, 0, $offset, $sort, $order, $filters)->result();
+		//$total		= $this->Receiving->get_all_receivings($search, 0, $offset, $sort, $order, $filters)->num_rows();
+		$data =  array_slice($data_all, $offset, $limit); //limit is usually more than 0
+		$data_rows	= array();
+		foreach ($data as $d) {
+			$data_rows[] = $this->xss_clean(get_receiving_item_data_row($d, $d->receiving_id, $this));
+		}
+		echo json_encode(array('total' => count($data_all), 'rows' => $data_rows));
+	}
+	public function transfer_history_data()
+	{
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
+
+		$filters = array(
+			'start_date' 	=> $this->input->get('start_date'),
+			'end_date' 		=> $this->input->get('end_date'),
+		);
+
+		//$total		= $this->Receiving->get_all_receivings($search, $filters);
+		$total		= $this->Receiving->get_all_transfers($search, 0, $offset, $sort, $order, $filters)->num_rows();
+		$data		= $this->Receiving->get_all_transfers($search, $limit, $offset, $sort, $order, $filters);
 
 		$data_rows	= array();
 		foreach ($data->result() as $d) {
-			$data_rows[] = $this->xss_clean(get_receiving_item_data_row($d, $d->receiving_id, $this));
+			$data_rows[] = $this->xss_clean(get_transfer_item_data_row($d, $d->transfer_id, $this));
 		}
 		echo json_encode(array('total' => $total, 'rows' => $data_rows));
 	}
@@ -456,9 +514,10 @@ class Receivings extends Secure_Controller
 		$this->load->view("receivings/history_view", $data);
 	}
 
+
 	public function reprint($id = -1)
 	{
-
+		//If id is not valide or does not exist, go back the inventory history table
 		if ($id == -1 || !$this->Receiving->exists($id)) {
 			$this->history();
 		}
@@ -471,11 +530,52 @@ class Receivings extends Secure_Controller
 			'items'	=> $items
 		);
 
+		$mode = '';
+		if (count($items) > 0 && (int) $items[0]->quantity_purchased < 0) {
+			$mode = "Return";
+		} else {
+			$mode = "Receiving";
+		}
+		$data['mode'] = $mode;
 		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode('RECV ' . $id);
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 		$data['receipt_title'] = $this->lang->line('receivings_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
+		$data['date'] = date("Y-m-d h:i A", strtotime($data['meta']->receiving_time));
+
 
 		$this->load->view("receivings/history_print", $data);
+	}
+	public function transfer_reprint($id = -1)
+	{
+		//If id is not valide or does not exist, go back the inventory history table
+		if ($id == -1 || !$this->Receiving->transfer_exists($id)) {
+			$this->transfer_history();
+		}
+
+		$transfer = $this->Receiving->get_transfer_by_transfer_id($id)->result();
+		$items = $this->Receiving->get_transfer_items_data_by_transfer_id($id)->result();
+
+		$data = array(
+			'meta'	=> $transfer[0], //Note that item exist here
+			'items'	=> $items
+		);
+
+		$mode = $data['meta']->transfer_type;
+		//show the receipt
+
+		$employee_info = $this->Employee->get_info($data['meta']->employee_id);
+		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+		$data['mode'] = $mode;
+		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode('PUSH ' . $id);
+		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
+		$data['receipt_title'] = $this->lang->line('transfer_receipt');
+		$data['date'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($data['meta']->transfer_time));
+		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
+		$data['from_branch'] = $this->CI->Stock_location->get_location_name($data['meta']->request_from_branch_id);
+		$data['to_branch'] = $this->CI->Stock_location->get_location_name($data['meta']->request_to_branch_id);
+		$data['transfer_id'] = $id;
+		$data['print_after_sale'] = 0;
+		$this->load->view("receivings/transfer_history_print", $data);
 	}
 }

@@ -1,10 +1,10 @@
-<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 
 <div id="title_bar" class="btn-toolbar print_hide">
 	<?php echo form_open($controller_name."/lab_cart", array('id'=>'buttons_form')); ?>
 
 	</div>
-require_once("Secure_Controller.php");
+<?php require_once("Secure_Controller.php");
 
 class Laboratory extends Secure_Controller
 {

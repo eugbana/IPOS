@@ -104,7 +104,7 @@ if (isset($success))
 			<tr>
 				<th style="width:5%;"><?php echo $this->lang->line('common_delete'); ?></th>
 				<th style="width:45%;"><?php echo $this->lang->line('receivings_item_name'); ?></th>
-				<th style="width:15%;"><?php echo $this->lang->line('receivings_company_name'); ?></th>
+				<th style="width:15%;"><?php echo 'Category';//$this->lang->line('receivings_company_name'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_cost'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_quantity'); ?></th>
 				<th style="width:5%;"></th>

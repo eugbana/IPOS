@@ -23,7 +23,8 @@
 
 	var button_class = {
 		'submit' : 'btn-primary',
-		'delete' : 'btn-danger'
+		'delete' : 'btn-danger',
+		'apply_vat':'btn-primary'
 	};
 
 	var init = function(selector) {
@@ -143,7 +144,9 @@
 	};
 
 	var do_delete = function (url, ids) {
+		
 		if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
+		
 			$.post((url || options.resource) + '/delete', {'ids[]': ids || selected_ids()}, function (response) {
 				//delete was successful, remove checkbox rows
 				if (response.success) {
@@ -162,6 +165,27 @@
 								}
 							});
 					});
+					$.notify(response.message, { type: 'success' });
+				} else {
+					$.notify(response.message, { type: 'danger' });
+				}
+			}, "json");
+		} else {
+			
+			return false;
+		}
+	};
+	var do_apply_vat = function (url, ids) {
+		
+		if (confirm($.fn.bootstrapTable.defaults.formatConfirmApplyVat())) {
+		
+			$.post((url || options.resource) + '/apply_vat', {'ids[]': ids || selected_ids()}, function (response) {
+				//delete was successful, remove checkbox rows
+				if (response.success) {
+					
+					table().collapseAllRows();
+					refresh();
+					enable_actions();
 					$.notify(response.message, { type: 'success' });
 				} else {
 					$.notify(response.message, { type: 'danger' });
@@ -240,13 +264,20 @@
 		}));
 		enable_actions();
 		init_delete();
+		init_apply_vat();
 		toggle_column_visbility();
 		dialog_support.init("button.modal-dlg");
 	};
 
 	var init_delete = function (confirmMessage) {
 		$("#delete").click(function (event) {
+			
 			do_delete();
+		});
+	};
+	var init_apply_vat = function (confirmMessage) {
+		$("#apply_vat").click(function (event) {
+			do_apply_vat();
 		});
 	};
 
@@ -300,6 +331,7 @@
 		handle_submit: handle_submit,
 		init: init,
 		do_delete: do_delete,
+		do_apply_vat: do_apply_vat,
 		refresh : refresh,
 		selected_ids : selected_ids,
 	});
