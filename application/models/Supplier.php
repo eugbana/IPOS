@@ -47,6 +47,7 @@ class Supplier extends Person
 	}
 	public function get_all_pills($limit_from = 0, $rows = 0)
 	{
+		//$this->db->cache_on();
 		$this->db->from('pill_reminder');
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
@@ -65,6 +66,7 @@ class Supplier extends Person
 	}
 	public function get_all($limit_from = 0, $rows = 0)
 	{
+		//$this->db->cache_on();
 		$this->db->from('suppliers');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->where('deleted', 0);
@@ -87,6 +89,7 @@ class Supplier extends Person
 	}
 	public function get_all_categories($limit_from = 0, $rows = 0)
 	{
+		//$this->db->cache_on();
 		$this->db->from('categories');
 		$this->db->order_by('name', 'asc');
 		if ($rows > 0) {
@@ -97,8 +100,21 @@ class Supplier extends Person
 	}
 	public function get_loc($item_location, $limit_from = 0, $rows = 0)
 	{
+		//$this->db->cache_on();
 		$this->db->from('stock_locations');
 		$this->db->where('location_id !=', $item_location);
+		$this->db->where('deleted', 0);
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+
+		return $this->db->get();
+	}
+
+	public function get_default_location($item_location, $limit_from = 0, $rows = 0)
+	{
+		$this->db->from('stock_locations');
+		$this->db->where('location_id =', $item_location);
 		$this->db->where('deleted', 0);
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
@@ -122,7 +138,7 @@ class Supplier extends Person
 		$this->db->from('branches');
 		$this->db->where('branche_id', $branch_id);
 		$this->db->where('deleted', 0);
-		
+
 
 		return $this->db->get()->row();
 	}
@@ -130,9 +146,9 @@ class Supplier extends Person
 	{
 		$this->db->select("*");
 		$this->db->from('branches');
-		
+
 		$this->db->where('deleted', 0);
-		
+
 
 		return $this->db->get()->result_array();
 	}
@@ -151,23 +167,27 @@ class Supplier extends Person
 			return $query->row();
 		} else {
 			//Get empty base parent object, as $supplier_id is NOT an supplier
-			$person_obj = parent::get_info(-1);
+			$person_obj = array();
 
 			//Get all the fields from supplier table		
 			//append those fields to base parent object, we we have a complete empty object
 			foreach ($this->db->list_fields('suppliers') as $field) {
-				$person_obj->$field = '';
+				$person_obj[$field] = '';
 			}
 
-			return $person_obj;
+			return (object) $person_obj;
 		}
 	}
+	public function get_supplier_name($s_id){
+	   return $this->db->get_where('suppliers',['person_id'=>$s_id])->row()->company_name;
+    }
 
 	/*
 	Gets information about multiple suppliers
 	*/
 	public function get_multiple_info($suppliers_ids)
 	{
+		//$this->db->cache_on();
 		$this->db->from('suppliers');
 		$this->db->join('people', 'people.person_id = suppliers.person_id');
 		$this->db->where_in('suppliers.person_id', $suppliers_ids);
@@ -232,9 +252,10 @@ class Supplier extends Person
 	/*
 	Get search suggestions to find suppliers
 	*/
-	public function get_search_suggestions($search, $unique = FALSE, $limit = 25)
+	public function get_search_suggestions($search, $unique = FALSE, $limt = 99999)
 	{
 		$suggestions = array();
+		//$this->db->cache_on();
 
 		$this->db->from('suppliers');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
@@ -333,6 +354,7 @@ class Supplier extends Person
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc')
 	{
+		//$this->db->cache_on();
 		$this->db->from('suppliers');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->group_start();
@@ -347,7 +369,8 @@ class Supplier extends Person
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
 
-		$this->db->order_by($sort, $order);
+		// $this->db->order_by($sort, $order);
+		$this->db->order_by('company_name', 'asc');
 
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);

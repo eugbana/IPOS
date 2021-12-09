@@ -1,4 +1,6 @@
-<?php echo form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
+<?php
+//    echo form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal'));
+    ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
 		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
@@ -8,12 +10,14 @@
 			<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
 		</div>
 
-		<?php echo form_submit(array(
-			'name' => 'submitMan',
-			'id' => 'submitMan',
-			'value' => $this->lang->line('common_submit'),
-			'class' => 'btn btn-primary btn-sm pull-right'
-		)); ?>
+		<?php
+//        echo form_submit(array(
+//			'name' => 'submitMan',
+//			'id' => 'submitMan',
+//			'value' => $this->lang->line('common_submit'),
+//			'class' => 'btn btn-primary btn-sm pull-right'
+//		));
+        ?>
 	</fieldset>
 
 
@@ -80,6 +84,37 @@
 		$.validator.addMethod('valid_chars', function(value, element) {
 			return value.indexOf('_') === -1;
 		}, "<?php echo $this->lang->line('config_stock_location_invalid_chars'); ?>");
+
+		$('.location-edit').on('submit',function (e) {
+		    e.preventDefault();
+		    // alert("Yes, How may I help you: "+JSON.stringify($(this).serializeArray()));
+            var data = $(this).serializeArray();
+            $.post($(this).attr('action'),data,function(resp){
+                $.notify({
+                    message: resp.message
+                }, {
+                    type: resp.success ? 'success' : 'danger'
+                });
+            },'json');
+        });
+		$('#reg-loc-btn').on('click',function () {
+		    $.get('config/register_loc',function (resp) {
+                $.notify({
+                    message: resp.message
+                }, {
+                    type: resp.success ? 'success' : 'danger'
+                });
+            },'json');
+        });
+        $('#sync-loc-btn').on('click',function () {
+            $.get('config/get_locs',function (resp) {
+                $.notify({
+                    message: resp.message
+                }, {
+                    type: resp.success ? 'success' : 'danger'
+                });
+            },'json');
+        });
 
 		$('#location_config_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form) {

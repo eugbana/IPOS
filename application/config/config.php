@@ -168,7 +168,7 @@ $config['subclass_prefix'] = 'MY_';
 | Enabling this setting will tell CodeIgniter to look for a Composer
 | package auto-loader script in application/vendor/autoload.php.
 |
-|	$config['composer_autoload'] = TRUE;
+
 |
 | Or if you have your vendor/ directory located somewhere else, you
 | can opt to set a specific path as well:
@@ -180,6 +180,7 @@ $config['subclass_prefix'] = 'MY_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
+$config['composer_autoload'] = TRUE;
 $config['composer_autoload'] = realpath(APPPATH . '../vendor/autoload.php');
 
 /*
@@ -257,7 +258,7 @@ $config['directory_trigger'] = 'd';
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 4;
+$config['log_threshold'] = 2; //4;
 
 /*
 |--------------------------------------------------------------------------
@@ -268,7 +269,7 @@ $config['log_threshold'] = 4;
 | application/logs/ directory. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] = 'application/logs';
+$config['log_path'] = '';//'application/logs/';
 
 /*
 |--------------------------------------------------------------------------
@@ -411,11 +412,18 @@ $config['encryption_key'] = getenv('ENCRYPTION_KEY') ? getenv('ENCRYPTION_KEY') 
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
+//$config['sess_driver'] = 'files';
+//$config['sess_cookie_name'] = 'ospos_session';
+//$config['sess_expiration'] = 7200;
+//$config['sess_save_path'] = 'sessions';
+//$config['sess_match_ip'] = FALSE;
+//$config['sess_time_to_update'] = 300;
+//$config['sess_regenerate_destroy'] = FALSE;
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ospos_session';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = 'sessions';
-$config['sess_match_ip'] = TRUE;
+$config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
 

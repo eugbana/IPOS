@@ -59,6 +59,24 @@ class Sale_lib
 		return $this->CI->session->userdata('pill_cart');
 	}
 
+	//pricer check
+	public function set_price_check($item)
+	{
+		$this->CI->session->set_userdata('price_check', $item);
+	}
+	public function empty_price_check()
+	{
+		$this->CI->session->unset_userdata('price_check');
+	}
+	public function get_price_check()
+	{
+		if (!$this->CI->session->userdata('price_check')) {
+			$this->set_price_check(array());
+		}
+
+		return $this->CI->session->userdata('price_check');
+	}
+
 	public function get_line_sequence_options()
 	{
 		return array(
@@ -86,6 +104,32 @@ class Sale_lib
 
 		return $this->CI->session->userdata('sales_cart');
 	}
+	public function register_return($line){
+        if (!$this->CI->session->userdata('return_register')) {
+            $this->CI->session->set_userdata('return_register', [$line]);
+        }else{
+            $registered = $this->CI->session->userdata('return_register');
+            $registered[] = $line;
+            $this->CI->session->set_userdata('return_register', $registered);
+        }
+    }
+    public function remove_registered($line){
+	    $registered = $this->get_registered_returns();
+	    if(($key = array_search($line,$registered)) !== false){
+	        unset($registered[$key]);
+        }
+        $this->CI->session->set_userdata('return_register', $registered);
+	}
+	public function clear_registered_returns(){
+        unset($_SESSION['return_register']);
+        unset($_SESSION['coppyitems']);
+    }
+    public function get_registered_returns(){
+        if (!$this->CI->session->userdata('return_register')) {
+            $this->CI->session->set_userdata('return_register', []);
+        }
+        return $this->CI->session->userdata('return_register');
+    }
 	public function get_lab_accountcart()
 	{
 		if (!$this->CI->session->userdata('lab_accountcart')) {
@@ -167,9 +211,10 @@ class Sale_lib
 		return $filtered_cart;
 	}
 
-	public function set_cart($cart_data)
+	public function set_cart($cart_data,$item_ids = [])
 	{
 		$this->CI->session->set_userdata('sales_cart', $cart_data);
+        $this->CI->session->set_userdata('cart_items_ids', $item_ids);
 	}
 	public function set_lab_resultcart($cart_data)
 	{
@@ -428,7 +473,8 @@ class Sale_lib
 	}
 
 	public function get_cash_rounding()
-	{ }
+	{
+	}
 
 	/*
 	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
@@ -508,7 +554,7 @@ class Sale_lib
 
 		return $totals;
 	}
-	public function get_totals()
+	public function get_totals_old()
 	{
 		$cash_rounding = $this->CI->session->userdata('cash_rounding');
 
@@ -516,43 +562,123 @@ class Sale_lib
 
 		$subtotal = 0;
 		$discounted_subtotal = 0;
-		$tax_exclusive_subtotal = 0;
 		$total_vat = 0.00;
+		$customer_id = $this->get_customer();
 		foreach ($this->get_cart() as $item) {
-			//$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
-			//$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
-			if (strtolower($item['stock_name']) == "wholesale") { //there is a mistake here but no need since price is already represent when it's wholesale or retails
+
+			if (strtolower($item['stock_name']) == "wholesale") {
 				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], FALSE));
 			} else {
-				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+				//if customer has a sale_markup
+				if ($customer_id > 0) {
+					$customer = $this->CI->Customer->get_info($customer_id);
+					
+					if($customer->company_id > 0){
+						$company = $this->CI->Customer->get_company_info($customer->company_id);
+						if ($company->sale_markup > 0) {
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $company->sale_markup, $item['discount'], FALSE));
+						}
+						else{
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+						}
+					}elseif ($customer->sale_markup > 0) {
+						$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $customer->sale_markup, $item['discount'], FALSE));
+					}else{
+						$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+					}
+
+
+					//normal code
+					// if ($customer->sale_markup > 0) {
+					// 	$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $customer->sale_markup, $item['discount'], FALSE));
+					// }else{
+					// 	$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+					// }
+				}else{
+					$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+				}
 			}
+
+			//another
 			if (strtolower($item['stock_name']) == "wholesale") {
 				$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], TRUE));
 			} else {
-				$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
-			}
-			if ($this->CI->config->config['tax_included']) {
-				$tax_exclusive_subtotal = bcadd($tax_exclusive_subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], TRUE));
+				//if customer has a sale_markup
+				if ($customer_id > 0) {
+					$customer = $this->CI->Customer->get_info($customer_id);
+					// if sale markup
+
+					if($customer->company_id > 0){
+						$company = $this->CI->Customer->get_company_info($customer->company_id);
+						if ($company->sale_markup > 0) {
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'] * $company->sale_markup, $item['discount'], TRUE));
+						}
+						else{
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+						}
+					}elseif ($customer->sale_markup > 0) {
+						$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'] * $customer->sale_markup, $item['discount'], TRUE));
+					}else{
+						$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+					}
+
+
+					//normal code
+					// if ($customer->sale_markup > 0) {
+					// 	$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'] * $customer->sale_markup, $item['discount'], TRUE));
+					// }else{
+					// 	$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+					// }
+				}else{
+					$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+				}
 			}
 
 			// calculate VAT for VATable items
 			if (strtolower($item["apply_vat"]) == "yes") {
-				/*$app_vat = $this->CI->config->item('vat') ? $this->CI->config->item('vat') : 5;
-				$vat = bcmul(bcdiv($app_vat, 100), $item["price"]);
-				$vat = bcmul($vat, $item['quantity']);
-				$total_vat += $vat;*/
-				$total_vat += $item['vat'];
+
+				$total_vat += $item['vat']; //vat is already calculated when an item is added or edited
 			}
 		}
 
+		//check whether the customer has discount percent.
+		//if yes, calculate and remove it from the total the customer supposed to pay
+		// $customer_id = $this->get_customer();
+		if ($customer_id > 0) {
+			$customer = $this->CI->Customer->get_info($customer_id);
+
+			if($customer->company_id > 0){
+				$company = $this->CI->Customer->get_company_info($customer->company_id);
+				if ($company->discount > 0) {
+					// $customer_discount = round(($company->discount / 100) * $discounted_subtotal, 2);
+					$customer_discount = round(($company->discount / 100) * $discounted_subtotal, 3); //by3dp
+					$discounted_subtotal = $discounted_subtotal - $customer_discount;
+				}
+			}elseif ($customer->discount_percent > 0) {
+				// $customer_discount = round(($customer->discount_percent / 100) * $discounted_subtotal, 2);
+				$customer_discount = round(($customer->discount_percent / 100) * $discounted_subtotal, 3); //by3dp
+				$discounted_subtotal = $discounted_subtotal - $customer_discount;
+			}
+		}
+
+		//normal code
+		// if ($customer_id > 0) {
+		// 	$customer = $this->CI->Customer->get_info($customer_id);
+		// 	if ($customer->discount_percent > 0) {
+		// 		$customer_discount = round(($customer->discount_percent / 100) * $discounted_subtotal, 2);
+		// 		$discounted_subtotal = $discounted_subtotal - $customer_discount;
+		// 	}
+		// }
+
+		$total_vat = $total_vat;
+
+		$discounted_subtotal = $discounted_subtotal;
 		$totals['total_vat'] = $total_vat;
 		$totals['subtotal'] = $subtotal;
 		$totals['discounted_subtotal'] = $discounted_subtotal;
-		$totals['tax_exclusive_subtotal'] = $tax_exclusive_subtotal;
 
 		$total = $discounted_subtotal;
 		$totals['total'] = $total;
-
 
 		if ($cash_rounding) {
 			$cash_total = $this->check_for_cash_rounding($total);
@@ -586,6 +712,309 @@ class Sale_lib
 
 		return $totals;
 	}
+
+	public function get_totals_old_vat()
+	{
+		$cash_rounding = $this->CI->session->userdata('cash_rounding');
+
+		$totals = array();
+
+		$subtotal = 0;
+		$discounted_subtotal = 0;
+		$total_vat = 0.00;
+		$customer_id = $this->get_customer();
+
+		//new VAT implementation
+
+		//remove VAT price from VATable items
+		//use the remainder as VAT
+		//set the VAT price into VAT
+		foreach ($this->get_cart() as $item) {
+
+			//get subtotals
+			if (strtolower($item['stock_name']) == "wholesale") {
+				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], FALSE));
+			} else {
+
+				//if customer exists
+					//if customer has company
+						//if company has a markup: price = cost * company_salemarkup
+						//else: price =  selling price
+					//else if customer has markup: price = cost * customer_salemarkup
+					//else: price = selling price
+				//else: price = selling price
+
+				if($customer_id > 0){
+					$customer = $this->CI->Customer->get_info($customer_id);
+					if($customer->company_id > 0){
+						$company = $this->CI->Customer->get_company_info($customer->company_id);
+						if ($company->markup > 0) {
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $company->markup, $item['discount'], FALSE));
+						}else{
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+						}
+					}elseif($customer->sale_markup > 0){
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $customer->sale_markup, $item['discount'], FALSE));
+						}else{
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+						}
+				}else{
+					$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+				}
+			}
+			
+			//get discounted total
+			if (strtolower($item['stock_name']) == "wholesale") {
+				$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], TRUE));
+			} else {
+
+				if($customer_id > 0){
+					$customer = $this->CI->Customer->get_info($customer_id);
+					if($customer->company_id > 0){
+						$company = $this->CI->Customer->get_company_info($customer->company_id);
+						if ($company->markup > 0) {
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $company->markup, $item['discount'], TRUE));
+						}else{
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+						}
+					}elseif($customer->sale_markup > 0){
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $customer->sale_markup, $item['discount'], TRUE));
+						}else{
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+						}
+				}else{
+					$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+				}
+			}
+
+			// calculate VAT for VATable items
+			if (strtolower($item["apply_vat"]) == "yes") {
+				$total_vat += $item['vat']; //vat is already calculated when an item is added or edited
+				// $total_vat += get_nearest_five($item['vat']); //vat is already calculated when an item is added or edited
+				//get_nearest_five
+			}
+		}
+
+		//check whether the customer has discount percent.
+		//if yes, calculate and remove it from the total the customer supposed to pay
+		// $customer_id = $this->get_customer();
+		if ($customer_id > 0) {
+			$customer = $this->CI->Customer->get_info($customer_id);
+			if($customer->company_id > 0){
+				$company = $this->CI->Customer->get_company_info($customer->company_id);
+				if($company->discount > 0){
+					// $customer_discount = round(($company->discount / 100) * $discounted_subtotal, 2);
+					$customer_discount = round(($company->discount / 100) * $discounted_subtotal, 3); //by3dp
+					$discounted_subtotal = $discounted_subtotal - $customer_discount;
+				}
+			}elseif ($customer->discount_percent > 0) {
+				// $customer_discount = round(($customer->discount_percent / 100) * $discounted_subtotal, 2);
+				$customer_discount = round(($customer->discount_percent / 100) * $discounted_subtotal, 3); //by3dp
+				$discounted_subtotal = $discounted_subtotal - $customer_discount;
+			}
+		}
+
+		// $total_vat = get_nearest_five($total_vat);
+		$total_vat = $total_vat;
+
+		$discounted_subtotal = $discounted_subtotal;
+		$totals['total_vat'] = $total_vat;
+		$totals['subtotal'] = $subtotal;
+		$totals['discounted_subtotal'] = $discounted_subtotal;
+
+		$total = $discounted_subtotal;
+		$totals['total'] = $total;
+
+		if ($cash_rounding) {
+			$cash_total = $this->check_for_cash_rounding($total);
+			$totals['cash_total'] = $cash_total;
+		} else {
+			$cash_total = $total;
+		}
+
+		$totals['cash_total'] = $cash_total;
+
+		$payment_total = $this->get_payments_total();
+		$totals['payment_total'] = $payment_total;
+
+		$amount_due = bcsub($total + $total_vat, $payment_total);
+		$totals['amount_due'] = $amount_due;
+
+		$cash_amount_due = bcsub($cash_total + $total_vat, $payment_total);
+		$totals['cash_amount_due'] = $cash_amount_due;
+
+		if ($cash_rounding) {
+			$current_due = $cash_amount_due;
+		} else {
+			$current_due = $amount_due;
+		}
+
+		if ($this->get_mode() == 'return') {
+			$totals['payments_cover_total'] = $current_due >= 0;
+		} else {
+			$totals['payments_cover_total'] =  $current_due <= 0;
+		}
+
+		return $totals;
+	}
+	
+	public function get_totals()
+	{
+		$cash_rounding = $this->CI->session->userdata('cash_rounding');
+
+		$totals = array();
+
+		$subtotal = 0;
+		$discounted_subtotal = 0;
+		$total_vat = 0.00;
+		$customer_id = $this->get_customer();
+		$sale_mode = $this->get_mode();
+
+		//new VAT implementation
+
+		//remove VAT price from VATable items
+		//use the remainder as VAT
+		//set the VAT price into VAT
+		foreach ($this->get_cart() as $item) {
+
+			//get subtotals
+			if (strtolower($item['stock_name']) == "wholesale") {
+				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], FALSE));
+			} else {
+
+				if($customer_id > 0){
+					$customer = $this->CI->Customer->get_info($customer_id);
+					if($customer->company_id > 0){
+						$company = $this->CI->Customer->get_company_info($customer->company_id);
+						if ($company->markup > 0) {
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $company->markup, $item['discount'], FALSE));
+						}else{
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+						}
+					}elseif($customer->sale_markup > 0){
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $customer->sale_markup, $item['discount'], FALSE));
+						}else{
+							$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+						}
+				}else{
+					$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+				}
+			}
+			
+			//get discounted total
+			if (strtolower($item['stock_name']) == "wholesale") {
+				$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['wholeprice'], $item['discount'], TRUE));
+			} else {
+
+				if($customer_id > 0){
+					$customer = $this->CI->Customer->get_info($customer_id);
+					if($customer->company_id > 0){
+						$company = $this->CI->Customer->get_company_info($customer->company_id);
+						if ($company->markup > 0) {
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $company->markup, $item['discount'], TRUE));
+						}else{
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+						}
+					}elseif($customer->sale_markup > 0){
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['cost'] * $customer->sale_markup, $item['discount'], TRUE));
+						}else{
+							$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+						}
+				}else{
+					$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
+				}
+			}
+
+			// calculate VAT for VATable items
+			if (strtolower($item["apply_vat"]) == "yes") {
+				$total_vat += $item['vat']; //vat is already calculated when an item is added or edited
+				// $total_vat += get_nearest_five($item['vat']); //vat is already calculated when an item is added or edited
+				//get_nearest_five
+			}
+		}
+
+		//check whether the customer has discount percent.
+		//if yes, calculate and remove it from the total the customer supposed to pay
+		// $customer_id = $this->get_customer();
+		if ($customer_id > 0) {
+			$customer = $this->CI->Customer->get_info($customer_id);
+			if($customer->company_id > 0){
+				$company = $this->CI->Customer->get_company_info($customer->company_id);
+				if($company->discount > 0){
+					$customer_discount = round(($company->discount / 100) * $discounted_subtotal, 3); //by3dp
+					// $customer_discount = round(($company->discount / 100) * $discounted_subtotal, 2);
+					$discounted_subtotal = $discounted_subtotal - $customer_discount;
+				}
+			}elseif ($customer->discount_percent > 0) {
+				$customer_discount = round(($customer->discount_percent / 100) * $discounted_subtotal, 3); //by3dp
+				// $customer_discount = round(($customer->discount_percent / 100) * $discounted_subtotal, 2);
+				$discounted_subtotal = $discounted_subtotal - $customer_discount;
+			}
+		}
+
+		// $total_vat = get_nearest_five($total_vat);
+//		$total_vat = $total_vat;
+
+//		$discounted_subtotal = $discounted_subtotal;
+		$totals['total_vat'] = $total_vat;
+		$totals['subtotal'] = $subtotal;
+		$totals['discounted_subtotal'] = $discounted_subtotal;
+
+		$total = $discounted_subtotal;
+		$totals['total'] = $total;
+
+		if ($cash_rounding) {
+			$cash_total = $this->check_for_cash_rounding($total);
+			$totals['cash_total'] = $cash_total;
+		} else {
+			$cash_total = $total;
+		}
+
+		$totals['cash_total'] = $cash_total;
+
+		$payment_total = $this->get_payments_total();
+		$totals['payment_total'] = $payment_total;
+
+//		echo "Payment Total: ".$payment_total;
+//        echo "Total: ".$total;
+//        echo "Vat Total: ".$total_vat;
+//        exit();
+
+		$amount_due = bcsub($total + $total_vat, $payment_total);
+		$totals['amount_due'] = $amount_due;
+
+		$cash_amount_due = bcsub($cash_total + $total_vat, $payment_total);
+		$totals['cash_amount_due'] = $cash_amount_due;
+
+		if ($cash_rounding) {
+			$current_due = $cash_amount_due;
+		} else {
+			$current_due = $amount_due;
+		}
+
+		if ($this->get_mode() == 'return') {
+			$totals['payments_cover_total'] = $current_due >= 0;
+		} else {
+			$totals['payments_cover_total'] =  $current_due <= 0;
+		}
+
+		return $totals;
+	}
+
+	function get_nearest_five($amount)
+{
+    // $amount = round($amount);
+    $amount = ceil($amount);
+    $remaining_to_reach_five = 5 - ($amount % 5);
+    // if ($remaining_to_reach_five != 5 && $remaining_to_reach_five != 0) {
+    if ($remaining_to_reach_five != 5) {
+        return $amount + $remaining_to_reach_five;
+    } else {
+        return $amount;
+    }
+}
+
+
 	public function get_totals_pill()
 	{
 		$cash_rounding = $this->CI->session->userdata('cash_rounding');
@@ -824,16 +1253,28 @@ class Sale_lib
 	}
 
 	// public function add_item(&$item_id, $retail_or_whole_sale = 'retail', $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0',$qty_selected='retail',$reference=0)
-	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0', $qty_selected = 'retail', $reference = 0, $apply_vat = "NO", $vat = 0)
+	public function add_item(&$item_id, $quantity, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0', $qty_selected = 'retail', $reference = 0, $apply_vat = "NO", $vat = 0,$new_sale = true)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+//		var_dump($item_info);
+//		exit();
+		$num_expired = $this->CI->Sale->get_total_expired_item($item_id);
+		$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id)->quantity;
 
+		if(($num_expired - $item_quantity)>= 0 && $new_sale){
+		    return FALSE;
+        }
 		//make sure item exists		
 		if (empty($item_info)) {
-			$item_id = -1;
+//			$item_id = -1;
 			return FALSE;
 		}
-
+		$aj_req = $this->CI->session->userdata('aj_req');
+		$last_inserted = $this->CI->session->userdata('last_inserted');
+		$cart_item_ids = $this->CI->session->userdata('cart_item_ids') == null ? [] : $this->CI->session->userdata('cart_item_ids');
+		if(!$last_inserted){
+		    $last_inserted = 1;
+        }
 		$item_id = $item_info->item_id;
 
 		// Serialization and Description
@@ -842,55 +1283,97 @@ class Sale_lib
 		$items = $this->get_cart();
 
 		//We need to loop through all items in the cart.
-		//If the item is already there, get it's key($updatekey).
+		//If the item is already there, get it's key($updateKey).
 		//We also need to get the next key that we are going to use in case we need to add the
 		//item to the cart. Since items can be deleted, we can't use a count. we use the highest key + 1.
 
-		$maxkey = 0;                       //Highest key so far
-		$itemalreadyinsale = FALSE;        //We did not find the item yet.
+		$maxKey = 0;                       //Highest key so far
+		$itemAlreadyInSale = FALSE;        //We did not find the item yet.
 		$insertkey = 0;                    //Key to use for new entry.
-		$updatekey = 0;                    //Key to use to update(quantity)
+		$updateKey = 0;                    //Key to use to update(quantity)
+		if(!$aj_req){
+            foreach ($items as $item) {
+                //We primed the loop so maxKey is 0 the first time.
+                //Also, we have stored the key in the element itself so we can compare.
 
-		foreach ($items as $item) {
-			//We primed the loop so maxkey is 0 the first time.
-			//Also, we have stored the key in the element itself so we can compare.
+                if ($maxKey < $item['line']) {
+                    $maxKey = $item['line'];
+                }
 
-			if ($maxkey <= $item['line']) {
-				$maxkey = $item['line'];
-			}
+                if ($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference'] == $reference && $item['qty_selected'] == $qty_selected)
+                    // if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
+                {
+                    $itemAlreadyInSale = TRUE;
+                    $updateKey = $item['line'];
+                    if (!$item_info->is_serialized) {
+                        $quantity = bcadd($quantity, $items[$updateKey]['quantity']);
+                    }
+                }
+                if ($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference'] == $reference && $item['qty_selected'] == $qty_selected)
+                    // if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
+                {
+                    $itemAlreadyInSale = TRUE;
+                    $updateKey = $item['line'];
+                }
+            }
+        }else{
+		    if(in_array($item_id,$cart_item_ids)){
+		        $itemAlreadyInSale = true;
+            }
+        }
 
-			if ($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference'] == $reference && $item['qty_selected'] == $qty_selected)
-			// if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
-			{
-				$itemalreadyinsale = TRUE;
-				$updatekey = $item['line'];
-				if (!$item_info->is_serialized) {
-					$quantity = bcadd($quantity, $items[$updatekey]['quantity']);
-				}
-			}
-			if ($item['item_id'] == $item_id && $item['item_location'] == $item_location && $item['reference'] == $reference && $item['qty_selected'] == $qty_selected)
-			// if($item['item_id'] == $item_id && $item['reference']==$reference && $item['qty_selected'] == $retail_or_whole_sale)
-			{
-				$itemalreadyinsale = TRUE;
-				$updatekey = $item['line'];
-			}
-		}
-
-		$insertkey = $maxkey + 1;
+//		$insertkey = $maxKey + 1;
+        $insertkey = $last_inserted + 1;
 		//array/cart records are identified by $insertkey and item_id is just another field.
 
 		$vatForThisItem = 0;
 		$vat_applied = $item_info->apply_vat;
+
+		//cutomer
+		$customer_id = $this->get_customer();
+		
+		//first, fix price
+		$originalSellingPrice = $item_info->unit_price;
+		$originalCostPrice = $item_info->cost_price;
+
+		$sellingPrice = 0;
+		if($customer_id > 0){
+			$customer = $this->CI->Customer->get_info($customer_id);
+			if($customer->company_id > 0){
+				$company = $this->CI->Customer->get_company_info($customer->company_id);
+				if($company->markup > 0){
+					$sellingPrice = $originalCostPrice * $company->markup;
+				}else{
+					$sellingPrice = $originalSellingPrice;
+				}
+			}elseif($customer->sale_markup > 0){
+				$sellingPrice = $originalCostPrice * $customer->sale_markup;
+			}else{
+				$sellingPrice = $originalSellingPrice;
+			}
+		}else{
+			$sellingPrice = $originalSellingPrice;
+		}
+
 		if (is_null($price) && $reference == 0) {
 			if (strtolower($item_info->apply_vat) == 'yes') {
+				//new formula
 				$configuredAppVat = $this->CI->config->item('vat');
-				$vatForThisItem = round(($item_info->unit_price * ($configuredAppVat / 100)), 2);
+//				var_dump($configuredAppVat);
+//				exit();
+				$vatCalc = ($configuredAppVat / 100);
+
+				// $exclOfVat = $item_info->unit_price - round(($item_info->unit_price * $vatCalc), 3);
+				// $vatForThisItem = $item_info->unit_price - $exclOfVat;
+
+				$exclOfVat = $sellingPrice - round(($sellingPrice * $vatCalc), 3);
+				$vatForThisItem = $sellingPrice - $exclOfVat;
+
 				$totalVat = floatval($this->getTotalVat()) + $vatForThisItem;
 				$this->setTotalVat($totalVat);
-				//$price =  $item_info->unit_price + $vatForThisItem;
-				$price = $item_info->unit_price;
+				$price = $exclOfVat;
 			} else {
-				$price = $item_info->unit_price;
+				$price = $sellingPrice;
 			}
 		} elseif (is_null($price) && $reference == 1) { //reference 1 means the item is pill reminder
 			$price = $this->CI->config->config['price_pill'];
@@ -902,7 +1385,6 @@ class Sale_lib
 			$vatForThisItem = $vat;
 		}
 
-
 		// For print purposes this simpifies line selection
 		// 0 will print, 2 will not print.   The decision about 1 is made here
 		if ($print_option == '1') {
@@ -913,9 +1395,8 @@ class Sale_lib
 			}
 		}
 
+		$cost = $item_info->cost_price;
 		$total = $this->get_item_total($quantity, $price, $discount);
-
-
 		$discounted_total = $this->get_item_total($quantity, $price, $discount, TRUE);
 
 		//$total = $this->get_item_total($quantity, $price, $discount);
@@ -924,27 +1405,40 @@ class Sale_lib
 		$no_of_days = 1;
 		$reminder_value = 1;
 		$time_started = date('Y-m-d H:i:s');
-		if (!$itemalreadyinsale || $item_info->is_serialized) {
+		if (!$itemAlreadyInSale || $item_info->is_serialized) {
+//		    echo "hello";
+            $s_loc = $this->CI->Stock_location->get_location_name($item_location);
+            $batches = $this->CI->Item->fetch_item_batches($item_id,$item_location);
+
+            $selected_batch = $this->CI->Item->fetch_item_sale_default_batches($item_id,$item_location);
+//            var_dump($batches);
+//            exit();
 			$item = array(
 				$insertkey => array(
 					'item_id' => $item_id,
 					'item_location' => $item_location,
-					'stock_name' => $this->CI->Stock_location->get_location_name($item_location),
+					'stock_name' => $s_loc,
+					's_type'=> $s_loc == $this->CI->lang->line('wholesale')?'wholesale':'retail',
 					'line' => $insertkey,
 					'name' => $item_info->name,
 					'item_number' => $item_info->item_number,
 					'description' => $description != NULL ? $description : $item_info->description,
 					'serialnumber' => $serialnumber != NULL ? $serialnumber : '',
 					'allow_alt_description' => $item_info->allow_alt_description,
+					'batches'=>$batches,
+					'batch_no'=>$selected_batch,
 					'is_serialized' => $item_info->is_serialized,
 					'quantity' => $quantity,
 					'qty_selected' => $qty_selected,
 					'discount' => $discount,
 					'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+					// 'price' => get_nearest_five($price),
 					'price' => $price,
-					'wholeprice' => $item_info->whole_price,
+					'cost' => get_nearest_five($cost),
+					'wholeprice' => get_nearest_five($item_info->whole_price),
+					// 'total' => get_nearest_five($total),
 					'total' => $total,
-					'discounted_total' => $discounted_total,
+					'discounted_total' => get_nearest_five($discounted_total),
 					'print_option' => '1',
 					'stock_type' => $stock_type,
 					'tax_category_id' => $item_info->tax_category_id,
@@ -959,19 +1453,170 @@ class Sale_lib
 				)
 			);
 			//add to existing array
+//            var_dump($item);
+//            echo " <br> item <br>";
 			$items += $item;
+
+//			var_dump($items);
+//            echo " <br> items <br>";
+			$cart_item_ids[] = $item_id;
+            $this->CI->session->set_userdata('last_inserted', $insertkey);
 		} else {
-			$line = &$items[$updatekey];
+			$line = &$items[$updateKey];
 			$line['quantity'] = $quantity;
 			$line['total'] = $total;
 			$line['discounted_total'] = $discounted_total;
 		}
 
 
-		$this->set_cart($items);
+		$this->set_cart($items,$item_id);
+//		var_dump($items);
+//		echo "<br> after set cart <br>";
+//
+//		var_dump($this->get_cart());
+//        echo "<br> what is saved cart <br>";
+//        exit();
 
 		return TRUE;
 	}
+
+	public function recheck_items(){
+
+		$newItems = array();
+		$insertkey = 1;
+		$item_location = $this->get_sale_location();
+
+		foreach ($this->get_cart() as $item) {
+
+			$item_id = $item['item_id'];
+
+			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+
+			//make sure item exists		
+			if (empty($item_info)) {
+				$item_id = -1;
+				return FALSE;
+			}
+
+			$item_id = $item_info->item_id;
+
+			$vatForThisItem = 0;
+			$vat_applied = $item_info->apply_vat;
+
+			//start here
+			$qty_type = $item['qty_selected'];
+			$priceToSaleWith = 0; //we'll send this price to perform the calculation
+
+			//check if current mode is retail or wholesale
+			if ($qty_type == 'retail') {
+				$priceToSaleWith = parse_decimals($item_info->unit_price);
+			} else {
+				$priceToSaleWith = parse_decimals($item_info->whole_price);
+			}
+			//ends here
+
+			//cutomer
+			$customer_id = $this->get_customer();
+			
+			//first, fix price
+			// $originalSellingPrice = $item_info->unit_price;
+			$originalSellingPrice = $priceToSaleWith;
+			$originalCostPrice = $item_info->cost_price;
+
+			$sellingPrice = 0;
+			if($customer_id > 0){
+				$customer = $this->CI->Customer->get_info($customer_id);
+				if($customer->company_id > 0){
+					$company = $this->CI->Customer->get_company_info($customer->company_id);
+					if($company->markup > 0){
+						$sellingPrice = $originalCostPrice * $company->markup;
+					}else{
+						$sellingPrice = $originalSellingPrice;
+					}
+				}elseif($customer->sale_markup > 0){
+					$sellingPrice = $originalCostPrice * $customer->sale_markup;
+				}else{
+					$sellingPrice = $originalSellingPrice;
+				}
+			}else{
+				$sellingPrice = $originalSellingPrice;
+			}
+
+			if (strtolower($item_info->apply_vat) == 'yes') {
+				//new formula
+				$configuredAppVat = $this->CI->config->item('vat');
+				$vatCalc = ($configuredAppVat / 100);
+
+				$exclOfVat = $sellingPrice - round(($sellingPrice * $vatCalc), 3);
+				$vatForThisItem = $sellingPrice - $exclOfVat;
+
+				$totalVat = floatval($this->getTotalVat()) + $vatForThisItem;
+				$this->setTotalVat($totalVat);
+				$price = $exclOfVat;
+			} else {
+				$price = $sellingPrice;
+			}
+			$print_option = '0';
+
+			$cost = $item_info->cost_price;
+			$total = $this->get_item_total($item['quantity'], $price, $item['discount']);
+			$discounted_total = $this->get_item_total($item['quantity'], $price, $item['discount'], TRUE);
+
+			$no_of_days = 1;
+			$reminder_value = 1;
+			$time_started = date('Y-m-d H:i:s');
+
+			$new = array(
+				'item_id' => $item_id,
+				'item_location' => $item_location,
+				'stock_name' => $this->CI->Stock_location->get_location_name($item_location),
+				'line' => $item['line'],
+				'name' => $item_info->name,
+				'item_number' => $item_info->item_number,
+				'description' => $item_info->description,
+				'serialnumber' => $item['serialnumber'],
+				'allow_alt_description' => $item_info->allow_alt_description,
+				'is_serialized' => $item_info->is_serialized,
+				'quantity' => $item['quantity'],
+				'qty_selected' => $item['qty_selected'],
+				'discount' => $item['discount'],
+				'batch_no'=> $item['batch_no'],
+				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+				// 'price' => get_nearest_five($price),
+				'price' => $price,
+				'cost' => get_nearest_five($cost),
+				'wholeprice' => get_nearest_five($item_info->whole_price),
+				// 'total' => get_nearest_five($total),
+				'total' => $total,
+				'discounted_total' => get_nearest_five($discounted_total),
+				'print_option' => '1',
+				'stock_type' => $item['stock_type'],
+				'tax_category_id' => $item_info->tax_category_id,
+				'time_started' => $item['time_started'],
+				'reference' => $item['reference'],
+				'reminder_value' => $item['reminder_value'],
+				'reminder_amount' => 0, //$reminder_amount,
+				'no_of_days' => $item['no_of_days'],
+				'period' => 0, //$period,
+				'apply_vat' => $item_info->apply_vat,
+				'vat' => round($vatForThisItem, 2)
+			);
+
+			//add to existing array
+			$newItems[$item['line']] = $new;
+		}
+
+		// echo "<pre>";
+		// print_r($newItems);
+		// echo "</pre>";
+		// die();
+
+		$this->set_cart($newItems);
+
+		return TRUE;
+	}
+
+
 	public function add_item_pill(&$item_id, $period, $no_of_days, $time_started, $price = NULL)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
@@ -1105,6 +1750,7 @@ class Sale_lib
 	}
 	public function item_add_lab(&$item_id, $quantity = 1, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '1')
 	{
+		
 		$item_info = $this->CI->Item->get_labinfo_by_id_or_number($item_id);
 
 		//make sure item exists		
@@ -1337,6 +1983,20 @@ class Sale_lib
 		return FALSE;
 	}
 
+	public function edit_requested_items($line, $received_quantity, $batch_no, $expiry)
+	{
+		$items = $this->get_push();
+		if (isset($items[$line])) {
+			$line = &$items[$line];
+			$line['batch_no'] = $batch_no;
+			$line['expiry'] = $expiry;
+			$line['quantity'] = $quantity;
+			$this->set_push($items);
+		}
+
+		return FALSE;
+	}
+
 	public function add_lab_cart($grants_data)
 	{
 		$items = array();
@@ -1367,11 +2027,49 @@ class Sale_lib
 			$insertkey += 1;
 			$items += $item;
 		}
+
+		
 		//$items=+=$item;
 		//$items=array('name'=>'Goueg');
 
 		$this->set_labcart($items);
 	}
+	
+	//transfer items
+	public function get_transfer()
+	{
+		if (!$this->CI->session->userdata('transfer_cart')) {
+			$this->set_transfer(array());
+		}
+
+		return $this->CI->session->userdata('transfer_cart');
+	}
+	public function set_transfer($push_data)
+	{
+		$this->CI->session->set_userdata('transfer_cart', $push_data);
+	}
+	public function empty_transfer()
+	{
+		$this->CI->session->unset_userdata('transfer_cart');
+	}
+
+	public function get_transfer_branch()
+	{
+		if (!$this->CI->session->userdata('transfer_branch')) {
+			$this->set_transfer(array());
+		}
+
+		return $this->CI->session->userdata('transfer_branch');
+	}
+	public function set_transfer_branch($push_data)
+	{
+		$this->CI->session->set_userdata('transfer_branch', $push_data);
+	}
+	public function empty_transfer_branch()
+	{
+		$this->CI->session->unset_userdata('transfer_branch');
+	}
+	
 	public function get_push()
 	{
 		if (!$this->CI->session->userdata('push_cart')) {
@@ -1525,8 +2223,7 @@ class Sale_lib
 		$insertkey = 0;                    //Key to use for new entry.
 		$updatekey = 0;                    //Key to use to update(quantity)
 
-
-
+		$ind = count($items) + 1;
 
 		$item  = array(
 			'item_id' => $item_info->item_id,
@@ -1545,7 +2242,8 @@ class Sale_lib
 			'print_option' => 1,
 
 		);
-		$items[] = $item;
+		// $items[] = $item;
+		$items[$ind] = $item;
 
 		$this->set_lab_resultcart($items);
 
@@ -1624,7 +2322,6 @@ class Sale_lib
 					'line' => $line,
 					'reference' => $reference,
 					'print_option' => 1,
-
 				)
 			);
 			//add to existing array
@@ -1638,10 +2335,13 @@ class Sale_lib
 		return TRUE;
 	}
 
-	public function add_item_push(&$item_id, $quantity, $request_from_branch_id, $request_to_branch_id = 0, $transfer_id = 0, $received_quantity = 0, $unaccounted = 0, $reference = 0, $batch_no = 0, $expiry = NULL)
+	public function add_item_push(&$item_id, $quantity, $request_from_branch_id, $request_to_branch_id = 0, $transfer_id = 0, $received_quantity = 0, $unaccounted = 0, $reference = 0, $batch_no = 0, $expiry = NULL,$is_id = false)
 	{
-		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+	    $loc = $this->get_sale_location();
+//	    var_dump($item_id);
+		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id,false,$is_id);
 
+//		return $item_info;
 		//make sure item exists		
 		if (empty($item_info)) {
 			$item_id = -1;
@@ -1659,6 +2359,249 @@ class Sale_lib
 		}
 
 		// Serialization and Description
+
+		//Get all items in the cart so far...
+		$items = $this->get_push();
+
+		//We need to loop through all items in the cart.
+		//If the item is already there, get it's key($updatekey).
+		//We also need to get the next key that we are going to use in case we need to add the
+		//item to the cart. Since items can be deleted, we can't use a count. we use the highest key + 1.
+
+		$maxkey = 0;                       //Highest key so far
+		$itemalreadyinsale = FALSE;        //We did not find the item yet.
+		$insertkey = 0;                    //Key to use for new entry.
+		$updateKey = 0;                    //Key to use to update(quantity)
+
+		foreach ($items as $item) {
+			//We primed the loop so maxkey is 0 the first time.
+			//Also, we have stored the key in the element itself so we can compare.
+
+			if ($maxkey <= $item['line']) {
+				$maxkey = $item['line'];
+			}
+			if ($item['item_id'] == $item_id && $reference == 0) {
+				$itemalreadyinsale = TRUE;
+				$updateKey = $item['line'];
+				if (!$item_info->is_serialized) {
+					$quantity = bcadd($quantity, $items[$updatekey]['quantity']);
+				}
+			}
+		}
+
+		$insertkey = $maxkey + 1;
+		//array/cart records are identified by $insertkey and item_id is just another field.
+
+		if (is_null($price)) {
+			$price = $item_info->unit_price;
+		} elseif ($price == 0) {
+			$price = 0.00;
+			$discount = 0.00;
+		}
+		if (is_null($wholeprice)) {
+			$wholeprice = $item_info->custom5;
+		} elseif ($wholeprice == 0) {
+			$wholeprice = 0.00;
+			$discount = 0.00;
+		}
+
+		// For print purposes this simpifies line selection
+		// 0 will print, 2 will not print.   The decision about 1 is made here
+		if ($print_option == '1') {
+			if ($price == 0) {
+				$print_option = '2';
+			} else {
+				$print_option = '0';
+			}
+		}
+		if ($this->CI->Stock_location->get_location_name($request_from_branch_id) == 'WholeSale') {
+			$total = $this->get_item_total($quantity, $wholeprice, $discount);
+		} else {
+			$total = $this->get_item_total($quantity, $price, $discount);
+		}
+		if ($this->CI->Stock_location->get_location_name($request_from_branch_id) == 'WholeSale') {
+			$discounted_total = $this->get_item_total($quantity, $wholeprice, $discount, TRUE);
+		} else {
+			$discounted_total = $this->get_item_total($quantity, $price, $discount, TRUE);
+		}
+		//$total = $this->get_item_total($quantity, $price, $discount);
+		//$discounted_total = $this->get_item_total($quantity, $price, $discount, TRUE);
+		//Item already exists and is not serialized, add to quantity
+
+		if (!$itemalreadyinsale) {
+			$item = array($insertkey => array(
+				'item_id' => $item_id,
+				'cost_price' => $item_info->cost_price,
+				'unit_price' => $item_info->unit_price,
+				'transfer_price' => $item_info->cost_price, //transfer_price is by default cost price
+				'whole_price' => $item_info->whole_price,
+				'item_location' => $request_from_branch_id,
+				'location' => $request_to_branch_id != NULL ? $request_to_branch_id : 'None',
+				'stock_name' => $this->CI->Stock_location->get_location_name($request_from_branch_id),
+				'line' => $insertkey,
+				'branch_transfer' => $this->CI->Item->get_transfer_branch_id($request_to_branch_id),
+				'name' => $item_info->name,
+				'item_number' => $item_info->item_number,
+				'allow_alt_description' => $item_info->allow_alt_description,
+				'is_serialized' => $item_info->is_serialized,
+				'quantity' => $quantity,
+				'category'=>$item_info->category,
+				'wholesale_markup'=>$item->wholesale_markup,
+                'unit_price_markup'=>$item->unit_price_markup,
+                'reorder_level'=>$item->reorder_level,
+				'stock_type' => '0',
+				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $request_from_branch_id)->quantity,
+				'transfer_id' => $transfer_id,
+				'received_quantity' => $received_quantity,
+				'unaccounted' => $unaccounted,
+				'reference' => $reference,
+				'expiry' => $expiry,
+				'batch_no' => $batch_no,
+                'batches'=> $item_info->batch_numbers
+			));
+			//add to existing array
+			$items += $item;
+            $this->CI->session->set_userdata('last_inserted', $insertkey);
+		} else {
+//			$line = &$items[$updatekey];
+            $line = $items[$updateKey];
+            unset($items[$updateKey]);
+			$line['quantity'] += $quantity;
+			foreach ($items as $item_line=>$item){
+                $items[$item_line]['line'] = $item_line;
+            }
+			$items[] = $line;
+		}
+		$this->set_push($items);
+
+
+		return TRUE;
+	}
+
+	public function add_item_to_transfer(&$item_id, $quantity, $accepted_quantity = 0, $request_id)
+	{
+		$print_option = 1;
+		$request_to_branch_id = 3;
+		$request_from_branch_id = 2;
+
+		$item_info = $this->CI->Item->get_item_info_by_number($item_id);
+		// $item_info = $this->Item->get_item_info_by_number($item_id);
+
+
+		//make sure item exists		
+		if (empty($item_info)) {
+			$item_id = -1;
+			return FALSE;
+		}
+
+		$item_id = $item_info->item_id;
+
+		//Get all items in the cart so far...
+		$items = $this->get_transfer();
+
+		//We need to loop through all items in the cart.
+		//If the item is already there, get it's key($updatekey).
+		//We also need to get the next key that we are going to use in case we need to add the
+		//item to the cart. Since items can be deleted, we can't use a count. we use the highest key + 1.
+
+		$maxkey = 0;                       //Highest key so far
+		$itemalreadyinsale = FALSE;        //We did not find the item yet.
+		$insertkey = 0;                    //Key to use for new entry.
+		$updatekey = 0;                    //Key to use to update(quantity)
+
+		foreach ($items as $item) {
+			//We primed the loop so maxkey is 0 the first time.
+			//Also, we have stored the key in the element itself so we can compare.
+
+			if ($maxkey <= $item['line']) {
+				$maxkey = $item['line'];
+			}
+			if ($item['item_id'] == $item_id) {
+				$itemalreadyinsale = TRUE;
+				$updatekey = $item['line'];
+				if (!$item_info->is_serialized) {
+					$quantity = bcadd($quantity, $items[$updatekey]['quantity']);
+				}
+			}
+		}
+
+		$insertkey = $maxkey + 1;
+		//array/cart records are identified by $insertkey and item_id is just another field.
+		$price = $item_info->unit_price;
+
+		// For print purposes this simpifies line selection
+		// 0 will print, 2 will not print.   The decision about 1 is made here
+		if ($print_option == '1') {
+			if ($price == 0) {
+				$print_option = '2';
+			} else {
+				$print_option = '0';
+			}
+		}
+
+		
+		// if ($this->CI->Stock_location->get_location_name($request_from_branch_id) == 'WholeSale') {
+		// 	$total = $this->get_item_total($quantity, $wholeprice, $discount);
+		// } else {
+		// 	$total = $this->get_item_total($quantity, $price, $discount);
+		// }
+		// if ($this->CI->Stock_location->get_location_name($request_from_branch_id) == 'WholeSale') {
+		// 	$discounted_total = $this->get_item_total($quantity, $wholeprice, $discount, TRUE);
+		// } else {
+		// 	$discounted_total = $this->get_item_total($quantity, $price, $discount, TRUE);
+		// }
+
+
+		if (!$itemalreadyinsale) {
+
+			$item = array(
+				'item_id' => $item_id,
+				'cost_price' => $item_info->cost_price,
+				'unit_price' => $item_info->unit_price,
+				'transfer_price' => $item_info->cost_price, //transfer_price is by default cost price
+				'whole_price' => $item_info->whole_price,
+				'item_location' => $request_from_branch_id,
+				'location' => $request_to_branch_id != NULL ? $request_to_branch_id : 'None',
+				'stock_name' => $this->CI->Stock_location->get_location_name($request_from_branch_id),
+				'line' => $insertkey,
+				'branch_transfer' => $this->CI->Item->get_transfer_branch_id($request_to_branch_id),
+				'name' => $item_info->name,
+				'item_number' => $item_info->item_number,
+				'allow_alt_description' => $item_info->allow_alt_description,
+				'is_serialized' => $item_info->is_serialized,
+				'quantity' => $quantity,
+				'stock_type' => '0',
+				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, 2)->quantity,
+				'transfer_id' => $request_id,
+				'accepted_quantity' => $accepted_quantity,
+			);
+
+			//add to existing array
+			// $items += $item;
+			array_push($items, $item);
+			
+		} else {
+			$line = &$items[$updatekey];
+			$line['quantity'] = $quantity;
+		}
+		
+		$this->set_transfer($items);
+
+		return TRUE;
+	}
+
+
+	public function add_item_request(&$item_id, $quantity, $request_from_branch_id, $request_to_branch_id = 0, $transfer_id = 0, $received_quantity = 0, $unaccounted = 0, $reference = 0, $batch_no = 0, $expiry = NULL)
+	{
+		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+
+		//make sure item exists		
+		if (empty($item_info)) {
+			$item_id = -1;
+			return FALSE;
+		}
+
+		$item_id = $item_info->item_id;
 
 		//Get all items in the cart so far...
 		$items = $this->get_push();
@@ -1724,15 +2667,13 @@ class Sale_lib
 		} else {
 			$discounted_total = $this->get_item_total($quantity, $price, $discount, TRUE);
 		}
-		//$total = $this->get_item_total($quantity, $price, $discount);
-		//$discounted_total = $this->get_item_total($quantity, $price, $discount, TRUE);
-		//Item already exists and is not serialized, add to quantity
 
 		if (!$itemalreadyinsale) {
 			$item = array($insertkey => array(
 				'item_id' => $item_id,
 				'cost_price' => $item_info->cost_price,
 				'unit_price' => $item_info->unit_price,
+				'transfer_price' => $item_info->cost_price, //transfer_price is by default cost price
 				'whole_price' => $item_info->whole_price,
 				'item_location' => $request_from_branch_id,
 				'location' => $request_to_branch_id != NULL ? $request_to_branch_id : 'None',
@@ -1764,6 +2705,7 @@ class Sale_lib
 
 		return TRUE;
 	}
+
 	public function add_item_pull(&$item_id, $quantity, $request_from_branch_id, $request_to_branch_id = 0, $transfer_id = 0, $received_quantity = 0, $unaccounted = 0, $reference = 0, $batch_no = 0, $expiry = NULL)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
@@ -2052,7 +2994,6 @@ class Sale_lib
 		if ($item_id != -1) {
 			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
-
 			if ($item_info->stock_type == '0') {
 				$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity;
 				$quantity_added = $this->get_quantity_already_added($item_id, $item_location);
@@ -2119,9 +3060,22 @@ class Sale_lib
 		}
 		$this->set_cart($items);
 	}
-	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $qty_selected)
+	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $qty_selected,$batch_no=null)
 	{
+
 		$items = $this->get_cart();
+        $mode = $this->get_mode();
+        $registered_returns = [];
+        if($mode == 'return'){
+            $items_copy = $this->CI->session->userdata('coppyitems');
+            if($items_copy == null){
+                $items_copy = $items;
+                $this->CI->session->set_userdata('coppyitems',$items_copy);
+            }else{
+                $items[$line] = $items_copy[$line];
+            }
+            $registered_returns = $this->get_registered_returns();
+        }
 
 		if (isset($items[$line])) {
 			$line = &$items[$line];
@@ -2130,17 +3084,46 @@ class Sale_lib
 			$line['quantity'] = $quantity;
 			$line['qty_selected'] = $qty_selected;
 			$line['discount'] = $discount;
-			$line['price'] = $price;
-			$line['total'] = $this->get_item_total($quantity, $price, $discount);
-			$discount_total = $this->get_item_total($quantity, $price, $discount, TRUE);
-			$line['discounted_total'] = $discount_total;
-			$vatForThisItem = 0;
-			if (trim(strtolower($line['apply_vat'])) == "yes") {
+			if($batch_no){
+                $line['batch_no'] = $batch_no;
+            }
 
+
+			// //before
+			// $line['price'] = get_nearest_five($price);
+			// $line['total'] = get_nearest_five($this->get_item_total($quantity, $price, $discount));
+			// $discount_total = get_nearest_five($this->get_item_total($quantity, $price, $discount, TRUE));
+
+			// $line['price'] = get_nearest_five($price);
+			
+			$vatForThisItem = 0;
+			$itemPrice = $price;
+			if (strtolower($line['apply_vat']) == "yes") {
+				
 				$configuredAppVat = $this->CI->config->item('vat');
-				$vatForThisItem = round((($quantity * $price) * ($configuredAppVat / 100)), 2);
+				$vatCalc = 1 + ($configuredAppVat / 100);
+				$itemPrice = round(($itemPrice / $vatCalc), 3);
+				
+				$exclOfVat = round((($quantity * $price) / $vatCalc), 3);
+				$vatForThisItem = ($quantity * $price) - $exclOfVat;
+
+				$line['price'] = $itemPrice;
+				$line['total'] = $this->get_item_total($quantity, $itemPrice, $discount);
+				
+				//old
+				// $configuredAppVat = $this->CI->config->item('vat');
+				// $vatForThisItem = round((($quantity * $price) * ($configuredAppVat / 100)), 2);
+
+
+			}else{
+				$line['price'] = get_nearest_five($itemPrice);
+				$line['total'] = get_nearest_five($this->get_item_total($quantity, $itemPrice, $discount));
 			}
-			$line['vat'] = $vatForThisItem;
+			$line['vat'] =  $vatForThisItem;
+			// $line['total'] = get_nearest_five($this->get_item_total($quantity, $price, $discount));
+			$discount_total = get_nearest_five($this->get_item_total($quantity, $itemPrice, $discount, TRUE));
+
+			$line['discounted_total'] = $discount_total;
 
 
 			//check if there are identical items in the different lines
@@ -2150,9 +3133,13 @@ class Sale_lib
 			$line_to_remove = 0;
 			$line_to_stay = 0;
 			$total_quantity = 0;
-			foreach ($items as $index => $item) {
-				if ($item['line'] == $cur_line) {
 
+			foreach ($items as $index => $item) {
+			    if(!in_array($item['item_id'],$registered_returns) && $mode==='return'){
+			        unset($items[$index]);
+			        continue;
+                }
+				if ($item['line'] == $cur_line) {
 					continue;
 				} else {
 					if ($line['item_id'] == $item['item_id'] && $line['item_location'] == $item['item_location'] && $line['qty_selected'] == $item['qty_selected']) {
@@ -2167,10 +3154,9 @@ class Sale_lib
 						//calculate total quantitity
 						//the reason for taking the bigger one is , adding both might cause out of stock
 
-
 						$total_quantity = $items[$line_to_stay]['quantity'] + $items[$line_to_remove]['quantity'];
 
-						//remove 
+						//remove
 						unset($items[$line_to_remove]);
 						//increase the quantity of line to stay
 						$items[$line_to_stay]['quantity'] = $total_quantity;
@@ -2185,20 +3171,19 @@ class Sale_lib
 				}
 			} //End of the duplication removal
 
-
-
 			$this->set_cart($items);
 			return TRUE;
 		}
 
 		return FALSE;
 	}
-	public function edit_salepill_item($line, $time_started, $reminder_value, $no_of_days, $discount, $price)
+	public function edit_salepill_item($line, $time_started, $time_ended, $reminder_value, $no_of_days, $discount, $price)
 	{
 		$items = $this->get_cart();
 		if (isset($items[$line])) {
 			$line = &$items[$line];
 			$line['time_started'] = $time_started;
+			$line['time_ended'] = $time_ended;
 			$line['reminder_value'] = $reminder_value;
 			$quantity = $reminder_value * $no_of_days;
 			$line['quantity'] = $quantity;
@@ -2225,17 +3210,30 @@ class Sale_lib
 
 		return FALSE;
 	}
-	public function edit_item_push($line, $item_name, $item_location, $quantity, $location, $branch_transfer)
+	public function edit_item_push($line, $item_name, $item_location, $quantity, $location, $branch_transfer, $batch_no = "", $expiry = null, $transfer_price = 0)
 	{
 		$items = $this->get_push();
 
 		if (isset($items[$line])) {
 			$line = &$items[$line];
+			$item_info = $this->CI->Item->get_info_by_id_or_number($line['item_id']);
+			//item cost or selling price must have changed through the update
+			if ($line['transfer_price'] == $item_info->unit_price) {
+				$line['transfer_price'] = $item_info->unit_price;
+				$line['unit_price'] = $item_info->unit_price;
+				$line['cost_price'] = $item_info->cost_price;
+			} else {
+				$line['transfer_price'] = $item_info->cost_price;
+				$line['cost_price'] = $item_info->cost_price;
+				$line['unit_price'] = $item_info->unit_price;
+			}
+
 			$line['item_name'] = $item_name;
 			$line['item_location'] = $item_location;
 			$line['quantity'] = $quantity;
 			$line['location'] = $location;
 			$line['branch_transfer'] = $branch_transfer;
+			$line['transfer_price'] = $transfer_price;
 
 			$this->set_push($items);
 		}
@@ -2246,6 +3244,86 @@ class Sale_lib
 		$this->set_push($items);
 		return FALSE;
 	}
+
+	public function edit_item_request($line, $item_name, $item_location, $quantity, $location, $branch_transfer, $batch_no = "", $expiry = null)
+	{
+		$items = $this->get_push();
+
+		if (isset($items[$line])) {
+			$line = &$items[$line];
+			$item_info = $this->CI->Item->get_info_by_id_or_number($line['item_id']);
+			//item cost or selling price must have changed through the update
+			if ($line['transfer_price'] == $item_info->unit_price) {
+				// $line['transfer_price'] = $item_info->unit_price;
+				$line['unit_price'] = $item_info->unit_price;
+				$line['cost_price'] = $item_info->cost_price;
+			} else {
+				// $line['transfer_price'] = $item_info->cost_price;
+				$line['cost_price'] = $item_info->cost_price;
+				$line['unit_price'] = $item_info->unit_price;
+			}
+
+			$line['item_name'] = $item_name;
+			$line['item_location'] = $item_location;
+			$line['quantity'] = $quantity;
+			$line['location'] = $location;
+			$line['branch_transfer'] = $branch_transfer;
+			// $line['transfer_price'] = $transfer_price;
+
+			$this->set_push($items);
+		}
+		//Set all the location to be the same
+		foreach ($items as $key => $item) {
+			$items[$key]['branch_transfer'] = $branch_transfer;
+		}
+		$this->set_push($items);
+		return FALSE;
+	}
+
+	public function edit_item_transfer($line, $item_name, $item_location, $quantity, $accepted_quantity, $location, $branch_transfer, $batch_no = "", $expiry = null)
+	{
+		$items = $this->get_transfer();
+
+		// print_r($items[0]);
+		// die();
+
+		if (isset($items[$line])) {
+
+			$line = &$items[$line];
+			$item_info = $this->CI->Item->get_info_by_id_or_number($line['item_id']);
+			//item cost or selling price must have changed through the update
+			// if ($line['transfer_price'] == $item_info->unit_price) {
+			// 	$line['transfer_price'] = $item_info->unit_price;
+			// 	$line['unit_price'] = $item_info->unit_price;
+			// 	$line['cost_price'] = $item_info->cost_price;
+			// } else {
+			// 	// $line['transfer_price'] = $item_info->cost_price;
+			// 	$line['cost_price'] = $item_info->cost_price;
+			// 	$line['unit_price'] = $item_info->unit_price;
+			// }
+
+			$line['transfer_price'] = $item_info->cost_price;
+			$line['unit_price'] = $item_info->unit_price;
+			$line['cost_price'] = $item_info->cost_price;
+
+			$line['item_name'] = $item_name;
+			$line['item_location'] = $item_location;
+			$line['quantity'] = $quantity;
+			$line['accepted_quantity'] = $accepted_quantity;
+			$line['location'] = $location;
+			$line['branch_transfer'] = $branch_transfer;
+			// $line['transfer_price'] = $transfer_price;
+
+			$this->set_transfer($items);
+		}
+		//Set all the location to be the same
+		foreach ($items as $key => $item) {
+			$items[$key]['branch_transfer'] = $branch_transfer;
+		}
+		$this->set_transfer($items);
+		return FALSE;
+	}
+
 	public function edit_item_pull($line, $item_name, $item_location, $quantity, $location, $branch_transfer, $stock_name, $in_stock)
 	{
 		$items = $this->get_push();
@@ -2356,24 +3434,34 @@ class Sale_lib
 		return $result;
 	}
 
-	public function copy_entire_sale($sale_id)
+	public function copy_entire_sale($sale_id,$for_returns = false,$for_receipt=false)
 	{
 		$this->empty_cart();
 		$this->remove_customer();
 
-		$saleSession = $this->CI->Sale->get_sale_items_ordered($sale_id)->result();
+		if($for_returns){
+		    $saleSession = $this->CI->Sale->eligible_returns($sale_id);
+            $this->CI->session->set_userdata('returned_sales', $sale_id);
+        }else{
+            $saleSession = $this->CI->Sale->get_sale_items_ordered($sale_id)->result();
+        }
+
 		foreach ($saleSession as $row) {
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option, '0', $row->qty_selected, 0, $row->apply_vat, $row->vat);
+			// $this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option, '0', $row->qty_selected, 0, $row->apply_vat, $row->vat); //modifed for pill remainder
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option, '0', $row->qty_selected, $row->reference, $row->apply_vat, $row->vat,false);
 		}
 
-		foreach ($this->CI->Sale->get_sale_payments($sale_id)->result() as $row) {
-			$this->add_payment($row->payment_type, $row->payment_amount);
-		}
+        if(!$for_returns){
+            foreach ($this->CI->Sale->get_sale_payments($sale_id)->result() as $row) {
+                $this->add_payment($row->payment_type, $row->payment_amount);
+            }
+        }
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 		$this->set_dinner_table($this->CI->Sale->get_dinner_table($sale_id));
 	}
+
 
 	public function get_cart_reordered($sale_id)
 	{
@@ -2471,13 +3559,10 @@ class Sale_lib
 		$this->empty_lab_resultcart();
 		$rs = $this->CI->Sale->get_savedresult_items_ordered($sale_id)->result();
 
-
-
 		foreach ($rs as $row) {
 			$this->item_add_result_pending($row->item_id, $row->print_option, $row->test_comment, $row->reference, $row->extra_name, $row->o_name, $row->h_name, $row->line);
+			// $this->item_add_result($row->item_id, $row->print_option, $row->test_comment, $row->reference, $row->extra_name, $row->o_name, $row->h_name, $row->line);
 		}
-
-
 
 		return $this->CI->session->userdata('lab_resultcart');
 	}
@@ -2578,11 +3663,17 @@ class Sale_lib
 	{
 		$this->empty_push();
 	}
+    public function clear_auth_codes()
+    {
+        unset($_SESSION['sales_auth_code']);
+        unset($_SESSION['sales_return_auth_code']);
+    }
 
 	public function clear_all()
 	{
 		$this->set_invoice_number_enabled(FALSE);
 		$this->clear_table();
+		$this->clear_auth_codes();
 		$this->empty_push();
 		$this->empty_balance_id();
 		$this->empty_sales_id();
@@ -2598,7 +3689,10 @@ class Sale_lib
 		$this->empty_payments();
 		$this->remove_customer();
 		$this->clear_cash_flags();
-	}
+		$this->clear_registered_returns();//
+        $this->CI->session->unset_userdata('not_for_sale');
+
+    }
 	public function clear_all_lab()
 	{
 		$this->empty_sales_id();
@@ -2643,11 +3737,14 @@ class Sale_lib
 
 	public function is_customer_taxable()
 	{
-		$customer_id = $this->get_customer();
-		$customer = $this->CI->Customer->get_info($customer_id);
+
 
 		//Do not charge sales tax if we have a customer that is not taxable
-		return $customer->taxable or $customer_id == -1;
+		//the code stub here was removed.
+		//no tax is applied. this function is not removed yet in order to avoid code breakage
+		//the stub here was calling $customer->taxable which was already removed from the db
+
+		return true; //returning true, we assume every customer is taxable on the only tax we have(i.e VAT)
 	}
 
 	/*
@@ -2655,91 +3752,48 @@ class Sale_lib
 	 */
 	public function get_taxes()
 	{
-		$register_mode = $this->CI->config->config['default_register_mode'];
-		$tax_decimals = $this->CI->config->config['tax_decimals'];
-		$customer_id = $this->get_customer();
-		$customer = $this->CI->Customer->get_info($customer_id);
+
 		$sales_taxes = array();
-		//Do not charge sales tax if we have a customer that is not taxable
-		//so apply tax if customer is taxable or there is no customer(in this case, we assume the customer, whoever he/she is, is taxable)
-		if ($customer->taxable || $customer_id == -1) {
-			foreach ($this->get_cart() as $line => $item) {
-				// Start of current VAT tax apply
-
-				$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
-				$tax_group_sequence = 0;
-				foreach ($tax_info as $tax) {
-					// This computes tax for each line item and adds it to the tax type total
-					$tax_group = (float) $tax['percent'] . '% ' . $tax['name'];
-					$tax_type = Tax_lib::TAX_TYPE_VAT;
-					$tax_basis = $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
-					$tax_amount = 0;
-
-					if ($this->CI->config->config['tax_included']) {
-						$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax['percent']);
-					} elseif ($this->CI->config->config['customer_sales_tax_support'] == '0') {
-						$tax_amount = $this->CI->tax_lib->get_sales_tax_for_amount($tax_basis, $tax['percent'], '0', $tax_decimals);
-					}
-
-					if ($tax_amount <> 0) {
-						$this->CI->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, '0', -1);
-						$tax_group_sequence += 1;
-					}
-				}
-
-				$tax_category = '';
-				$tax_rate = '';
-				$rounding_code = Rounding_code::HALF_UP;
-				$tax_group_sequence = 0;
-				$tax_code = '';
-
-				if ($this->CI->config->config['customer_sales_tax_support'] == '1') {
-
-					// Now calculate what the sales taxes should be (storing them in the $sales_taxes array
-					$this->CI->tax_lib->apply_sales_tax($item, $customer->city, $customer->state, $customer->sales_tax_code, $register_mode, 0, $sales_taxes, $tax_category, $tax_rate, $rounding_code, $tax_group_sequence, $tax_code);
-				}
-			}
-
-			$this->CI->tax_lib->round_sales_taxes($sales_taxes);
-		}
+		//the code stub here was removed.
+		//no tax is applied. this function is not removed yet in order to avoid code breakage
 
 		return $sales_taxes;
 	}
 
-	public function apply_customer_discount($discount_percent)
-	{
-		// Get all items in the cart so far...
-		$items = $this->get_cart();
 
-		foreach ($items as &$item) {
-
-			$quantity = $item['quantity'];
-			//$price = $item['price'];
-
-			if ($item['qty_selected'] == 'wholesale') {
-
-				$price = $item['wholeprice'];
-			} else {
-				$price = $item['price'];
-			}
-
-			// set a new discount only if the current one is 0
-			if ($item['discount'] == 0) {
-				$item['discount'] = $discount_percent;
-				$item['total'] = $this->get_item_total($quantity, $price, $discount_percent);
-				$item['discounted_total'] = $this->get_item_total($quantity, $price, $discount_percent, TRUE);
-			}
-		}
-
-		$this->set_cart($items);
-	}
 
 	public function get_discount()
 	{
 		$discount = 0;
+
+		//check whether the customer has discount percent and add it to the individual item discount.
+
+		$customer_id = $this->get_customer();
+		$discount_percent = 0;
+		$markup = 0;
+		if ($customer_id > 0) {
+			$customer = $this->CI->Customer->get_info($customer_id);
+
+			//if customer is linked to a company
+			if($customer->company_id > 0){
+				$company = $this->CI->Customer->get_company_info($customer->company_id);
+				if ($company->discount > 0) {
+					$discount_percent = $company->discount;
+					$markup = $company->markup;
+				}
+			}elseif ($customer->discount_percent > 0) {
+				$discount_percent = $customer->discount_percent;
+				$markup = $customer->sale_markup;
+			}
+			
+			// if ($customer->discount_percent > 0) {
+			// 	$discount_percent = $customer->discount_percent;
+			// }
+		}
+
 		foreach ($this->get_cart() as $item) {
-			if ($item['discount'] > 0) {
-				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+			if (($item['discount'] + $discount_percent) > 0) {
+				$item_discount = $this->get_item_discount($item['quantity'], $markup == 0 ? $item['price'] : $item['cost'] * $markup, ($item['discount'] + $discount_percent));
 				$discount = bcadd($discount, $item_discount);
 			}
 		}
@@ -2808,6 +3862,14 @@ class Sale_lib
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount));
 			} else {
 				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $include_discount));
+				// calculate VAT for VATable items
+				if (strtolower($item["apply_vat"]) == "yes") {
+					/*$app_vat = $this->CI->config->item('vat') ? $this->CI->config->item('vat') : 5;
+				$vat = bcmul(bcdiv($app_vat, 100), $item["price"]);
+				$vat = bcmul($vat, $item['quantity']);
+				$total_vat += $vat;*/
+					$subtotal = bcadd($subtotal, $item['vat']);
+				}
 			}
 		}
 
@@ -2820,15 +3882,14 @@ class Sale_lib
 
 		$cash_rounding = $this->CI->session->userdata('cash_rounding');
 
-		foreach ($this->get_taxes() as $sales_tax) {
-			$total = bcadd($total, $sales_tax['sale_tax_amount']);
-		}
+		// foreach ($this->get_taxes() as $sales_tax) {
+		// 	$total = bcadd($total, $sales_tax['sale_tax_amount']);
+		// }
 
 		if ($cash_rounding) {
-			$rounded_total = $this->check_for_cash_rounding($total);
-			return $rounded_total;
+            return $this->check_for_cash_rounding($total);
 		}
-		return $total;
+		return round($total,-1);
 	}
 
 	public function get_empty_tables()
@@ -2860,16 +3921,24 @@ class Sale_lib
 			$rounded_total = round($total / 5) * 5;
 		}
 
-		return $rounded_total;
+		return round($rounded_total,-1);
 	}
 
-	public function set_auth_code($code)
+	public function set_auth_code($code,$for_returns = false)
 	{
-		$this->CI->session->set_userdata('sales_auth_code', $code);
+	    if($for_returns){
+            $this->CI->session->set_userdata('sales_return_auth_code', $code);
+        }else{
+            $this->CI->session->set_userdata('sales_auth_code', $code);
+        }
+
 	}
 
-	public function get_auth_code()
+	public function get_auth_code($for_returns = false)
 	{
+	    if($for_returns){
+	        return $this->CI->session->userdata('sales_return_auth_code') ? $this->CI->session->userdata('sales_return_auth_code') : null;
+        }
 		return $this->CI->session->userdata('sales_auth_code') ? $this->CI->session->userdata('sales_auth_code') : null;
 	}
 

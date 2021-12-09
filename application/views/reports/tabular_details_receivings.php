@@ -5,12 +5,18 @@
         <div id="page_title">
             <?php echo $title  ?>
             <p style="font-size:16px;">
-                <a href="<?php echo site_url('reports/print_filtered_report_receivings/' . $start_date . '/' . $end_date . '/' . $receiving_type . '/' . $location_id); ?>">Print all</a> |
-                <a href="<?php echo site_url('reports/print_filtered_report_items_receivings/' . $start_date . '/' . $end_date . '/' . $receiving_type . '/' . $location_id); ?>">Print all items</a>
+                <a href="<?php echo site_url('reports/print_filtered_report_receivings/' . $start_date . '/' . $end_date . '/' . $receiving_type . '/' . $location_id . '/' . $employee_id . '/' . $supplier); ?>">Print Items</a> |
+                <a href="<?php echo site_url('reports/print_filtered_report_items_receivings/' . $start_date . '/' . $end_date . '/' . $receiving_type . '/' . $location_id . '/' . $employee_id . '/' . $supplier); ?>">Print Detailed Items</a>
             </p>
         </div>
 
-        <div id="page_subtitle"><?php echo $subtitle ?></div>
+        <div>
+			<?php
+			foreach ($report_title_data as $key => $value) {
+				echo '<div><b>' . $key . ': </b>' . $value . ' </div>';
+			}
+			?>
+		</div>
 
         <div id="table_holder">
             <table id="table"></table>
@@ -19,10 +25,11 @@
         <div id="report_summary">
             <?php
             foreach ($overall_summary_data as $name => $value) {
-                ?>
-                <div class="summary_row"><?php echo $this->lang->line('reports_' . $name) . ': ' . to_currency($value); ?></div>
+            ?>
+                <div class="summary_row"><?php echo $name . ': ' . to_currency($value); ?></div>
             <?php
             }
+            $d_data = json_encode($details_data);
             ?>
         </div>
     </div>
@@ -32,10 +39,10 @@
     $(document).ready(function() {
         <?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
-        var detail_data = <?php echo json_encode($details_data); ?>;
+        var detail_data = <?php echo $d_data ? json_encode($details_data): json_encode([]) ?>;
         <?php
         if ($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards)) {
-            ?>
+        ?>
             var details_data_rewards = <?php echo json_encode($details_data_rewards); ?>;
         <?php
         }
@@ -67,14 +74,14 @@
             onPostBody: function() {
                 dialog_support.init("a.modal-dlg");
             },
-            onExpandRow: function(index, row, $detail) {
-                $detail.html('<table></table>').find("table").bootstrapTable({
+            onExpandRow: function(index, row, detail) {
+                detail.html('<table></table>').find("table").bootstrapTable({
                     columns: <?php echo transform_headers_readonly($headers['details']); ?>,
                     data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
                 });
                 <?php
                 if ($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards)) {
-                    ?>
+                ?>
                     $detail.append('<table></table>').find("table").bootstrapTable({
                         columns: <?php echo transform_headers_readonly($headers['details_rewards']); ?>,
                         data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]

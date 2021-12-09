@@ -12,14 +12,14 @@
 		if ($this->config->item('receipt_show_company_name')) {
 			?>
 			<div id="company_name">
-				<h3><b><?php echo 'Tonia Medical Laboratories Ltd.'; ?></b></h3>
+				<h3><b><?php echo 'Tonia Medical Diagnostics Services LTD..'; ?></b></h3>
 			</div>
 		<?php
 		}
 		?>
 
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
-		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
+		<div id="company_phone"><?php echo !empty($this->config->item('laboratory_phone')) ? $this->config->item('laboratory_phone') : '09097486557' ?></div>
 		<div id="sale_receipt"><?php echo $receipt_title; ?></div>
 
 
@@ -73,6 +73,12 @@
 
 	</div>
 
+	<!-- <style>
+		td {
+			font-size: 12px;
+		}
+	</style> -->
+
 	<table id="receipt_items">
 		<thead>
 			<tr>
@@ -107,7 +113,7 @@
 
 				?>
 				<?php if ($third_check < 1) { ?>
-					<b>Investigation:</b>
+					<b>&nbsp; &nbsp; Investigation:</b>
 				<?php
 						$third_check += 1;
 					}
@@ -443,7 +449,7 @@
 								<td>
 									<h5><b>TEST</b></h5>
 								</td>
-								<td>
+								<td align="center">
 									<h5><b>PATIENT VALUE</b></h5>
 								</td>
 								<td>
@@ -461,8 +467,8 @@
 							<td></td>
 							<td><?php echo ($item['test_code']); ?></td>
 							<td><?php echo ($item['test_name']); ?></td>
-							<td><?php echo ($item['test_comment']); ?></td>
-							<td><?php echo ($item['test_unit']); ?></td>
+							<td align="center"><?php echo ($item['test_comment']); ?></td>
+							<td><?php echo wordwrap($item['test_unit'], 75, '<br/>'); ?></td>
 							<td></td>
 
 

@@ -442,7 +442,7 @@ var fill_value = function(event, ui) {
 $("#sales_tax_code_name").autocomplete({
     source: '<?php echo site_url("taxes/suggest_sales_tax_codes"); ?>',
     minChars: 0,
-    delay: 15,
+    delay: 50,
     cacheLength: 1,
     appendTo: '.modal-content',
     select: fill_value,

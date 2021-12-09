@@ -11,6 +11,7 @@ class Customers extends Persons
 		parent::__construct('customers');
 
 		$this->load->library('mailchimp_lib');
+		$this->load->library('audit_lib');
 
 		$CI = &get_instance();
 
@@ -33,15 +34,17 @@ class Customers extends Persons
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
 		$sort   = $this->input->get('sort');
+		// $sort   = 'person.name';
 		$order  = $this->input->get('order');
 
-		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
-		$total_customers = $this->Customer->search($search, 0, $offset, $sort, $order)->num_rows();
-		
+		$all_customers = $this->Customer->search($search, 0, $offset, $sort, $order)->result();
+		$total_customers = count($all_customers);
+		$customers = array_slice($all_customers, $offset, $limit);
+
 
 		$data_rows = array();
-		foreach ($customers->result() as $person) {
-		
+		foreach ($customers as $person) {
+
 			// retrieve the total amount the customer spent so far together with min, max and average values
 			$stats = $this->Customer->get_stats($person->person_id);
 			//$stats = array();
@@ -72,14 +75,6 @@ class Customers extends Persons
 		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->get('term'), TRUE));
 
 		echo json_encode($suggestions);
-		// $sg = $this->xss_clean(array(
-		// 	array('value' => 'value', 'label' => 'wilson'),
-		// 	array('value' => 'value1', 'label' => 'wilson2'),
-		// 	array('value' => 'value2', 'label' => 'wilson3')
-		// ));
-		// echo json_encode(
-		// 	$sg
-		// );
 	}
 
 	public function suggest_search()
@@ -92,16 +87,19 @@ class Customers extends Persons
 	/*
 	Loads the customer edit form
 	*/
-	public function view($customer_id = -1)
+	public function view($customer_id = -1, $is_lab = false)
 	{
-		$customer_sales_tax_support = $this->config->item('customer_sales_tax_support');
+
+		$this->audit_lib->empty_family();
+
+		$family = !empty($this->input->post('family_id')) ? $this->input->post('family_id') : '';
+		$this->audit_lib->set_family($dept);
 
 		$info = $this->Customer->get_info($customer_id);
 		foreach (get_object_vars($info) as $property => $value) {
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
-		$data['sales_tax_code_label'] = $info->sales_tax_code . ' ' . $this->Tax->get_info($info->sales_tax_code)->tax_code_name;
 		$packages = array('' => $this->lang->line('items_none'));
 		foreach ($this->Customer_rewards->get_all()->result_array() as $row) {
 			$packages[$this->xss_clean($row['package_id'])] = $this->xss_clean($row['package_name']);
@@ -109,11 +107,20 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if ($customer_sales_tax_support == '1') {
-			$data['customer_sales_tax_enabled'] = TRUE;
-		} else {
-			$data['customer_sales_tax_enabled'] = FALSE;
+		$companies = array('' => $this->lang->line('items_none'));
+		foreach ($this->Customer->get_all_companies()->result_array() as $row) {
+			$companies[$this->xss_clean($row['company_id'])] = $this->xss_clean($row['company_name']);
 		}
+		$data['companies'] = $companies;
+		$data['selected_company'] = $info->company_id;
+
+		//families
+		$families = array('' => $this->lang->line('items_none'));
+		foreach ($this->Customer->get_all()->result_array() as $row) {
+			$families[$this->xss_clean($row['person_id'])] = $this->xss_clean($row['first_name']) . ' ' . $this->xss_clean($row['last_name']) . ' (' . $this->xss_clean($row['phone_number']) . ')';
+		}
+		$data['families'] = $families;
+		$data['selected_family'] = $info->family_id;
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
 		$stats = $this->Customer->get_stats($customer_id);
@@ -123,53 +130,121 @@ class Customers extends Persons
 			}
 			$data['stats'] = $stats;
 		}
-
-		// retrieve the info from Mailchimp only if there is an email address assigned
-		if (!empty($info->email)) {
-			// collect mailchimp customer info
-			if (($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== FALSE) {
-				$data['mailchimp_info'] = $this->xss_clean($mailchimp_info);
-
-				// collect customer mailchimp emails activities (stats)
-				if (($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== FALSE) {
-					if (array_key_exists('activity', $activities)) {
-						$open = 0;
-						$unopen = 0;
-						$click = 0;
-						$total = 0;
-						$lastopen = '';
-
-						foreach ($activities['activity'] as $activity) {
-							if ($activity['action'] == 'sent') {
-								++$unopen;
-							} elseif ($activity['action'] == 'open') {
-								if (empty($lastopen)) {
-									$lastopen = substr($activity['timestamp'], 0, 10);
-								}
-								++$open;
-							} elseif ($activity['action'] == 'click') {
-								if (empty($lastopen)) {
-									$lastopen = substr($activity['timestamp'], 0, 10);
-								}
-								++$click;
-							}
-
-							++$total;
-						}
-
-						$data['mailchimp_activity']['total'] = $total;
-						$data['mailchimp_activity']['open'] = $open;
-						$data['mailchimp_activity']['unopen'] = $unopen;
-						$data['mailchimp_activity']['click'] = $click;
-						$data['mailchimp_activity']['lastopen'] = $lastopen;
-					}
-				}
-			}
-		}
+		$data['is_lab'] = $is_lab;
 
 		$this->load->view("customers/form", $data);
 	}
+	/*
+	Loads the customer wallet update form
+	*/
+	public function view_wallet($customer_id = -1)
+	{
 
+
+		$info = $this->Customer->get_info($customer_id);
+
+		$data['person_info'] = $info;
+
+
+		$data['already_used_credit'] = $this->Sale->get_thismonth_credit($customer_id); //for staff customers
+
+
+
+		$this->load->view("customers/wallet_form", $data);
+	}
+
+	public function save_wallet($customer_id = -1)
+	{
+
+		$customer_id = (int) $this->xss_clean($this->input->post("customer_id"));
+		$deposit = $this->xss_clean($this->input->post('deposit'));
+		$narration = $this->xss_clean($this->input->post('narration'));
+		$updateType = $this->xss_clean($this->input->post('update_type'));
+		$customer = $this->Customer->get_info($customer_id);
+		if ($customer_id > 0) {
+			//update customer wallet balance
+			$update_data = array(
+				'balance' => $updateType < -1 ? $customer->wallet - $deposit: $customer->wallet + $deposit, //balance is what is currently in the wallet plus the new deposit
+//				'sale_id' => 0, //0 sale_id means funding. bigger than 0 mean sales that uses wallet payment type
+                'sale_id' => $updateType,
+				'debit'=> $updateType < -1 ?$deposit: 0.00,
+                'credit'=> $updateType < -1 ? 0.00 : $deposit,
+				'customer_id' => $customer_id,
+				'narration'=>$narration,
+				'employee_id' => $this->Employee->get_logged_in_employee_info()->person_id,
+				'date' => date("Y-m-d H:i:s"),
+				'amount' => $deposit
+			);
+
+			// $msg = 'Updated '. $customer->first_name . ' ' . $customer->last_name . ' Wallet with ' . $deposit . ', Balance now: '. $customer->walllet + $deposit;
+			$msg = " Wallet with " . $customer->first_name;
+
+			$this->audit_lib->add_log('edit', $msg);
+			// echo json_encode(array(
+			// 	'success' => TRUE,
+			// 	'message' => $customer->first_name,
+			// 	'id' => $customer_id
+			// ));
+
+			$this->Customer->update_customer_wallet($customer_id, $update_data);
+			
+			echo json_encode(array(
+				'success' => TRUE,
+				'message' => 'Customer wallet has been successfull updated.',
+				'id' => $customer_id
+			));
+		} else {
+
+
+			echo json_encode(array(
+				'success' => FALSE,
+				'message' => 'No customer selected',
+				'id' => -1
+			));
+		}
+	}
+	public function print_customer_wallet_history($customer_id = 0, $start_date = null, $end_date = null,$isLedger = false)
+	{
+
+		// $item_id = $this->input->post('item_id');
+
+		// $start_date = $this->input->post('start_date');
+		// $end_date = $this->input->post('end_date');
+		if ($customer_id <= 0) {
+
+			redirect('customers');
+		}
+		if ($start_date != null) {
+			$start_date = $start_date . ' 00:00:00';
+		}
+		if ($end_date != null) {
+			$end_date = $end_date . ' 23:59:59';
+		}
+
+		//$current_location_id = $this->input->post('stock_location');
+        if($isLedger){
+            $data['brought_forward'] = $this->Customer->get_brought_forward($customer_id,$start_date);
+            $data['is_ledger'] = true;
+        }
+
+		$data['customer_info'] = $this->Customer->get_info($customer_id);
+		$data['credit_sales'] = 0;
+		if ($data['customer_info']->staff) {
+			$data['credit_sales'] = $this->Sale->get_thismonth_credit($customer_id);
+		}
+		$cust_stats = $this->Customer->get_stats($customer_id);
+		$data['customer_total'] = empty($cust_stats) ? 0 : $cust_stats->total;
+
+		$data['wallet_info'] = $this->Customer->get_wallet_info($customer_id, $start_date, $end_date);
+
+		$data['start_date'] = $start_date;
+		$data['end_date'] = $end_date;
+
+		$this->load->view('customers/wallet_history', $data);
+	}
+	public function ledger($customer_id = 0, $start_date = null, $end_date = null){
+        $this->print_customer_wallet_history($customer_id,$start_date,$end_date,true);
+    }
 	/*
 	Inserts/updates a customer
 	*/
@@ -200,24 +275,19 @@ class Customers extends Persons
 			'comments' => $this->input->post('comments')
 		);
 
+
 		$customer_data = array(
-			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
 			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
 			'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
+			'credit_limit' => $this->input->post('credit_limit') == '' ? 0.00 : $this->input->post('credit_limit'),
+			'sale_markup' => $this->input->post('sale_markup') == '' ? 0.00 : $this->input->post('sale_markup'),
 			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
-			'taxable' => $this->input->post('taxable') != NULL
+			'company_id' => $this->input->post('company_id') == '' ? NULL : $this->input->post('company_id'),
+			'staff' => $this->input->post('type') != 0
 		);
-
-		$tax_code = $this->input->post('sales_tax_code');
-		if (!isset($tax_code)) {
-			$customer_data['sales_tax_code'] = '';
-		} else {
-			$customer_data['sales_tax_code'] = $tax_code;
-		}
 
 		if ($this->Customer->save_customer($person_data, $customer_data, $customer_id)) {
 			// save customer to Mailchimp selected list
-			$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $email, $first_name, $last_name, $this->input->post('mailchimp_status'), array('vip' => $this->input->post('mailchimp_vip') != NULL));
 
 			// New customer
 			if ($customer_id == -1) {
@@ -243,6 +313,18 @@ class Customers extends Persons
 			));
 		}
 	}
+	
+	/*
+	AJAX call to verify if an phone address already exists
+	*/
+	public function ajax_check_phone()
+	{
+		// $check = $this->input->post('check_phone');
+		$exists = $this->Customer->check_phone_exists(strtolower($this->input->post('phone_number')), $this->input->post('person_id'));
+
+		// echo $check == '1' ? !$exists ? 'true' : 'false' : 'true';
+		echo !$exists ? 'true' : 'false';
+	}
 
 	/*
 	AJAX call to verify if an email address already exists
@@ -252,6 +334,13 @@ class Customers extends Persons
 		$exists = $this->Customer->check_email_exists(strtolower($this->input->post('email')), $this->input->post('person_id'));
 
 		echo !$exists ? 'true' : 'false';
+	}
+	/*
+	AJAX call to verify if an new wallet update amount(deposit) already exists
+	*/
+	public function ajax_check_deposit()
+	{
+		return is_numeric($this->input->post('deposit')) ? 'true' : 'false';
 	}
 
 	/*
@@ -337,7 +426,8 @@ class Customers extends Persons
 
 						$customer_data = array(
 							'company_name'		=> $data[12],
-							'discount_percent'	=> $data[14],
+							'discount_percent'	=> $data[13],
+							'credit_limit' => $data[14],
 							'taxable'			=> $data[15] == '' ? 0 : 1
 						);
 						$account_number = $data[13];

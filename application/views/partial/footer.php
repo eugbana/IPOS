@@ -9,10 +9,12 @@
 <!-- /Right-bar -->
 </div>
 </div>
-<!--<footer class="footer text-left">
-                    2018 © InfoStrategy.
-                </footer>-->
-</div>
+
+<!-- <footer class=" text-center">
+	<div class="text-center">
+		© 2018 - <?php echo date("Y") ?> <a href="www.istrategytech.com">Powered By Infostrategy.</a>
+	</div>
+</footer> -->
 
 <div id="noticeModal" class="modal fade">
 	<div class="modal-dialog">
@@ -49,6 +51,37 @@
 			$('#register_form').submit();
 		}
 	});
+
+	// $("body").keydown(function(e){
+    //      var keyCode = e.keyCode || e.which;
+	// 	//  console.log(keyCode);      
+	// 	 if(keyCode == 114){
+	// 		window.location = 'sales/receipt/<?php echo $this->Sale->get_latest_sale_id() ?>';
+	// 	 }else if(keyCode == 115){
+	// 		window.location = 'items/check_price';
+	// 	 }else if(keyCode == 116){
+	// 		window.location = 'sales/check_receipt';
+	// 	 }
+    // 	});
+
+	$("body").keydown(function(e){
+
+		if ((e.metaKey || e.altKey) && ( String.fromCharCode(e.which).toLowerCase() === 'p') ) {
+			window.location = 'items/check_price';
+		}
+
+		if ((e.metaKey || e.altKey) && ( String.fromCharCode(e.which).toLowerCase() === 's') ) {
+			window.location = 'sales/receipt/<?php echo $this->Sale->get_latest_sale_id() ?>';
+		}
+
+		if ((e.metaKey || e.altKey) && ( String.fromCharCode(e.which).toLowerCase() === 'r') ) {
+			window.location = 'sales/check_receipt';
+		}
+	});
+
+	
+
+
 </script>
 
 
@@ -76,6 +109,20 @@
 
 
 <!-- END wrapper -->
+<script src="dist/assets/js/jquery.app.js"></script>
+<script>
+	$(document).ready(function() {
+		<?php
+		if ($close_side) {
+		?>
+			$(".open-left").click();
+		<?php
+		}
+		?>
+
+
+	});
+</script>
 
 </body>
 

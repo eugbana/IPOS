@@ -1,0 +1,87 @@
+DEBUG - 2021-09-21 16:02:34 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:02:34 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:02:34 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:02:34 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 21
+DEBUG - 2021-09-21 16:03:35 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:03:35 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:03:35 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:03:36 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 21
+DEBUG - 2021-09-21 16:07:37 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:07:37 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:07:38 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:07:38 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 19
+DEBUG - 2021-09-21 16:10:01 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:10:01 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:10:01 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:10:01 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 20
+DEBUG - 2021-09-21 16:10:55 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:10:55 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:10:55 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:10:55 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 20
+DEBUG - 2021-09-21 16:12:02 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:12:02 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:12:02 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:12:02 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 20
+ERROR - 2021-09-21 17:12:02 --> Severity: Warning --> Cannot modify header information - headers already sent by (output started at /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php:16) /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/codeigniter/framework/system/core/Common.php 570
+DEBUG - 2021-09-21 16:12:49 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:12:49 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:12:49 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:12:49 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 20
+ERROR - 2021-09-21 17:12:49 --> Severity: Warning --> Cannot modify header information - headers already sent by (output started at /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php:16) /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/codeigniter/framework/system/core/Common.php 570
+DEBUG - 2021-09-21 16:15:28 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:15:28 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:15:28 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:15:28 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 21
+DEBUG - 2021-09-21 16:16:25 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:16:25 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:16:25 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:16:25 --> Severity: error --> Exception: Call to a member function from() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 21
+DEBUG - 2021-09-21 16:20:59 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:20:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:20:59 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:20:59 --> Query error: Table 'ipos_maitama.ipos_item_push' doesn't exist - Invalid query: SELECT `ipos_items`.`item_number`, `ipos_items`.`name`, `ipos_items`.`category`, `ipos_items`.`type`, `ipos_item_push`.`pushed_quantity`, `ipos_item_push`.`item_cost_price`, `ipos_item_push`.`item_unit_price`
+FROM `ipos_item_push`
+JOIN `ipos_items` ON `ipos_item_push`.`item_id`= `ipos_items`.`item_id`
+WHERE `transfer_id` IS NULL
+DEBUG - 2021-09-21 16:22:18 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:22:18 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:22:18 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:22:18 --> Query error: Unknown column 'ipos_item_push.item_unit_price' in 'field list' - Invalid query: SELECT `ipos_items`.`item_number`, `ipos_items`.`name`, `ipos_items`.`category`, `ipos_items`.`type`, `ipos_items_push`.`pushed_quantity`, `ipos_items_push`.`item_cost_price`, `ipos_item_push`.`item_unit_price`
+FROM `ipos_items_push`
+JOIN `ipos_items` ON `ipos_items_push`.`item_id`= `ipos_items`.`item_id`
+WHERE `transfer_id` IS NULL
+DEBUG - 2021-09-21 16:22:47 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:22:47 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:22:47 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:22:47 --> Query error: Unknown column 'ipos_item_push.item_unit_price' in 'field list' - Invalid query: SELECT `ipos_items`.`item_number`, `ipos_items`.`name`, `ipos_items`.`category`, `ipos_items`.`type`, `ipos_items_push`.`pushed_quantity`, `ipos_items_push`.`item_cost_price`, `ipos_item_push`.`item_unit_price`
+FROM `ipos_items_push`
+JOIN `ipos_items` ON `ipos_items_push`.`item_id`= `ipos_items`.`item_id`
+WHERE `transfer_id` IS NULL
+DEBUG - 2021-09-21 16:30:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:30:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:30:16 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-21 17:30:16 --> Severity: error --> Exception: Cannot use object of type stdClass as array /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Item.php 18
+DEBUG - 2021-09-21 16:31:21 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:31:21 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:31:21 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-21 17:31:21 --> Total execution time: 0.0449
+DEBUG - 2021-09-21 16:31:55 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:31:55 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:31:55 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-21 17:31:55 --> Total execution time: 0.0398
+DEBUG - 2021-09-21 16:31:57 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:31:57 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:31:57 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-21 17:31:57 --> Total execution time: 0.0396
+DEBUG - 2021-09-21 16:32:26 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:32:26 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:32:26 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-21 17:32:26 --> Total execution time: 0.0445
+DEBUG - 2021-09-21 16:34:13 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:34:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:34:13 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-21 17:34:13 --> Total execution time: 0.0495
+DEBUG - 2021-09-21 16:34:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-21 16:34:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-21 16:34:16 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-21 17:34:16 --> Total execution time: 0.0346

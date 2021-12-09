@@ -191,7 +191,7 @@
                         </li>
                         <?php
                         foreach ($allowed_modules->result() as $module) {
-                            ?>
+                        ?>
                             <?php if ($this->lang->line("module_" . $module->module_id) == "Reports") { ?>
 
                                 <li class="has_sub">
@@ -280,7 +280,7 @@
                                         </span>
                                         <div class="percent">
                                             <?php //print($thisSiteBalance/1000000)*100;
-                                                ?>
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="details">
@@ -320,8 +320,8 @@
 
             </div> <!-- content -->
 
-            <footer class="footer text-right">
-                <?php echo date('Y') ?> © Infostrategy.
+            <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?> <a href="www.istrategytech.com">Powered By Infostrategy.</a>
             </footer>
 
         </div>

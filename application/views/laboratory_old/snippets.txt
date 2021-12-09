@@ -1,0 +1,7 @@
+views/laboratory/check.php
+
+<?php echo form_open("laboratory/lab_result_receipt", array('class' => 'form-horizontal ajax-form', 'id' => 'sub')); ?>
+					<div class="col-xs-1"><button class='btn btn-info btn-sm' id="submitButton">
+								Submit
+					</button></a></div>
+					<?php echo form_close(); ?>

@@ -23,6 +23,36 @@ class Laboratory extends Secure_Controller
 
 		$this->load->view('laboratory/tests', $data);
 	}
+    public function pending_invoices()
+    {
+        $this->sale_lib->clear_all();
+        $data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
+
+        $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
+        $data['from_cashier'] = true;
+
+        $this->load->view('account/unprocessed', $data);
+    }
+    public function edit_invoice($inv_id = null){
+        if(!$inv_id){
+            redirect(base_url('laboratory/test_start'));
+        }
+        $invoice_details = $this->Item->total_invoice_item($inv_id);
+        if($invoice_details && count($invoice_details) > 0){
+            foreach ($invoice_details as $detail){
+                $data['itemised'][] =$detail['item_id'];
+            }
+        }
+        $data['items'] = $invoice_details;
+        $data['editing'] = true;
+        $data['inv_id'] = $inv_id;
+        $data['inv_detail'] = $this->Customer->get_lab_invoice_info($inv_id);
+        $laboratory_test = $this->Item->get_lab_items();
+        $customer_info = $this->_load_customer_data($data['inv_detail']->person_id, $data, TRUE);
+        $this->sale_lib->set_customer($data['inv_detail']->person_id);
+        $data['laboratory_test'] = $laboratory_test;
+        $this->load->view('laboratory/manage', $data);
+    }
 	public function test_start()
 	{
 		$this->sale_lib->clear_all();
@@ -113,9 +143,9 @@ class Laboratory extends Secure_Controller
 	{
 
 		$data['cart'] = $this->sale_lib->get_cart();
-		$data['notice'] = $this->sale_lib->notice_transfer_items();
+		$data['notice'] = $this->sale_lib->notice_transfer_items($this->item_lib->get_item_location());
 		$data['table_headers'] = $this->xss_clean(get_laboratory_manage_table_headers());
-		$data['transfer'] = $this->sale_lib->global_transfer_items();
+		$data['transfer'] = $this->sale_lib->global_transfer_items($this->item_lib->get_item_location());
 		$data['stock_location'] = $this->xss_clean($this->item_lib->get_item_location());
 		$data['stock_locations'] = $this->xss_clean($this->Stock_location->get_allowed_locations());
 
@@ -134,21 +164,21 @@ class Laboratory extends Secure_Controller
 	public function result_info()
 	{
 		$sale_id = $this->input->post('sale_id');
-		$result_info = $this->Item->get_labresult_info($sale_id);
+		// $result_info = $this->Item->get_labresult_info($sale_id);
 
 
-		$data['sale_id'] = $sale_id;
-		$data['invoice'] = $result_info->invoice_id;
-		$data['status'] = $result_info->status;
-		$customer_id = $result_info->customer_id;
-		$customer_info = $this->_load_customer_data($customer_id, $data);
+		// $data['sale_id'] = $sale_id;
+		// $data['invoice'] = $result_info->invoice_id;
+		// $data['status'] = $result_info->status;
+		// $customer_id = $result_info->customer_id;
+		// $customer_info = $this->_load_customer_data($customer_id, $data);
 
 
 
 		//$data['cart'] = $this->sale_lib->get_labsaveresultcart_reordered($sale_id);
 
 		// filters that will be loaded in the multiselect dropdown
-
+		$data = $this->fetch_result_info($sale_id);
 
 		$this->load->view('laboratory/results_check', $data);
 	}
@@ -176,10 +206,10 @@ class Laboratory extends Secure_Controller
 
 		// filters that will be loaded in the multiselect dropdown
 
-
 		$this->load->view('laboratory/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
+
 	public function new_test()
 	{
 
@@ -210,7 +240,8 @@ class Laboratory extends Secure_Controller
 			$test_info->$property = $this->xss_clean($value);
 		}
 
-		if ($lab_category_id == -1) { }
+		if ($lab_category_id == -1) {
+		}
 
 
 
@@ -361,6 +392,18 @@ class Laboratory extends Secure_Controller
 		//$this->load->view('laboratory/tests');
 		//$this->tests();
 	}
+
+	/*
+	AJAX call to verify if an phone address already exists
+	*/
+	public function ajax_check_phone()
+	{
+		// $exists = $this->Customer->check_phone_exists(strtolower($this->input->post('phone_number')), $this->input->post('person_id'));
+		// echo !$exists ? 'true' : 'false';
+		echo 'true';
+	}
+
+
 	public function view_testunit($lab_testunit_id = -1)
 	{
 
@@ -369,7 +412,8 @@ class Laboratory extends Secure_Controller
 			$test_info->$property = $this->xss_clean($value);
 		}
 
-		if ($lab_testunit_id == -1) { }
+		if ($lab_testunit_id == -1) {
+		}
 
 
 
@@ -385,7 +429,8 @@ class Laboratory extends Secure_Controller
 			$test_info->$property = $this->xss_clean($value);
 		}
 
-		if ($lab_subgroup_id == -1) { }
+		if ($lab_subgroup_id == -1) {
+		}
 
 
 
@@ -407,7 +452,7 @@ class Laboratory extends Secure_Controller
 		return $invoice_info;
 	}
 
-	public function lab_result_sales()
+	public function lab_result_sales_renamed()  //jude changed this from `lab_result_sales` to `lab_result_sales_renamed`
 	{
 		// Save the data to the sales table
 
@@ -507,6 +552,12 @@ class Laboratory extends Secure_Controller
 		//$data['cart']=array ( 1 => array ( 'item_id' => 1330,'item_location' => 1,'stock_name' => 'warehouse','line'=> 1, 'name' => 'Booyks','allow_alt_description' => 0,'is_serialized' => 0,'quantity' => 1,'discount' => 0,'in_stock' => 24.000,'price' => 4900,'wholeprice' => 3000,'total' => 8000,'discounted_total' => 7000,'print_option' => 1,'stock_type' => 0,'tax_category_id' => 0 ), 2 => array ( 'item_id' => 1331,'item_location' => 1,'stock_name' => 'warehouse','line' => 2, 'name' => 'Panadole','allow_alt_description' => 0,'is_serialized' => 0,'quantity' => 1,'discount' => 0,'in_stock' => 10.000,'price' => 4900,'wholeprice' => 3000,'total' => 8000,'discounted_total' => 7000,'print_option' => 1,'stock_type' => 0, 'tax_category_id' => 0 ) ) ;
 		//$data['taxes']=array();
 		$data['cart'] = $this->sale_lib->get_lab_resultcart();
+
+		// print('<pre>');
+		// print_r($data['cart']);
+		// print('</pre>');
+
+		// die();
 		$sale_id = $data['sale_id'] = $this->sale_lib->get_sales_id();
 		$data['sale_id'] = $sale_id;
 
@@ -542,6 +593,7 @@ class Laboratory extends Secure_Controller
 		$this->sale_lib->clear_all();
 		$this->load->view('laboratory/new_results', $data);
 	}
+
 	public function pending_results()
 	{
 		//$data['table_headers'] = $this->xss_clean(get_account_manage_table_headers());
@@ -598,15 +650,31 @@ class Laboratory extends Secure_Controller
 		$data['customer_id'] = $customer_id;
 		//$data['cart']=$this->sale_lib->get_lab_resultcart();
 		$data['cart'] = $this->sale_lib->get_labsaveresultcart_reordered($sale_id);
+		// $data['cart'] = $this->sale_lib->get_lab_resultcart();
 
 		//$data['invoice_details'] = $invoice_details;
-
 
 		//$customer_id=23;
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 
+		// return "<pre>" . print_r($data) . "</pre>";
+
+		// print "<pre>";
+		// print_r($data);
+		// print "</pre>";
+
+		// die();
 
 		$this->load->view('laboratory/check', $data);
+	}
+
+	public function quick(){
+		$data['cart'] = $this->sale_lib->get_lab_resultcart();
+		print "<pre>";
+		print_r($data);
+		print "</pre>";
+
+		die();
 	}
 	public function lab_result()
 	{
@@ -752,7 +820,6 @@ class Laboratory extends Secure_Controller
 		//$customer_id=23;
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 
-
 		$this->load->view('laboratory/check', $data);
 	}
 	public function delete_test_item($item_number)
@@ -783,6 +850,11 @@ class Laboratory extends Secure_Controller
 		$line = $this->input->post('line');
 		$item_id = $this->input->post('item_id');
 
+		// $m = 'Line: ' . $line . ', Ref: '. $reference . ', ItemID: ' . $item_id . ', BatchID: ' . $batch_id . ', Test Comment: '. $test_comment . ', Test Name: '. $test_name . ', Extra NAme: '. $extra_name . ', O Name: ' . $o_name . ', Hname: ' . $h_name;
+
+		// return print_r($m);
+		// die();
+
 
 		if ($batch_id == 0 && $reference == 0) {
 			//$received_quantity = $this->input->post('received_quantity');
@@ -809,23 +881,33 @@ class Laboratory extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_lab_resultcart();
 		$this->load->view('laboratory/check', $data);
 	}
+
+	public function checkcart(){
+		$items = $this->sale_lib->get_lab_resultcart();
+		print "<pre>";
+		print_r($items);
+		print "</pre>";
+	}
 	public function edit_item_ajax()
 
 	{
 		$items = $this->sale_lib->get_lab_resultcart();
+
+		
 		$ret = array('status' => false);
 
 		$ret['status'] = true;
 		$ret['message'] = 'Done';
 
 		$tests = $this->input->post('tests');
+
+		// echo json_encode($tests);
+
 		foreach ($tests as $le => $each_line) {
 
 			$line = $each_line['line'];
 
 			$ref = $each_line['reference'];;
-
-
 
 			$test_comment = $each_line['test_comment'];;
 
@@ -834,8 +916,7 @@ class Laboratory extends Secure_Controller
 			$h_name = $each_line['h_name'];;
 			$let = (int) $each_line['let'];;
 
-
-			if (isset($items[$let])) {
+			if (isset($items[$line])) {
 				$line = $items[$let];
 				$line['test_comment'] = $test_comment;
 				$line['extra_name'] = $extra_name;
@@ -981,7 +1062,7 @@ class Laboratory extends Secure_Controller
 		$data = $this->Item->new_result_items();
 		foreach ($data as $row => $value) {
 			$customer_info = $this->_load_customer_data($value['customer_id'], $data); //the $data array is filled with the customer name in this method
-			$lab_items[] = array('sale_id' => $value['sale_id'], 'customer_id' => $data['customer'], 'result_time' => $value['result_time'], 'doctor_name' => $value['doctor_name'], 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
+			$lab_items[] = array('sale_id' => $value['sale_id'], 'invoice_id' => $value['invoice_id'], 'customer_id' => $data['customer'], 'result_time' => $value['result_time'], 'doctor_name' => $value['doctor_name'], 'edit' => '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Edit</button>', 'print' => '<button class="btn btn-danger btn-sm pull-left modal-dlg " id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>');
 		}
 		$results = array(
 			"sEcho" => 1,
@@ -998,7 +1079,7 @@ class Laboratory extends Secure_Controller
 		$data = $this->Item->pending_result_items();
 		foreach ($data as $row => $value) {
 			$customer_info = $this->_load_customer_data($value['customer_id'], $data);
-			$lab_items[] = array('sale_id' => $value['sale_id'], 'customer_id' => $data['customer'], 'result_time' => $value['result_time'], 'doctor_name' => $value['doctor_name'], 'edit' => '<button class="btn btn-primary btn-sm pull-left modal-dlg update" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Continue</button>', 'print' => '');
+			$lab_items[] = array('sale_id' => $value['sale_id'], 'invoice_id' => $value['invoice_id'], 'customer_id' => $data['customer'], 'result_time' => $value['result_time'], 'doctor_name' => $value['doctor_name'], 'edit' => '<button class="btn btn-primary btn-sm pull-left modal-dlg update" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Continue</button>', 'print' => '');
 		}
 		$results = array(
 			"sEcho" => 1,
@@ -1015,7 +1096,7 @@ class Laboratory extends Secure_Controller
 		$data = $this->Item->completed_result_items();
 		foreach ($data as $row => $value) {
 			$customer_info = $this->_load_customer_data($value['customer_id'], $data);
-			$lab_items[] = array('sale_id' => $value['sale_id'], 'customer_id' => $data['customer'], 'result_time' => $value['result_time'], 'doctor_name' => $value['doctor_name'], 'edit' => '<button class="btn btn-success btn-sm pull-left modal-dlg update" id="' . $value['sale_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>', 'print' => '');
+			$lab_items[] = array('sale_id' => $value['sale_id'], 'invoice_id' => $value['invoice_id'], 'customer_id' => $data['customer'], 'result_time' => $value['result_time'], 'doctor_name' => $value['doctor_name'], 'edit' => '<button class="btn btn-success btn-sm pull-left modal-dlg update" id="' . $value['sale_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Print</button>',  'print' => '');
 		}
 		$results = array(
 			"sEcho" => 1,
@@ -1104,7 +1185,8 @@ class Laboratory extends Secure_Controller
 
 		$this->_reload($data);
 	}
-	public function lab_account_sales()
+	public function lab_account_none()
+	// public function lab_account_sales()
 	{
 		//$data['notice'] = $this->sale_lib->notice_transfer_items();
 		$data['transfer'] = $this->sale_lib->global_transfer_items();
@@ -1217,6 +1299,30 @@ class Laboratory extends Secure_Controller
 
 		$this->load->view('laboratory/accounts', $data);
 	}
+    public function update_invoice($inv_id = null){
+        if(!$inv_id){
+            redirect(base_url('laboratory/test_start'));
+        }
+//        $grants_data = $this->input->post('grants[]') != NULL ? $this->input->post('grants[]') : array();
+//        $this->sale_lib->empty_labcart();
+//        $data['grants_data'] = $grants_data;
+//        $this->sale_lib->add_lab_cart($grants_data);
+//        $data['cart'] = $this->sale_lib->get_labcart();
+////        $data['cart'] = $this->input->post('grants[]') != NULL ? $this->input->post('grants[]') : array();
+//        $customer_id = $this->sale_lib->get_customer();
+//        if ($customer_id == -1 || $customer_id === -1 || $customer_id == "-1" || $customer_id <= 0) {
+//            //go back to the new test page with error
+//            $data['error'] = "You must select a customer or create a new customer before you proceed";
+//            $this->_reload($data);
+//            exit();
+////			return;
+//        }
+//        $customer_info = $this->_load_customer_data($customer_id, $data, TRUE);
+
+        $this->Sale->delete_lab_invoice_items($inv_id);
+        $this->lab_cart();
+//        redirect(base_url("laboratory/edit_invoice/$inv_id"));
+    }
 	public function lab_cart()
 	{
 
@@ -1225,6 +1331,8 @@ class Laboratory extends Secure_Controller
 		$test_type = $this->input->post('btnGetValue');
 		$test_type = 1;
 		$grants_data = $this->input->post('grants[]') != NULL ? $this->input->post('grants[]') : array();
+		//clear lab cart here
+		$this->sale_lib->empty_labcart();
 		$this->sale_lib->add_lab_cart($grants_data);
 		$data['grants_data'] = $grants_data;
 		//$this->load->view('laboratory/test_sales', $data);
@@ -1234,11 +1342,16 @@ class Laboratory extends Secure_Controller
 		//$data['ano'] = "Hello World";
 		$data['cart'] = $this->sale_lib->get_labcart();
 		$customer_id = $this->sale_lib->get_customer();
-		if ($customer_id == -1) {
+//        var_dump("I got here $customer_id");
+//        exit();
+		if ($customer_id == -1 || $customer_id === -1 || $customer_id == "-1" || $customer_id <= 0) {
 			//go back to the new test page with error
 			$data['error'] = "You must select a customer or create a new customer before you proceed";
 			$this->_reload($data);
+			exit();
+//			return;
 		}
+
 		$customer_info = $this->_load_customer_data($customer_id, $data, TRUE);
 
 		if ($this->config->item('invoice_enable') == '0') {
@@ -1261,18 +1374,20 @@ class Laboratory extends Secure_Controller
 		$data['stock_location'] = $this->sale_lib->get_sale_location();
 		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
 
-		$data['taxes'] = $this->sale_lib->get_taxes();
-		$data['discount'] = $this->sale_lib->get_discount();
-		$data['payments'] = $this->sale_lib->get_payments();
+		// $data['taxes'] = $this->sale_lib->get_taxes();
+		// $data['discount'] = $this->sale_lib->get_discount();
+		// $data['payments'] = $this->sale_lib->get_payments();
+		//JUDE changed this
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
+
 
 
 
 		$invoice_format = $this->config->item('sales_invoice_format');
 		$data['invoice_format'] = $invoice_format;
 
-		$data['cart'] = $this->sale_lib->get_labcart();
+		// $data['cart'] = $this->sale_lib->get_labcart(); //JUDE changed this
 		//$lab_items=$data['cart'];
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
@@ -1293,10 +1408,22 @@ class Laboratory extends Secure_Controller
 		$data['cur_rewards_value'] = $this->sale_lib->get_rewards_remainder();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
-		$customer_id = $this->sale_lib->get_customer();
+
+ 	///////////////////////////////////////////////////////////////////
+
+		// $customer_id = $this->sale_lib->get_customer();
+		// if ($customer_id == -1 || $customer_id === -1 || $customer_id == "-1" || $customer_id <= 0) {
+		// 	//go back to the new test page with error
+		// 	$data['error'] = "You must select a customer or create a new customer before you proceed";
+		// 	$this->_reload($data);
+		// 	exit();
+		// }
+		// $customer_info = $this->_load_customer_data($customer_id, $data);
+
+	///////////////////////////////////////////////////////////////////
+
 		$data["invoice_number"] = $this->sale_lib->get_invoice_number();
 		$data["quote_number"] = $this->sale_lib->get_quote_number();
-		$customer_info = $this->_load_customer_data($customer_id, $data);
 
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
@@ -1344,6 +1471,7 @@ class Laboratory extends Secure_Controller
 		if ($this->Sale->check_invoice_number_exists($invoice_number)) {
 			$data['error'] = $this->lang->line('sales_invoice_number_duplicate');
 			$this->_reload($data);
+			exit();
 		} else {
 			$data['invoice_number'] = $invoice_number;
 			$data['sale_status'] = '0'; // Complete
@@ -1352,6 +1480,7 @@ class Laboratory extends Secure_Controller
 			//$data['sale_id']=3;
 			$data['sale_id'] = $data['invoice_number'];
 
+			// $data['invoice_id'] = $this->Sale->save_laboratory_invoice($data['cart'], $test_type, $customer_id, $invoice_id);
 			$data['invoice_id'] = $this->Sale->save_laboratory_invoice($data['cart'], $test_type, $customer_id, $invoice_id);
 			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 			$this->load->view('laboratory/invoice', $data);
@@ -1754,7 +1883,8 @@ class Laboratory extends Secure_Controller
 			$data['error_message'] = $this->lang->line('sales_transaction_failed');
 		}
 		
-		*/ }
+		*/
+	}
 
 
 	public function suggest_kits()
@@ -1818,7 +1948,8 @@ class Laboratory extends Secure_Controller
 			$test_info->$property = $this->xss_clean($value);
 		}
 
-		if ($item_id == -1) { }
+		if ($item_id == -1) {
+		}
 		//$laboratory_cat=array('none'=>'Choose Category','microbiology'=>'MICROBIOLOGY','chemistry'=>'CHEMISTRY','M/C/S'=>'M/C/S');
 		$data['laboratory_cat'] = $laboratory_cat;
 		$test_categories = array('' => $this->lang->line('items_none'));
@@ -2324,7 +2455,7 @@ class Laboratory extends Secure_Controller
 			} else {
 				$data['customer_location'] = '';
 			}
-			$data['customer_account_number'] = $customer_info->account_number;
+
 			$data['customer_discount_percent'] = $customer_info->discount_percent;
 			$package_id = $this->Customer->get_info($customer_id)->package_id;
 			if ($package_id != NULL) {
@@ -2344,7 +2475,7 @@ class Laboratory extends Secure_Controller
 				$data['customer'],
 				$data['customer_address'],
 				$data['customer_location'],
-				$data['customer_account_number']
+
 			));
 		}
 
@@ -2455,12 +2586,6 @@ class Laboratory extends Secure_Controller
 		$customer_id = $this->input->post('customer');
 		if ($this->Customer->exists($customer_id)) {
 			$this->sale_lib->set_customer($customer_id);
-			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
-
-			// apply customer default discount to items that have 0 discount
-			if ($discount_percent != '') {
-				$this->sale_lib->apply_customer_discount($discount_percent);
-			}
 		}
 
 		$this->_reload();
@@ -2546,6 +2671,11 @@ class Laboratory extends Secure_Controller
 
 	public function result_info_profile($id)
 	{
+		$data = $this->fetch_result_info($id);
+		$this->load->view('laboratory/results_check', $data);
+	}
+	public function fetch_result_info($id)
+	{
 		$result_info = $this->Item->get_labresult_info($id);
 
 		$data['sale_id'] = $id;
@@ -2558,6 +2688,6 @@ class Laboratory extends Secure_Controller
 		$customer_info = $this->_load_customer_data($customer_id, $data);
 		//$data['cart'] = $this->sale_lib->get_labsaveresultcart_reordered($sale_id);
 		// filters that will be loaded in the multiselect dropdown
-		$this->load->view('laboratory/results_check', $data);
+		return $data;
 	}
 }

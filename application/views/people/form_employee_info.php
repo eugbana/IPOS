@@ -6,7 +6,7 @@
 				'name' => 'first_name',
 				'id' => 'first_name',
 				'class' => 'form-control input-sm',
-				'value' => $first_name
+				'value' => $person_info->first_name
 			)
 		); ?>
 	</div>
@@ -20,7 +20,7 @@
 				'name' => 'last_name',
 				'id' => 'last_name',
 				'class' => 'form-control input-sm',
-				'value' => $last_name
+				'value' => $person_info->last_name
 			)
 		); ?>
 	</div>
@@ -36,7 +36,7 @@
 					'type' => 'radio',
 					'id' => 'gender_male',
 					'value' => 1,
-					'checked' => $gender === '1'
+					'checked' => $person_info->gender === '1'
 				)
 			); ?> <?php echo $this->lang->line('common_gender_male'); ?>
 		</label>
@@ -47,7 +47,7 @@
 					'type' => 'radio',
 					'id' => 'gender_female',
 					'value' => 0,
-					'checked' => $gender === '0'
+					'checked' => $person_info->gender === '0'
 				)
 			); ?> <?php echo $this->lang->line('common_gender_female'); ?>
 		</label>
@@ -65,7 +65,7 @@
 					'name' => 'email',
 					'id' => 'email',
 					'class' => 'form-control input-sm',
-					'value' => $email
+					'value' => $person_info->email
 				)
 			); ?>
 		</div>
@@ -82,7 +82,7 @@
 					'name' => 'date_of_birth',
 					'id' => 'date_of_birth',
 					'class' => 'form-control input-sm',
-					'value' => $date_of_birth
+					'value' => $person_info->date_of_birth
 				)
 			); ?>
 		</div>
@@ -99,7 +99,7 @@
 					'name' => 'phone_number',
 					'id' => 'phone_number',
 					'class' => 'form-control input-sm',
-					'value' => $phone_number
+					'value' => $person_info->phone_number
 				)
 			); ?>
 		</div>
@@ -114,7 +114,7 @@
 				'name' => 'address_1',
 				'id' => 'address_1',
 				'class' => 'form-control input-sm',
-				'value' => $address_1
+				'value' => $person_info->address_1
 			)
 		); ?>
 	</div>
@@ -128,7 +128,7 @@
 				'name' => 'address_2',
 				'id' => 'address_2',
 				'class' => 'form-control input-sm',
-				'value' => $address_2
+				'value' => $person_info->address_2
 			)
 		); ?>
 	</div>
@@ -142,7 +142,7 @@
 				'name' => 'city',
 				'id' => 'city',
 				'class' => 'form-control input-sm',
-				'value' => $city
+				'value' => $person_info->city
 			)
 		); ?>
 	</div>
@@ -156,7 +156,7 @@
 				'name' => 'state',
 				'id' => 'state',
 				'class' => 'form-control input-sm',
-				'value' => $state
+				'value' => $person_info->state
 			)
 		); ?>
 	</div>
@@ -170,7 +170,7 @@
 				'name' => 'zip',
 				'id' => 'postcode',
 				'class' => 'form-control input-sm',
-				'value' => $zip
+				'value' => $person_info->zip
 			)
 		); ?>
 	</div>
@@ -184,7 +184,7 @@
 				'name' => 'country',
 				'id' => 'country',
 				'class' => 'form-control input-sm',
-				'value' => $country
+				'value' => $person_info->country
 			)
 		); ?>
 	</div>
@@ -198,7 +198,7 @@
 				'name' => 'comments',
 				'id' => 'comments',
 				'class' => 'form-control input-sm',
-				'value' => $comments
+				'value' => $person_info->comments
 			)
 		); ?>
 	</div>

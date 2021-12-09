@@ -168,7 +168,8 @@
                         <div class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><?= $user_info->first_name . ' ' . $user_info->last_name;  ?> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li>
+                                <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); 
+                                    ?></li>
 
                                 <!-- <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
                                 <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
@@ -289,184 +290,214 @@
 
                     </div> <!-- End row -->
 
-                </div>
-                <!-- End row-->
-                <div class="row">
-                    <div class="col-lg-6">
 
-                        <div class="cal1 cal_2">
-                            <div class="clndr">
-                                <div class="clndr-controls">
-                                    <div class="clndr-control-button">
-                                        <p class="clndr-previous-button">previous</p>
+                    <!-- End row-->
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <div class="cal1 cal_2">
+                                <div class="clndr">
+                                    <div class="clndr-controls">
+                                        <div class="clndr-control-button">
+                                            <p class="clndr-previous-button">previous</p>
+                                        </div>
+                                        <div class="month">July 2015</div>
+                                        <div class="clndr-control-button rightalign">
+                                            <p class="clndr-next-button">next</p>
+                                        </div>
                                     </div>
-                                    <div class="month">July 2015</div>
-                                    <div class="clndr-control-button rightalign">
-                                        <p class="clndr-next-button">next</p>
-                                    </div>
+                                    <table class="clndr-table" border="0" cellspacing="0" cellpadding="0">
+                                        <thead>
+                                            <tr class="header-days">
+                                                <td class="header-day">S</td>
+                                                <td class="header-day">M</td>
+                                                <td class="header-day">T</td>
+                                                <td class="header-day">W</td>
+                                                <td class="header-day">T</td>
+                                                <td class="header-day">F</td>
+                                                <td class="header-day">S</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-28">
+                                                    <div class="day-contents">28</div>
+                                                </td>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-29">
+                                                    <div class="day-contents">29</div>
+                                                </td>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-30">
+                                                    <div class="day-contents">30</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-01">
+                                                    <div class="day-contents">1</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-02">
+                                                    <div class="day-contents">2</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-03">
+                                                    <div class="day-contents">3</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-04">
+                                                    <div class="day-contents">4</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-05">
+                                                    <div class="day-contents">5</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-06">
+                                                    <div class="day-contents">6</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-07">
+                                                    <div class="day-contents">7</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-08">
+                                                    <div class="day-contents">8</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-09">
+                                                    <div class="day-contents">9</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-10">
+                                                    <div class="day-contents">10</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-11">
+                                                    <div class="day-contents">11</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-12">
+                                                    <div class="day-contents">12</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-13">
+                                                    <div class="day-contents">13</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-14">
+                                                    <div class="day-contents">14</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-15">
+                                                    <div class="day-contents">15</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-16">
+                                                    <div class="day-contents">16</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-17">
+                                                    <div class="day-contents">17</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-18">
+                                                    <div class="day-contents">18</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-19">
+                                                    <div class="day-contents">19</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-20">
+                                                    <div class="day-contents">20</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-21">
+                                                    <div class="day-contents">21</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-22">
+                                                    <div class="day-contents">22</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-23">
+                                                    <div class="day-contents">23</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-24">
+                                                    <div class="day-contents">24</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-25">
+                                                    <div class="day-contents">25</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-26">
+                                                    <div class="day-contents">26</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-27">
+                                                    <div class="day-contents">27</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-28">
+                                                    <div class="day-contents">28</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-29">
+                                                    <div class="day-contents">29</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-30">
+                                                    <div class="day-contents">30</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-31">
+                                                    <div class="day-contents">31</div>
+                                                </td>
+                                                <td class="day adjacent-month next-month calendar-day-2015-08-01">
+                                                    <div class="day-contents">1</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <table class="clndr-table" border="0" cellspacing="0" cellpadding="0">
-                                    <thead>
-                                        <tr class="header-days">
-                                            <td class="header-day">S</td>
-                                            <td class="header-day">M</td>
-                                            <td class="header-day">T</td>
-                                            <td class="header-day">W</td>
-                                            <td class="header-day">T</td>
-                                            <td class="header-day">F</td>
-                                            <td class="header-day">S</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="day adjacent-month last-month calendar-day-2015-06-28">
-                                                <div class="day-contents">28</div>
-                                            </td>
-                                            <td class="day adjacent-month last-month calendar-day-2015-06-29">
-                                                <div class="day-contents">29</div>
-                                            </td>
-                                            <td class="day adjacent-month last-month calendar-day-2015-06-30">
-                                                <div class="day-contents">30</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-01">
-                                                <div class="day-contents">1</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-02">
-                                                <div class="day-contents">2</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-03">
-                                                <div class="day-contents">3</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-04">
-                                                <div class="day-contents">4</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day calendar-day-2015-07-05">
-                                                <div class="day-contents">5</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-06">
-                                                <div class="day-contents">6</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-07">
-                                                <div class="day-contents">7</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-08">
-                                                <div class="day-contents">8</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-09">
-                                                <div class="day-contents">9</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-10">
-                                                <div class="day-contents">10</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-11">
-                                                <div class="day-contents">11</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day calendar-day-2015-07-12">
-                                                <div class="day-contents">12</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-13">
-                                                <div class="day-contents">13</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-14">
-                                                <div class="day-contents">14</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-15">
-                                                <div class="day-contents">15</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-16">
-                                                <div class="day-contents">16</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-17">
-                                                <div class="day-contents">17</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-18">
-                                                <div class="day-contents">18</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day calendar-day-2015-07-19">
-                                                <div class="day-contents">19</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-20">
-                                                <div class="day-contents">20</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-21">
-                                                <div class="day-contents">21</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-22">
-                                                <div class="day-contents">22</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-23">
-                                                <div class="day-contents">23</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-24">
-                                                <div class="day-contents">24</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-25">
-                                                <div class="day-contents">25</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="day calendar-day-2015-07-26">
-                                                <div class="day-contents">26</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-27">
-                                                <div class="day-contents">27</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-28">
-                                                <div class="day-contents">28</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-29">
-                                                <div class="day-contents">29</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-30">
-                                                <div class="day-contents">30</div>
-                                            </td>
-                                            <td class="day calendar-day-2015-07-31">
-                                                <div class="day-contents">31</div>
-                                            </td>
-                                            <td class="day adjacent-month next-month calendar-day-2015-08-01">
-                                                <div class="day-contents">1</div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <?php
+                                //                var_dump($u_mod_grants['config']);
+                                $granted_perm = $u_mod_grants['config'];
+
+                                $granted_permissions=[];
+                                if(isset($granted_perm)&& count($granted_perm)>0){
+//                    var_dump($granted_perm);
+                                    foreach ($granted_perm as $perm){
+                                        $granted_permissions[] = $perm["permission_id"];
+                                    }
+                                }
+                                // print_r($granted_perm);
+//                                echo in_array("config_backup_database",$granted_permissions);
+                                // var_dump($granted_permissions);
+                                if(in_array('config_database_backup',$granted_permissions)){
+                                    echo form_label($this->lang->line('config_backup_database'),
+                                        'config_backup_database', array('class' => 'control-label col-xs-6'));
+                                    ?>
+                                    <div class='col-xs-6'>
+                                        <button id="backup_db" class="btn btn-default btn-sm">
+                                            <span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
+                                        </button>
+                                    </div>
+                                <?php }
+                                ?>
                             </div>
                         </div>
+                        <!-- end col -->
 
-                    </div> <!-- end col -->
+                        <div class="col-lg-4">
 
-                    <div class="col-lg-4">
-
-                    </div> <!-- end col-->
-                </div>
-
+                        </div> <!-- end col-->
+                    </div>
 
 
 
 
 
-            </div> <!-- container -->
 
-        </div> <!-- content -->
+                </div> <!-- container -->
 
-
-        <footer class="footer text-right">
-            2018 © InfoStrategy.
-        </footer>
-
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Right content here -->
-    <!-- ============================================================== -->
+            </div> <!-- content -->
 
 
+            <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?> <a href="www.istrategytech.com">Powered By Infostrategy.</a>
+            </footer>
 
-    <!-- /Right-bar -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Right content here -->
+        <!-- ============================================================== -->
+
+
+
+        <!-- /Right-bar -->
 
     </div>
     <!-- END wrapper -->
@@ -535,6 +566,22 @@
                 time: 1200
             });
         });
+    </script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+
+            $("#backup_db").click(function() {
+                console.log('clicked');
+                var backup_db = $(this);
+                backup_db.html("Backup in Progress...");
+                backup_db.attr("disabled", "disabled");
+                window.location='<?php echo site_url('config/backup_db/1') ?>';
+            });
+            setInterval(function () {
+                $.get("<?=base_url('transfer/uploadTransfer')?>");
+            },30*60*1000);
+        });
+
     </script>
 
 

@@ -1,26 +1,32 @@
-<div class="form-group form-group-sm">	
-	<?php echo form_label($this->lang->line('common_first_name'), 'first_name', array('class'=>'required control-label col-xs-3')); ?>
-	<div class='col-xs-8'>
-		<?php echo form_input(array(
-				'name'=>'first_name',
-				'id'=>'first_name',
-				'class'=>'form-control input-sm',
-				'value'=>$person_info->first_name)
-				);?>
-	</div>
-</div>
 
-<div class="form-group form-group-sm">	
-	<?php echo form_label($this->lang->line('common_last_name'), 'last_name', array('class'=>'required control-label col-xs-3')); ?>
-	<div class='col-xs-8'>
-		<?php echo form_input(array(
-				'name'=>'last_name',
-				'id'=>'last_name',
-				'class'=>'form-control input-sm',
-				'value'=>$person_info->last_name)
-				);?>
-	</div>
-</div>
+
+	<?php 
+		if($controller_name != 'suppliers'){ ?>
+		<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('common_first_name'), 'first_name', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_input(array(
+						'name'=>'first_name',
+						'id'=>'first_name',
+						'class'=>'form-control input-sm',
+						'value'=>$person_info->first_name)
+						);?>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('common_last_name'), 'last_name', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_input(array(
+						'name'=>'last_name',
+						'id'=>'last_name',
+						'class'=>'form-control input-sm',
+						'value'=>$person_info->last_name)
+						);?>
+			</div>
+		</div>
+
+		<?php } ?>
 
 <div class="form-group form-group-sm">	
 	<?php echo form_label($this->lang->line('common_gender'), 'gender', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
@@ -43,7 +49,6 @@
 					'checked'=>$person_info->gender === '0')
 					); ?> <?php echo $this->lang->line('common_gender_female'); ?>
 		</label>
-
 	</div>
 </div>
 
@@ -91,6 +96,33 @@
 		</div>
 	</div>
 </div>
+
+<!-- check for validation -->
+<!-- 
+<div class="form-group form-group-sm">	
+	<?php echo form_label('Phone Number Check', 'check_phone', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+	<div class="col-xs-4">
+		<label class="radio-inline">
+			<?php echo form_radio(array(
+					'name'=>'check_phone',
+					'type'=>'radio',
+					'id'=>'check_phone',
+					'value'=> 1,
+					'checked' => empty($person_info->phone_number) ? '1' : '0',
+					)
+					); ?> <?php echo 'YES' ?>
+		</label>
+		<label class="radio-inline">
+			<?php echo form_radio(array(
+					'name'=>'check_phone',
+					'type'=>'radio',
+					'id'=>'check_phone',
+					'value'=>0,
+					'checked'=> empty($person_info->phone_number) ? '1' : '0')
+					); ?> <?php echo 'NO'; ?>
+		</label>
+	</div>
+</div> -->
 
 <div class="form-group form-group-sm">	
 	<?php echo form_label($this->lang->line('common_address_1'), 'address_1', array('class'=>'control-label col-xs-3')); ?>
@@ -200,11 +232,9 @@ $(document).ready(function()
 					format: ["postcode", "village|town|hamlet|city_district|city", "state", "country"]
 				}
 			},
-
 			state : {
 				dependencies :  ["state", "country"]
 			},
-
 			country : {
 				dependencies :  ["state", "country"]
 			}

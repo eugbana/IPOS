@@ -348,8 +348,8 @@
                                
                 </div> <!-- content -->
 
-                <footer class="footer text-right">
-                    <?php echo date('Y')?> © Infostrategy.
+                <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?>   <a href="www.istrategytech.com">Powered By Infostrategy.</a>
                 </footer>
 
             </div>

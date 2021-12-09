@@ -10,16 +10,24 @@
 		<?php //echo $person_info->person_id;
 		?>
 
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); //print_r($special_module) 
+		<div id="required_fields_message"><?php
+            echo $this->lang->line('common_fields_required_message'); //print_r($special_module)
+
+            if (isset($success)) {
+                echo "<div class='alert alert-dismissible alert-success'>" . $success . "</div>";
+            }
+            if (isset($error)) {
+                echo "<div class='alert alert-dismissible alert-danger'>" . $error . "</div>";
+            }
 											?></div>
 
 		<ul id="error_message_box" class="error_message_box"></ul>
 
-
-
 		<div class="tab-pane" id="employee_permission_info">
 			<fieldset>
-				<?php echo form_open($controller_name . '/view_assign/' . $person_info->person_id, array('id' => 'role_check', 'class' => 'form-horizontal')); ?>
+				<?php
+//                var_dump($this->CI->Employee->get_employee_grants($person_info->person_id));
+                echo form_open($controller_name . '/view_assign/' . $person_info->person_id, array('id' => 'role_check', 'class' => 'form-horizontal')); ?>
 
 				<div class="form-group form-group-sm" style="margin-top:10px">
 					<?php echo form_label('', 'role', array('class' => 'control-label col-xs-3')); ?>
@@ -34,45 +42,61 @@
 				<?php echo form_open($controller_name . '/save_employee_role/' . $person_info->person_id, array('id' => 'employee_rolform', 'class' => 'form-horizontal')); ?>
 				<?php echo form_hidden('role', $selected_role, array('id' => 'role')); ?>
 				<ul id="permission_list" class="check_default">
+					<?php
+					if(isset($all_modules)  && count($all_modules) > 0){
 
-					<?php
-					foreach ($all_modules as $module) {
-						?>
-						<li>
-							<?php echo form_checkbox("grants[]", $module->module_id, $module->grant, "class='module'"); ?>
-							<span class="medium"><?php echo $this->lang->line('module_' . $module->module_id); ?>:</span>
-							<span class="small"><?php echo $this->lang->line('module_' . $module->module_id . '_desc'); ?></span>
-							<?php
-								foreach ($all_subpermissions as $permission) {
-									$exploded_permission = explode('_', $permission->permission_id);
-									if ($permission->module_id == $module->module_id) {
-										$lang_key = $module->module_id . '_' . $exploded_permission[1];
-										$lang_line = $this->lang->line($lang_key);
-										$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? $exploded_permission[1] : $lang_line;
-										if (!empty($lang_line)) {
-											?>
-										<ul>
-											<li>
-												<?php echo form_checkbox("grants[]", $permission->permission_id, $permission->grant); ?>
-												<span class="medium"><?php echo $lang_line ?></span>
-											</li>
-										</ul>
-							<?php
-										}
-									}
-								}
-								?>
-						</li>
-					<?php
-					}
+                        foreach ($all_modules as $module) {
+                            $granted_perm = $granted[$module->module_id];
+                            $granted_permissions=[];
+                            if(isset($granted_perm)&& count($granted_perm)>0){
+                                foreach ($granted_perm as $perm){
+                                    $granted_permissions[] = $perm["permission_id"];
+                                }
+                            }
+                            ?>
+                            <li>
+
+                                <div id="div-mod-<?=$module->module_id?>">
+                                    <input type="checkbox" name="grants[]" value="<?=$module->module_id?>" <?php if($granted_perm!= null) echo "checked";?> data-mid="<?=$module->module_id?>" class="module"/>
+                                    <span class="medium"><?php echo $this->lang->line('module_' . $module->module_id); ?>:</span>
+                                    <span class="small"><?php echo $this->lang->line('module_' . $module->module_id . '_desc'); ?></span>
+                                    <span class="small"><b><?=$module->module_id ?></b></span>
+                                </div>
+
+                                <?php
+
+                                if(isset($cust_perms[$module->module_id]) && count($cust_perms[$module->module_id])>0){
+                                    foreach ($cust_perms[$module->module_id] as $perm){
+//                                        $lang_key = $perm->permission_id;
+//                                        $module->module_id . '_' . $exploded_permission[1];
+//                                        $lang_line = $this->lang->line($lang_key);
+//                                        $lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? $exploded_permission[1] : $lang_line;
+//                                        if (!empty($lang_line)) {
+                                            ?>
+                                            <ul>
+                                                <li id="<?=$perm->permission_id?>" class="<?=$module->module_id?>">
+                                                    <?php //echo form_checkbox("grants[]", $permission->permission_id, $permission->grant); ?>
+                                                    <input type="checkbox" name="grants[]" value="<?=$perm->permission_id?>" <?php if($granted_perm != null){if(in_array($perm->permission_id,$granted_permissions)){echo "checked";}}else{echo "disabled";} ?> data-mid="<?=$module->module_id?>" class="sModule"/>
+                                                    <span class="medium"><?php echo ucfirst($perm->permission_id) ?></span>
+                                                </li>
+                                            </ul>
+                                            <?php
+//                                        }
+                                    }
+                                }
+                                ?>
+                            </li>
+                            <?php
+                        }
+                    }
 					?>
 				</ul>
 
 				<?php echo form_submit(array(
 					'name' => 'role_submit',
 					'id' => 'role_submit',
-					//'value'=>$this->lang->line('common_submit'),
-					'value' => 'Comm',
+					'value'=>$this->lang->line('common_submit'),
+//					'value' => 'Submit',
 					'class' => 'btn btn-primary btn-sm pull-right'
 				)); ?>
 			</fieldset>
@@ -89,6 +113,13 @@
 		$.validator.setDefaults({
 			ignore: []
 		});
+        //<input type="hidden" name="grantsPMod[]" id="sModule-<?=$permission->permission_id?>"/>
+		$("form").on('submit',function(e){
+		    // e.preventDefault();
+		    // const fdata = $(this).serializeArray();
+		    // alert(JSON.stringify(fdata) );
+		    // return false;
+        });
 
 		$.validator.addMethod("module", function(value, element) {
 			var result = $("#permission_list input").is(":checked");
@@ -116,6 +147,32 @@
 				updateCheckboxes($this.is(":checked"));
 			});
 		});
+        $(".module").on('change',function () {
+            const tVal = $(this).val();
+            const mId = $(this).attr('data-mid');
+            if($(this).is(":checked")){
+                // $("#div-mod-"+mId).append('<input type="hidden" value="'+mId+'" name="grantsPMod[]" id="sModule-'+tVal+'"/>');
+                $("."+tVal).find("input:checkbox").removeAttr('disabled');
+                // $("#sModule-"+tVal).val(mId);
+            }else {
+                $("#sModule-"+tVal).remove();
+                $("."+tVal).find("input:checkbox").removeAttr('checked').attr('disabled','disabled');
+            }
+        });
+        $("#employee_rolform").on('submit',function (e) {
+            // e.preventDefault();
+            // console.log($(this).serializeArray());
+        })
+        $(".sModule").on('change',function () {
+            const tVal = $(this).val();
+            if($(this).is(":checked")){
+                const mId = $(this).attr('data-mid');
+                // $("#"+tVal).append('<input type="hidden" value="'+mId+'" name="grantsPMod[]" id="sModule-'+tVal+'"/>');
+                // $("#sModule-"+tVal).val(mId);
+            }else {
+                $("#sModule-"+tVal).remove();
+            }
+        });
 
 		/*$("#roles").on("change", function() {
 		var role=("#roles").val();
@@ -127,7 +184,7 @@
 			//var role=("#roles").val();
 			$("#role_check").submit();
 		});
-		$("#role_submit").on("click", function() {
+		$("#role_submit").on("click", function(event) {
 			event.preventDefault();
 			//$("#role")=("#role_input").val();
 			// alert($("#role_input").val());

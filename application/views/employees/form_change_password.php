@@ -74,6 +74,7 @@
 				</div>
 			</div>
 
+
 			<div class="form-group form-group-sm">
 				<?php echo form_label('Image', 'items_image', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>

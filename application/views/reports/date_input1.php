@@ -56,6 +56,7 @@
 		if (!empty($stock_locations) && count($stock_locations) > 1) {
 			?>
 			<div class="form-group form-group-sm">
+			
 				<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class' => 'required control-label col-xs-2')); ?>
 				<div id='report_stock_location' class="col-xs-3">
 					<?php echo form_dropdown('stock_location', $stock_locations, 'all', array('id' => 'location_id', 'class' => 'form-control')); ?>

@@ -17,12 +17,7 @@ class Account extends Secure_Controller
 
 	public function index()
 	{
-		//$data['table_headers'] = $this->xss_clean(get_account_manage_table_headers());
-		//$data['notice'] = $this->sale_lib->notice_transfer_items();
-		//$data['transfer'] = $this->sale_lib->global_transfer_items();
-		//$data['cart'] = $this->sale_lib->get_cart();
-		//$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
-		//$data['cart']=Array ( 1 => Array ( 'item_id' => 1330,'item_location' => 1,'stock_name' => 'warehouse','line'=> 1, 'name' => 'Booyks','allow_alt_description' => 0,'is_serialized' => 0,'quantity' => 1,'discount' => 0,'in_stock' => 24.000,'price' => 4900,'wholeprice' => 3000,'total' => 8000,'discounted_total' => 7000,'print_option' => 1,'stock_type' => 0,'tax_category_id' => 0 ), 2 => Array ( 'item_id' => 1331,'item_location' => 1,'stock_name' => 'warehouse','line' => 2, 'name' => 'Panadole','allow_alt_description' => 0,'is_serialized' => 0,'quantity' => 1,'discount' => 0,'in_stock' => 10.000,'price' => 4900,'wholeprice' => 3000,'total' => 8000,'discounted_total' => 7000,'print_option' => 1,'stock_type' => 0, 'tax_category_id' => 0 ) ) ;
+
 		$data['invoice'] = $this->Item->total_invoice_item(7);
 		$invoice_details = $this->Item->total_invoice_item(7);
 		$quantity = 1;
@@ -44,12 +39,6 @@ class Account extends Secure_Controller
 	}
 	public function processed_payment()
 	{
-		//$data['table_headers'] = $this->xss_clean(get_account_manage_table_headers());
-		//$data['notice'] = $this->sale_lib->notice_transfer_items();
-		//$data['transfer'] = $this->sale_lib->global_transfer_items();
-		//$data['cart'] = $this->sale_lib->get_cart();
-		//$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
-		//$data['cart']=Array ( 1 => Array ( 'item_id' => 1330,'item_location' => 1,'stock_name' => 'warehouse','line'=> 1, 'name' => 'Booyks','allow_alt_description' => 0,'is_serialized' => 0,'quantity' => 1,'discount' => 0,'in_stock' => 24.000,'price' => 4900,'wholeprice' => 3000,'total' => 8000,'discounted_total' => 7000,'print_option' => 1,'stock_type' => 0,'tax_category_id' => 0 ), 2 => Array ( 'item_id' => 1331,'item_location' => 1,'stock_name' => 'warehouse','line' => 2, 'name' => 'Panadole','allow_alt_description' => 0,'is_serialized' => 0,'quantity' => 1,'discount' => 0,'in_stock' => 10.000,'price' => 4900,'wholeprice' => 3000,'total' => 8000,'discounted_total' => 7000,'print_option' => 1,'stock_type' => 0, 'tax_category_id' => 0 ) ) ;
 		$data['invoice'] = $this->Item->total_invoice_item(7);
 		$invoice_details = array(); //$this->Item->total_invoice_item(7);
 		$quantity = 1;
@@ -89,10 +78,7 @@ class Account extends Secure_Controller
 		//$data['cart']=$this->sale_lib->get_lab_accountcart();
 		$data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
 
-
 		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
-
-
 
 		$this->load->view('account/unprocessed', $data);
 	}
@@ -197,6 +183,7 @@ class Account extends Secure_Controller
 		$item_location = 1; //
 		$discount = 0;
 		//$iteg=1330;
+		$this->sale_lib->empty_lab_accountcart(); //remove lab account items, JUDE
 		foreach ($invoice_details as $row => $value) {
 			$this->sale_lib->item_add_lab($value['item_id'], $quantity, $item_location, $discount);
 		}
@@ -239,7 +226,7 @@ class Account extends Secure_Controller
 			$this->config->item('account_number')
 		));
 		$data['sale_status'] = '0'; // Complete
-		$data['sale_id_num'] = $this->Sale->lab_accountsave($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], NULL, NULL, $data['payments'], $data['dinner_table'], $data['taxes'], $invoice_id);
+		$data['sale_id_num'] = $this->Sale->lab_accountsave($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], NULL, NULL, $data['payments'], $data['dinner_table'], $data['taxes'], $invoice_id, false, $item_location);
 
 		$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
@@ -260,11 +247,12 @@ class Account extends Secure_Controller
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')); //now
 		$data['date'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($this->Sale->get_info($data['sale_id_num'])->row()->sale_time)); //now
 		$data['receipt_title'] = "Laboratory Payment";
+		$data['receipt_type'] = "lab";
 		$this->load->view('account/receipt', $data);
 		//$this->load->view('sales/receipt', $data);
 
 	}
-	public function lab_result_sales()
+	public function lab_result_sales_renamed() //jude changed this from `lab_result_sales` to `lab_result_sales_renamed`
 	{
 		// Save the data to the sales table
 
@@ -273,6 +261,7 @@ class Account extends Secure_Controller
 		$quantity = 1;
 		$item_location = 1;
 		$discount = 0;
+		$this->sale_lib->empty_lab_accountcart(); //remove lab account items, JUDE
 		foreach ($invoice_details as $row => $value) {
 			$this->sale_lib->item_add_lab($value['item_id'], $quantity, $item_location, $discount);
 		}
@@ -500,13 +489,19 @@ class Account extends Secure_Controller
 
 		echo json_encode($results);
 	}
-	public function unprocessed_laboratory_items()
+	public function unprocessed_laboratory_items($from_cash = null)
 	{
 		$lab_items = array();
 		$data = $this->Item->unprocessed_account_items();
 		foreach ($data as $row => $value) {
 			$customer_info = $this->_load_customer_data($value['person_id'], $data);
-			$lab_items[] = array('invoice_id' => $value['invoice_id'], 'person_id' => $data['customer'], 'invoice_time' => $value['invoice_time'], 'doctor_name' => $value['doctor_name'], 'edit' => $value['status'] == 0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>' : '<button class="btn btn-info btn-sm pull-left modal-dlg" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>', 'print' => '');
+			$lab_item = array('invoice_id' => $value['invoice_id'], 'person_id' => $data['customer'], 'invoice_time' => $value['invoice_time'], 'doctor_name' => $value['doctor_name'],
+                'edit' => $value['status'] == 0 ? '<button class="btn btn-danger btn-sm pull-left modal-dlg update" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Not Processed</button>' : '<button class="btn btn-info btn-sm pull-left modal-dlg" id="' . $value['invoice_id'] . '" data-btn-new="New" data-btn-submit="Submit"><span class="glyphicon glyphicon-tag">&nbsp</span>Processed</button>',
+                'print' => '');
+			if($from_cash){
+			    $lab_item['edit_invoice'] = '<a href="'.base_url('laboratory/edit_invoice').'/'.$value['invoice_id'].'"><span class="glyphicon glyphicon-edit">&nbsp</span></a>';
+            }
+            $lab_items[] = $lab_item;
 		}
 		$results = array(
 			"sEcho" => 1,
@@ -606,7 +601,7 @@ class Account extends Secure_Controller
 			} else {
 				$data['customer_location'] = '';
 			}
-			$data['customer_account_number'] = $customer_info->account_number;
+
 			$data['customer_discount_percent'] = $customer_info->discount_percent;
 			$package_id = $this->Customer->get_info($customer_id)->package_id;
 			if ($package_id != NULL) {
@@ -626,7 +621,7 @@ class Account extends Secure_Controller
 				$data['customer'],
 				$data['customer_address'],
 				$data['customer_location'],
-				$data['customer_account_number']
+
 			));
 		}
 
@@ -766,6 +761,43 @@ class Account extends Secure_Controller
 				'id' => -1
 			));
 		}
+	}
+
+	public function sales_day_book() {
+		$this->load->view("account/sales_day_book");
+	}
+
+	public function get_cash_day_book_data($type, $startDate = null, $endDate = null) {
+
+		$results = $this->Sale->get_latest_sales($type,$startDate,$endDate);
+
+		$results = array(
+			"sEcho" => 1,
+			"iTotalRecords" => count($results),
+			"iTotalDisplayRecords" => count($results),
+			"aaData" => $results
+		);
+
+		echo json_encode($results);
+	}
+
+	public function purchase_day_book() {
+		$this->load->view("account/purchase_day_book");
+	}
+
+	public function get_purchase_day_book_data($type,$startDate = null,$endDate = null) {
+
+		$results = $this->Receiving->get_latest_receivings($type,$startDate,$endDate);
+
+
+		$results = array(
+			"sEcho" => 1,
+			"iTotalRecords" => count($results),
+			"iTotalDisplayRecords" => count($results),
+			"aaData" => $results
+		);
+
+		echo json_encode($results);
 	}
 
 	/*

@@ -114,6 +114,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
+	// $application_folder = '../application';
 	$application_folder = '../application';
 
 /*
@@ -304,6 +305,9 @@ switch (ENVIRONMENT)
 	}
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
+
+	define('ERD_BASE_URL', "erd.toniapharmacy.com/api");
+	define('WOO_BASE_URL', "toniawholesale.com/wp-json/sync");
 
 /*
  * --------------------------------------------------------------------

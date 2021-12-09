@@ -1,6 +1,157 @@
 <?php
 class Item extends CI_Model
 {
+
+    //begin hassan's function
+	public function register_item_quantities_batch(){
+		$this->load->model('employee');
+        $branch_info = $this->Employee->get_branchinfo(2);
+        $erd_url = ERD_BASE_URL.'/branches/itemq/'.$branch_info->brid.'/batch/register';
+		$all = 1000;
+		while($all > 0){
+			$quants = $this->db->select('item_quantities.quantity,item_quantities.id as q_id,items.*')->from('item_quantities')
+					->join('items','item_quantities.item_id = items.item_id')
+					->where(['item_quantities.registered'=>0])
+					->where('item_quantities.quantity > 0')
+					->limit(10)
+					->get()->result_array();
+			$qs = [];
+			if(count($quants)>0){
+				foreach($quants as $quant){
+					$quant['batches'] = $this->db->select('batch_no,quantity,expiry')
+												->from('item_expiry')->where(['item_id'=>$quant['item_id']])
+												->get()->result_array();
+					$qs['quants'][] = $quant;
+				}
+				$qs['caller']  ='HaslekIsBae';
+				$this->load->library('External_calls');
+				$erd_response = External_calls::makeRequest($erd_url,$qs,"POST");
+				$erd_response = json_decode($erd_response,true);
+				if(isset($erd_response['status']) && $erd_response['status'] == "00"){
+					$data = $erd_response['data'];
+					foreach ($data as $s_id=>$stat){
+						$this->db->update('item_quantities',['registered'=>$stat],['id'=>$s_id]);
+					}
+					// return true;
+				}
+				// var_dump($erd_response);
+				$all -= 10;
+				
+			}
+		}
+		return ['message'=>"1000 entries attempted"];
+	
+		// var_dump($qs);
+		
+	}
+	public function register_item_transfers_batch(){
+	
+        $this->load->model('employee');
+        $branch_info = $this->Employee->get_branchinfo(2);
+        $erd_url = ERD_BASE_URL.'/branches/transfer/'.$branch_info->brid.'/batch/register';
+		$base = 1000;
+		while($base > 0){
+			$this->db->select('item_transfer.transfer_id,item_transfer.transfer_time,item_transfer.reference as transfer_reference,
+				item_transfer.transfer_type,stock_locations.brid as to_branch_id,stock_locations.location_name as to_branch,people.first_name,people.last_name,
+				SUM(ipos_items_push.pushed_quantity) as total_quantity,SUM(ipos_items_push.item_cost_price * ipos_items_push.pushed_quantity) as total_price
+				')->from('item_transfer')
+			->join('stock_locations','item_transfer.request_to_branch_id = stock_locations.location_id')
+			->join('people','item_transfer.employee_id = people.person_id')
+			->join('items_push','item_transfer.transfer_id = items_push.transfer_id')
+			->group_by('item_transfer.transfer_id')
+			->where(['status'=>0])
+			->limit(10);
+		$trans = $this->db->get()->result_array();
+		$transfers = [];
+		 if(count($trans)> 0){
+			 foreach($trans as $transfer){
+				//  var_dump($this->db->select()->from('item_push'));
+				if($transfer['transfer_reference'] == null){
+					$transfer['transfer_reference'] = $branch_info->brid.$transfer['transfer_type'].$transfer['transfer_id'];
+				}
+				 $transfer['items'] = $this->db->select('items.item_number,items.name,items.category,
+				 		items.type,items_push.item_id,items_push.pushed_quantity,items_push.item_cost_price,items_push.item_unit_price')->from('items')
+					->join('items_push','items.item_id= items_push.item_id')
+					// ->group_by('items_push.item_id')
+					->where(['items_push.transfer_id'=>$transfer['transfer_id']])
+					->get()->result_array();
+				$transfers['transfers'][] = $transfer;
+			 }
+			 $transfers['caller'] = "HaslekIsBae";
+            $this->load->library('External_calls');
+            $erd_response = External_calls::makeRequest($erd_url,$transfers,"POST");
+            $erd_response = json_decode($erd_response,true);
+            if(isset($erd_response['status']) && $erd_response['status'] == "00"){
+                $data = $erd_response['data'];
+                foreach ($data as $s_id=>$stat){
+                    $this->db->update('item_transfer',['status'=>$stat['status'],'reference'=>$stat['reference']],['transfer_id'=>$s_id]);
+                }
+            }
+		 }
+		 $base -= 10;
+		}
+		 return ['message'=>"1000 or less Transfers sent"];
+		 
+	}
+    public function fetch_item_batches($item_id,$location){
+        return $this->db->select('batch_no,quantity,expiry')
+            ->from('item_expiry')
+            ->where("location_id = '$location' AND item_id = '$item_id'")
+            ->order_by('expiry','ASC')
+            ->get()
+            ->result();
+    }
+	public function get_item_qty($item_id) {
+	    $items_global = [];
+	    
+	    $this->db->select('item_id, quantity');
+	    $this->db->from('item_quantities');
+	    $this->db->where('item_id', $item_id);
+	    
+	    $query = $this->db->get();
+	    $ret = $query->row();
+	    if(isset($ret->item_id)){
+	     $items_global = array('item_id' => $ret->item_id, 'qty' => (int)$ret->quantity);
+	    }
+	    return $items_global;
+	}
+    public function fetch_item_sale_default_batches($item_id,$location,$is_return = false){
+        $today = date('Y-m-d H:i:s');
+        $where = "location_id = '$location' AND item_id = '$item_id'";
+        if(!$is_return){
+            $where .= " AND expiry > '$today'";
+        }
+        $query = $this->db->select('batch_no')
+            ->from('item_expiry')
+            ->where($where)
+            ->order_by('expiry','ASC')
+            ->get()->row();
+        return $query->batch_no;
+
+    }
+    public function fetch_item_with_batch_numbers($item_id,$location){ //function name is self explanatory
+        $today = date('Y-m-d h:i:s');
+        $item = $this->db->from('items')
+            ->where('item_id',$item_id)
+            ->get()
+            ->row();
+        $batch_nums = $this->db->select('batch_no,quantity')
+                            ->from('item_expiry')
+            ->where("quantity > 0 AND expiry > '$today' AND location_id = '$location' AND item_id = '$item_id'")
+            ->order_by('expiry','ASC')
+            ->get()
+            ->result();
+        if($item != null){
+            $item = (object) array_merge((array) $item,['batch_numbers'=>$batch_nums]);
+        }
+        return $item;
+    }
+    public function register_expiring_items(){
+
+    }
+
+    //end hassan functions
+
 	/*
 	Determines if a given item_id is an item
 	*/
@@ -25,14 +176,15 @@ class Item extends CI_Model
 	public function get_transfer_branch_id($location_name)
 	{
 		$suggestions = array();
+		//$this->db->cache_on();
 
 		$this->db->select('location_id');
 		$this->db->from('stock_locations');
 		$this->db->where('location_name', $location_name);
-		foreach ($this->db->get()->result() as $row) {
-			return $row->location_id;
-		}
-
+        return $this->db->get()->row()->$location_id;
+//		foreach ($this->db->get()->result() as $row) {
+//			return $row->location_id;
+//		}
 
 		//return $suggestions['location_id'];
 		//return 1;
@@ -211,6 +363,7 @@ class Item extends CI_Model
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
 		$cats = $this->categories_list();
+		//$this->db->cache_on();
 
 
 		if ($filters['expiry'] == FALSE) {
@@ -221,7 +374,9 @@ class Item extends CI_Model
 			$this->db->select('MAX(items.description) as description');
 			$this->db->select('MAX(items.cost_price) as cost_price');
 			$this->db->select('MAX(items.unit_price) as unit_price');
+			$this->db->select('MAX(items.whole_price) as whole_price');
 			$this->db->select('MAX(items.reorder_level) as reorder_level');
+			$this->db->select('MAX(items.apply_vat) as apply_vat');
 			$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
 			$this->db->select('items.item_id as item_id');
 			$this->db->select('MAX(items.pic_filename) as pic_filename');
@@ -238,6 +393,7 @@ class Item extends CI_Model
 			$this->db->select('MAX(items.custom8) as custom8');
 			$this->db->select('MAX(items.custom9) as custom9');
 			$this->db->select('MAX(items.custom10) as custom10');
+            $this->db->select('items.type');
 
 			$this->db->select('MAX(suppliers.person_id) as person_id');
 			$this->db->select('MAX(suppliers.company_name) as company_name');
@@ -286,6 +442,11 @@ class Item extends CI_Model
 
 					$this->db->or_like('items.item_number', $search);
 					$this->db->or_like('items.item_id', $search);
+					if (is_numeric($search)) {
+						$this->db->or_like('items.whole_price', $search);
+						$this->db->or_like('items.cost_price', $search);
+						$this->db->or_like('items.unit_price', $search);
+					}
 					$this->db->or_like('company_name', $search);
 					$this->db->or_like('category', $search);
 
@@ -341,11 +502,13 @@ class Item extends CI_Model
 		} else {
 			$this->db->select('items.name as name');
 			$this->db->select('items.category as category');
+            $this->db->select('items.type');
 			$this->db->select('MAX(items.supplier_id) as supplier_id');
 			$this->db->select('MAX(items.item_number) as item_number');
 			$this->db->select('MAX(items.description) as description');
 			$this->db->select('items.cost_price as cost_price');
 			$this->db->select('items.unit_price as unit_price');
+			$this->db->select('items.apply_vat as apply_vat');
 
 			$this->db->select('items.item_id as item_id');
 			$this->db->select('MAX(items.pic_filename) as pic_filename');
@@ -368,8 +531,8 @@ class Item extends CI_Model
 
 			$this->db->join('item_expiry as item_expiry', 'item_expiry.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
-			$this->db->where('expiry_date <=', date("Y-m-d H:i:s"));
-
+//			$this->db->where('expiry_date <=', date("Y-m-d H:i:s"));
+            $this->db->where('expiry <=', date("Y-m-d H:i:s"));
 			$this->db->where('items.deleted', $filters['is_deleted']);
 
 			// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
@@ -385,6 +548,56 @@ class Item extends CI_Model
 		}
 
 		return $this->db->get();
+	}
+
+	public function search_audit($search, $filters, $rows = 0, $limit_from = 0, $sort = 'audit_logs.audit_id', $order = 'desc')
+	{
+
+		//$this->db->cache_on();
+
+		$this->db->select("audit_logs.*,
+			CONCAT(employee.first_name,' ', employee.last_name) AS employee_name
+		");
+		$this->db->from('audit_logs AS audit_logs');
+		$this->db->join('people as employee', 'employee.person_id = audit_logs.employee_id', 'left'); //there is always employee id
+		// return $this->db->get()->result_array();
+
+		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
+		// $this->db->group_by('audits.audit_id');
+
+		// order by name of item
+		$this->db->order_by($sort, $order);
+
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+
+		return $this->db->get();
+	}
+
+	public function save_audit($action = "misc", $desc = "", $employee_id = -1)
+	{
+		if ($employee_id > 0) {
+			$audit_data = array(
+				'action_type' => $action,
+				'description' => $desc,
+				'employee_id' => $employee_id
+			);
+
+			$this->db->trans_start();
+
+			$this->db->insert('audit_logs', $audit_data);
+			$audit_id = $this->db->insert_id();
+
+			$this->db->trans_complete();
+
+			if ($this->db->trans_status() === FALSE) {
+				return -1;
+			}
+			return $audit_id;
+			//return TRUE;
+		}
+		return null;
 	}
 
 
@@ -430,7 +643,6 @@ class Item extends CI_Model
 
 		return $suggestions;
 	}
-
 	/*
 	Gets information about a particular item
 	*/
@@ -475,15 +687,20 @@ class Item extends CI_Model
 
 		return $suggestions;
 	}
-	public function get_inventory_total($location)
+	public function get_inventory_total($location, $is_count = false)
 	{
 		$this->db->select('items.name');
-		$this->db->select('item_quantities.location_id as location_id');
+//		$this->db->select('item_quantities.location_id as location_id');
+        $this->db->select('item_quantities.location_id');
 		$this->db->from('items');
-		$this->db->join('item_quantities as item_quantities', 'item_quantities.item_id = items.item_id');
+//		$this->db->join('item_quantities as item_quantities', 'item_quantities.item_id = items.item_id');
+        $this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
 		//$this->db->group_by('stock_locations.location_id');
-		$this->db->where('location_id', $location);
-
+//		$this->db->where('location_id', $location);
+        $this->db->where('item_quantities.location_id', $location);
+        if($is_count){
+            return $this->db->count_all_results();
+        }
 
 		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('name' => $row->name);
@@ -510,7 +727,7 @@ class Item extends CI_Model
 
 		return $suggestions;
 	}
-	public function get_reorder_total($location)
+	public function get_reorder_total($location,$is_count = false)
 	{
 		$this->db->select('items.name');
 		$this->db->select('items.reorder_level as reorder_level');
@@ -521,7 +738,9 @@ class Item extends CI_Model
 		$this->db->where('location_id', $location);
 		$this->db->where('quantity <=', 'reorder_level');
 
-
+		if($is_count){
+		    return $this->db->count_all_results();
+        }
 		foreach ($this->db->get()->result() as $row) {
 			$suggestions[] = array('name' => $row->name);
 		}
@@ -842,33 +1061,97 @@ class Item extends CI_Model
 	/*
 	Gets information about a particular item by item id or number
 	*/
-	public function get_info_by_id_or_number($item_id)
+	public function get_info_by_id_or_number($item_id, $retail = false,$is_id = false)
 	{
+		//$this->db->cache_on();
+
 		$this->db->from('items');
 
-		if (ctype_digit($item_id)) {
-			$this->db->group_start();
-			$this->db->where('item_id', (int) $item_id);
-			$this->db->or_where('items.item_number', $item_id);
-			$this->db->group_end();
-		} else {
-			$this->db->where('item_number', $item_id);
+		if($is_id){
+			if (ctype_digit($item_id)) {
+				//		    var_dump($item_id);
+				//            return $item_id." ctype";
+							$this->db->group_start();
+							$this->db->where('item_id', $item_id);
+				//			$this->db->or_where('items.item_number', $item_id);
+							$this->db->or_where('item_number', $item_id);
+							$this->db->group_end();
+						} else {
+				//            var_dump($item_id);
+				//            return $item_id." normal";
+							$this->db->where('item_number', $item_id);
+						}
+		}else {
+			# code...
+			$this->db->where('item_id', $item_id);
 		}
 
-		$this->db->where('items.deleted', 0);
+//		$this->db->where('items.deleted', 0);
+        $this->db->where('deleted', 0);
 
 		$query = $this->db->get();
 		$num = $query->num_rows();
-		if ($num == 1) {
+		$item_row = new stdClass();
+        if ($num >= 1) {
+            foreach ($query->result() as $row) {
+                if ($row->item_id == $item_id || $row->item_number == $item_id) {
+                    $item_row = $row;
+                    break;
+                }
+            }
+        }
+//        return $num;
+//        $item_location = $this->sale_lib->get_sale_location();
+        if($item_row->item_id !== null){
+            $today = date('Y-m-d h:i:s');
+            $this->load->library('sale_lib');
+            $location = $this->sale_lib->get_sale_location();
+            $i_id = $item_row->item_id;
+            if(!$retail){
+                $batch_nums = $this->db->select('batch_no,quantity,expiry')
+                    ->from('item_expiry')
+                    ->where("quantity > 0 AND expiry > '$today' AND location_id = '$location' AND item_id = '$i_id'")
+                    ->order_by('expiry','ASC')
+                    ->get()
+                    ->result();
+                $item_row = (object) array_merge((array) $item_row,['batch_numbers'=>$batch_nums]);
+            }
+            return $item_row;
+        }
+//		if ($num == 1) {
+//			return $query->row();
+//		} elseif ($num > 1) {
+//			foreach ($query->result() as $row) {
+//				if ($row->item_id == $item_id) {
+//					return $row;
+//				}
+//			}
+//		}
+		return '';
+	}
 
-			return $query->row();
-		} elseif ($num > 1) {
-			foreach ($query->result() as $row) {
-				if ($row->item_id == $item_id) {
-					return $row;
-				}
+	public function get_item_info_by_number($item_number)
+	{
+
+		$this->db->from('items');
+
+		$this->db->where('item_number', $item_number);
+		$query = $this->db->get();
+
+		// print_r($query->result());
+		// die();
+
+		// $num = $query->num_rows();
+		// if ($num == 1) {
+		// 	return $query->row();
+		// } elseif ($num > 1) {
+
+		foreach ($query->result() as $row) {
+			if ($row->item_number == $item_number) {
+				return $row;
 			}
 		}
+		// }
 
 		return '';
 	}
@@ -1007,6 +1290,53 @@ class Item extends CI_Model
 		return FALSE;
 	}
 
+	public function create_item_online($item)
+	{
+		$item_data = array(
+			'name'	 => $item['name'],
+			'category'	 => $item['category'],
+			'item_number'	 => $item['item_number'],
+			'cost_price'	 => $item['cost_price'],
+			'unit_price'	 => $item['unit_price'],
+			'whole_price'	 => $item['whole_price'],
+			'pack'	 => $item['pack'],
+			'prescriptions'	 => $item['prescriptions'],
+			'apply_vat'	 => $item['apply_vat'],
+			'wholesale_price_markup'	 => $item['wholesale_price_markup'],
+			'unit_price_markup'	 => $item['unit_price_markup'],
+			'description'	 => $item['description'],
+			'company'	 => $item['company'],
+		);
+
+		$post = json_encode($item_data);
+
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL =>  $this->config->item('erd_baseurl') . "/api/items_request/create_item",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			// CURLOPT_POSTFIELDS =>"{\n \"branch_name\" : \"capitalhub\", \"request_branch\" ; \"garki\", \"items\" ; {$req_items} \n}",
+			CURLOPT_POSTFIELDS => $post,
+			CURLOPT_HTTPHEADER => array(
+				"Content-Type: application/json"
+			),
+		));
+
+		$response = curl_exec($curl);
+
+		curl_close($curl);
+
+		$response = json_decode($response, true);
+
+		return $response['status'];
+	}
+
 	/*
 	Gets information about multiple items
 	*/
@@ -1020,11 +1350,31 @@ class Item extends CI_Model
 
 		return $this->db->get();
 	}
-	public function save(&$item_data, $item_id = FALSE)
+	public function save(&$item_data, $item_id = FALSE, $save_online = FALSE)
 	{
 		if (!$item_id || !$this->exists($item_id, TRUE)) {
 			if ($this->db->insert('items', $item_data)) {
 				$item_data['item_id'] = $this->db->insert_id();
+
+				if ($save_online) {
+					$online_item_data = array(
+						'name'	 => $item_data['name'],
+						'category'	 => $item_data['category'],
+						'item_number'	 => $item_data['item_number'],
+						'cost_price'	 => $item_data['cost_price'],
+						'unit_price'	 => $item_data['unit_price'],
+						'whole_price'	 => $item_data['whole_price'],
+						'pack'	 => $item_data['pack'],
+						'prescriptions'	 => $item_data['prescriptions'],
+						'apply_vat'	 => $item_data['apply_vat'],
+						'wholesale_price_markup'	 => $item_data['wholesale_price_markup'],
+						'unit_price_markup'	 => $item_data['unit_price_markup'],
+						'description'	 => $item_data['description'],
+						'company'	 => $item_data['company'],
+					);
+
+					$this->create_item_online($online_item_data);
+				}
 
 				return TRUE;
 			}
@@ -1036,11 +1386,110 @@ class Item extends CI_Model
 
 		return $this->db->update('items', $item_data);
 	}
+
+	public function accept_item(&$item_data)
+	{
+		if ($this->db->insert('items', $item_data)) {
+			$item_data['item_id'] = $this->db->insert_id();
+
+			if (!empty($item_data['item_id'])) {
+				$location_detail = array(
+					'item_id'	 => $item_data['item_id'],
+					'location_id'	 => 2,
+					'quantity'	 => 0
+				);
+
+				$this->db->insert('item_quantities', $location_detail);
+
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
 	public function save_custom($item_data)
 	{
 
 		$this->db->insert_batch('items', $item_data);
 		return true; //$this->db->insert_id();
+	}
+
+	public function stock_exists($month, $year, $isOpening = true)
+	{
+		$this->db->from('account_stock_value');
+		$this->db->where('month', $month);
+		$this->db->where('year', $year);
+		$this->db->where('stock_type', $isOpening ? 'opening' : 'closing');
+		return ($this->db->get()->num_rows() == 1);
+
+		return FALSE;
+	}
+
+	//recodr stock
+	public function record_stock($month, $year, $isOpening = true)
+	{
+
+		if (!$this->stock_exists($month, $year, $isOpening)) {
+//			$totalStock = 0;
+			//get the sum of the current stock
+//			$this->db->select_sum('unit_price');
+//			$this->db->from('items');
+            $this->db->select_sum('(ipos_items.unit_price*ipos_item_quantities.quantity)','stock_value');
+            $this->db->from('items');
+            $this->db->join('item_quantities','items.item_id = item_quantities.item_id');
+//			foreach ($this->db->get()->result() as $row) {
+//				$totalStock = $row->unit_price;
+//				break;
+//			}
+            $totalStock = $this->db->get()->row()->stock_value;
+
+			$stock_data = array(
+				"month" => $month,
+				"year" => $year,
+				"stock_type" => $isOpening ? "opening" : "closing",
+				"stock_value" => $totalStock
+			);
+			if($month == 1){
+			    $year -= 1;
+            }
+            $stock_data_close = array(
+                "month" => date('m',strtotime(date('Y-m').' -1 month')),
+                "year" => $year,
+                "stock_type" => "closing",
+                "stock_value" => $totalStock
+            );
+			$this->db->insert('account_stock_value', $stock_data);
+            $this->db->insert('account_stock_value', $stock_data_close);
+		}
+	}
+	public function get_stock_values($type,$year=null,$month=null,$range=5)
+    {
+        $stocks = [];
+        $this->db->from('account_stock_value');
+        if($year){
+            $this->db->where('year <=',$year);
+        }
+        if($month){
+            $this->db->where('month <=',$month);
+        }
+        $this->db->where('stock_type',$type);
+        return $this->db->select('month,year,stock_value')->limit($range)->get()->result();
+    }
+
+	public function get_stock_value($year, $month, $type)
+	{
+		$this->db->from('account_stock_value');
+		$this->db->where('month', $month);
+		$this->db->where('year', $year);
+		$this->db->where('stock_type', $type);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 1) {
+			return $query->row()->stock_value;
+		}
+
+		return FALSE;
 	}
 
 	/*
@@ -1164,8 +1613,9 @@ class Item extends CI_Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
+		$location_id = $this->Employee->get_logged_in_employee_info()->branch_id;
 		// set to 0 quantities
-		$this->Item_quantity->reset_quantity($item_id);
+		$this->Item_quantity->reset_quantity($item_id, $location_id);
 		$this->db->where('item_id', $item_id);
 		$success = $this->db->update('items', array('deleted' => 1));
 		$success &= $this->Inventory->reset_quantity($item_id);
@@ -1195,13 +1645,15 @@ class Item extends CI_Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
+		$location_id = $this->Employee->get_logged_in_employee_info()->branch_id;
+
 		// set to 0 quantities
-		$this->Item_quantity->reset_quantity_list($item_ids);
+		$this->Item_quantity->reset_quantity_list($item_ids, $location_id);
 		$this->db->where_in('item_id', $item_ids);
 		$success = $this->db->update('items', array('deleted' => 1));
 
 		foreach ($item_ids as $item_id) {
-			$success &= $this->Inventory->reset_quantity($item_id);
+			$success &= $this->Inventory->reset_quantity($item_id, $location_id);
 		}
 
 		$this->db->trans_complete();
@@ -1235,36 +1687,47 @@ class Item extends CI_Model
 		return $success;
 	}
 
-	public function get_search_suggestions($search, $filters = array('is_deleted' => 0, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+	public function get_search_suggestions($search, $filters = array('is_deleted' => 0, 'search_custom' => FALSE), $unique = FALSE, $limit = 999999,$for_dispatch = false)
 	{
 		$suggestions = array();
 
-		$this->db->select('items.item_id, name, quantity');
+		//$this->db->cache_on();
+
+		$this->db->select('items.item_id, name, quantity,item_number,unit_price,cost_price');
 		$this->db->from('items');
-		$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
+		$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id', 'left');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 		$this->db->where("stock_type = '0'");
-		$this->db->like('name', $search); //it could be 'after'
+//		if($for_dispatch){
+//		    $this->db->where("quantity > 0");
+//        }
+		$this->db->group_start();
+		$this->db->like('name', $search, 'both'); //it could be 'after'
+		$this->db->or_like('item_number', $search);
+		$this->db->or_like('company', $search);
+
+		$this->db->group_end();
+
 		//$this->db->or_like('name',$search);
 
 		$this->db->order_by('name', 'asc');
 
 		$this->db->limit($limit);
 		foreach ($this->db->get()->result() as $row) {
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name . '(Qty:' . number_format($row->quantity) . ')');
+			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name . '(Qty:' . number_format($row->quantity) . ', Price:N' . number_format(get_nearest_five($row->unit_price)) . ')');
 		}
 
-		$this->db->select('item_id, item_number');
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
-		$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
-		$this->db->where("stock_type = '0'");
-		$this->db->like('item_number', $search);
-		$this->db->order_by('item_number', 'asc');
-		foreach ($this->db->get()->result() as $row) {
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
-		}
+		// $this->db->select('item_id, item_number');
+		// $this->db->from('items');
+		// $this->db->where('deleted', $filters['is_deleted']);
+		// $this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
+		// $this->db->where("stock_type = '0'"); //not lab items
+		// $this->db->like('item_number', $search);
+		// $this->db->order_by('item_number', 'asc');
+		// foreach ($this->db->get()->result() as $row) {
+		// 	$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
+		// }
 
 		/*if (!$unique) {
 			//Search by category
@@ -1337,13 +1800,13 @@ class Item extends CI_Model
 
 
 		//only return $limit suggestions
-		if (count($suggestions > $limit)) {
+		if (count($suggestions ) > $limit) {
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
 	}
-	public function get_batchsearch_suggestions($search,  $limit = 25)
+	public function get_batchsearch_suggestions($search,  $limt = 99999)
 	{
 		$suggestions = array();
 
@@ -1367,7 +1830,7 @@ class Item extends CI_Model
 
 
 
-	public function get_stock_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+	public function get_stock_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limt = 99999)
 	{
 		$suggestions = array();
 
@@ -1541,16 +2004,38 @@ class Item extends CI_Model
 	public function categories_list()
 	{
 		$lab_items = array();
+		//$this->db->cache_on();
 
-		$this->db->select('id,name');
+		$this->db->select('id,name,type'); // categorization
+		// $this->db->select('id,name');
 		$this->db->from('categories');
+
 		$this->db->order_by('id', 'asc');
 
 		foreach ($this->db->get()->result() as $row) {
-			$lab_items[] = array('id' => $row->id, 'name' => $row->name);
+			$lab_items[] = array('id' => $row->id, 'name' => $row->name, 'type' => $row->type); //categorization
+			// $lab_items[] = array('id' => $row->id, 'name' => $row->name);
 		}
 
+		return $lab_items;
+	}
 
+	public function categories_list_by_dept($dept)
+	{
+		$lab_items = array();
+
+		$this->db->select('id,name,type'); // categorization
+		// $this->db->select('id,name');
+		$this->db->from('categories');
+		if ($dept != "all") {
+			$this->db->where('type', $dept);
+		}
+		$this->db->order_by('id', 'asc');
+
+		foreach ($this->db->get()->result() as $row) {
+			$lab_items[] = array('id' => $row->id, 'name' => $row->name, 'type' => $row->type); //categorization
+			// $lab_items[] = array('id' => $row->id, 'name' => $row->name);
+		}
 
 		return $lab_items;
 	}
@@ -1619,6 +2104,21 @@ class Item extends CI_Model
 
 		return $lab_items;
 	}
+    public function pending_invoices()
+    {
+        $lab_items = [];
+
+        $this->db->select('invoice_time,invoice_id,people.first_name,people.last_name,doctor_name');
+        $this->db->from('laboratory_invoice')
+            ->join('people','laboratory_invoice.person_id = people.person_id');
+
+        $this->db->where('status', 0);
+
+
+
+
+        return $lab_items;
+    }
 	public function completed_result_items()
 	{
 		$lab_items = array();
@@ -1702,7 +2202,7 @@ class Item extends CI_Model
 
 
 
-	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limt = 99999)
 	{
 		$suggestions = array();
 
@@ -1899,6 +2399,21 @@ class Item extends CI_Model
 
 		if ($query->num_rows() == 1) {
 			return $query->row();
+		} else {
+			return FALSE;
+		}
+	}
+	public function get_item_category_by_id($id)
+	{
+		$this->db->select('id,name');
+		$this->db->from('categories');
+
+		$this->db->where('id', $id);
+
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 1) {
+			return $query->row()->name;
 		} else {
 			return FALSE;
 		}

@@ -30,29 +30,69 @@ function quantity_decimals()
 
 function totals_decimals()
 {
-	$config = get_instance()->config;
-	return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
+    $config = get_instance()->config;
+    return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
+}
+function vat_amount($amount)
+{
+    $config = get_instance()->config;
+
+    if ($amount > 0) {
+        return get_nearest_five((floatval($config->item('vat')) / 100) * $amount);
+    } else {
+        return $amount;
+    }
+}
+
+function vat_excl($amount)
+{
+    $config = get_instance()->config;
+
+    if ($amount > 0) {
+        // return get_nearest_five((floatval($config->item('vat')) / 100) * $amount);
+        // $vatValue = 1 + ($config->item('vat') / 100);
+        $vatValue = $config->item('vat') / 100;
+        // return (floatval($config->item('vat')) / 100) * $amount;
+        // return $amount / $vatValue;
+        return $amount - ($amount * $vatValue);
+    } else {
+        return $amount;
+    }
+}
+
+function get_nearest_five($amount)
+{
+    $amount = round($amount);
+    // $amount = ceil($amount);
+    $remaining_to_reach_five = 5 - ($amount % 5);
+    // if ($remaining_to_reach_five != 5 && $remaining_to_reach_five != 0) {
+    if ($remaining_to_reach_five != 5) {
+        return $amount + $remaining_to_reach_five;
+    } else {
+        return $amount;
+    }
 }
 
 function to_currency($number)
 {
+
     return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
 }
 
 function to_currency_no_money($number)
 {
+
     return to_decimals($number, 'currency_decimals');
 }
 
 function to_tax_decimals($number)
 {
-	// taxes that are NULL, '' or 0 don't need to be displayed
-	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0 and it will save it
-    if(empty($number))
-    {
+    // taxes that are NULL, '' or 0 don't need to be displayed
+    // NOTE: do not remove this line otherwise the items edit form will show a tax with 0 and it will save it
+    if (empty($number)) {
         return $number;
     }
-	
+
     return to_decimals($number, 'tax_decimals');
 }
 
@@ -61,21 +101,19 @@ function to_quantity_decimals($number)
     return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
+function to_decimals($number, $decimals, $type = \NumberFormatter::DECIMAL)
 {
-	// ignore empty strings and return
-	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
-    if(!isset($number))
-    {
+    // ignore empty strings and return
+    // NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
+    if (!isset($number)) {
         return $number;
     }
-	
+
     $config = get_instance()->config;
     $fmt = new \NumberFormatter($config->item('number_locale'), $type);
     $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item($decimals));
     $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $config->item($decimals));
-    if (empty($config->item('thousands_separator')))
-    {
+    if (empty($config->item('thousands_separator'))) {
         $fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
     $fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
@@ -85,15 +123,13 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 function parse_decimals($number)
 {
     // ignore empty strings and return
-    if(empty($number))
-    {
+    if (empty($number)) {
         return $number;
     }
 
     $config = get_instance()->config;
-    $fmt = new \NumberFormatter( $config->item('number_locale'), \NumberFormatter::DECIMAL );
-    if (empty($config->item('thousands_separator')))
-    {
+    $fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
+    if (empty($config->item('thousands_separator'))) {
         $fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
     return $fmt->parse($number);
@@ -188,5 +224,3 @@ function dateformat_bootstrap($php_format)
 
     return strtr($php_format, $SYMBOLS_MATCHING);
 }
-
-?>

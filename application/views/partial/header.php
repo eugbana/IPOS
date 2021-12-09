@@ -20,10 +20,13 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>" />
 
 	<link href="dist/assets/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="dist/swal/cdnjs/sweetalert.min.css" rel="stylesheet" type="text/css">
 
 	<link href="dist/assets/css/menu.css" rel="stylesheet" type="text/css">
-
-
+    <?php
+//    var_dump($allowed_modules);
+//    exit();
+    ?>
 
 
 	<?php if ($this->input->cookie('debug') == 'true' || $this->input->get('debug') == 'true') : ?>
@@ -66,6 +69,7 @@
 		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
 		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/print/bootstrap-table-print.js"></script>
 		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
@@ -108,7 +112,14 @@
 
 	<!-- Custom styles for this template-->
 	<link href="dist/css/sb-admin.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /> -->
+	<link rel="stylesheet" type="text/css" href="dist/css/font-awesome.min.css"/>
+<!--    <link rel="stylesheet" type="text/css" href="dist/assets/plugins/datatables/jquery.dataTables.min.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="dist/assets/plugins/datatables/buttons.bootstrap.min.css"/>-->
+    <link rel="stylesheet" type="text/css" href="dataTables/datatables.min.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css" /> -->
+
+<!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/b-1.7.0/b-html5-1.7.0/r-2.2.7/datatables.min.css"/>-->
 	<meta name="siteurl" content="<?php echo site_url("laboratory/get_unprocessed_tests_count"); ?>">
 	<!-- <script src="dist/assets/js/signaling.js" async></script> -->
 	<style>
@@ -361,7 +372,8 @@
 		<!-- Top Bar End -->
 		<!-- ========== Left Sidebar Start ========== -->
 
-		<div class="left side-menu" style="overflow: scroll;">
+		<!-- <div class="left side-menu" style="overflow: scroll;"> -->
+		<div class="left side-menu">
 			<div class="sidebar-inner slimscrollleft">
 				<div class="user-details">
 					<div class="pull-left">
@@ -440,20 +452,20 @@
 							</li>
 						<?php } ?>
 						<?php if (($user_info->roles) == "custom") { ?>
-							<?php foreach ($allowed_modules->result() as $module) { ?>
+							<?php foreach ($allowed_modules as $module) { ?>
 								<li class="has_sub">
 									<a href="<?php echo site_url("$module->module_id"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/$module->module_id") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
 								</li>
 							<?php } ?>
 						<?php } else if (($user_info->role) == 7) { ?>
-							<?php foreach ($allowed_modules->result() as $module) { ?>
+							<?php foreach ($allowed_modules as $module) { ?>
 								<?php if ($this->lang->line("module_" . $module->module_id) == "Laboratory") {
-											$this->load->view("sidebars/lab_receptionist");
-										}  ?>
+									$this->load->view("sidebars/lab_receptionist");
+								}  ?>
 
 							<?php } ?>
 						<?php } else if (($user_info->role) == 6) { ?>
-							<?php foreach ($allowed_modules->result() as $module) { ?>
+							<?php foreach ($allowed_modules as $module) { ?>
 								<?php if ($this->lang->line("module_" . $module->module_id) == "Account") { ?>
 									<li>
 										<a href="<?php echo site_url("account/unprocessed_payment"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/account/unprocessed_payment") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed</span></a>
@@ -467,13 +479,11 @@
 							<li>
 								<a href="<?php echo site_url("reports/account_report"); ?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo 'Reports' ?></span></a>
 							</li>
-							<li>
-								<a href="<?php echo site_url("receivings/transfer_history"); ?>" class="waves-effect waves-light"><i class="md md-redeem"></i>Transfers</a>
-							</li>
+
 						<?php } else if (($user_info->role) == 3) { ?>
 							<?php $this->load->view("sidebars/admin"); ?>
 						<?php } else if (($user_info->role) == 9) { ?>
-							<?php foreach ($allowed_modules->result() as $module) { ?>
+							<?php foreach ($allowed_modules as $module) { ?>
 								<?php if ($this->lang->line("module_" . $module->module_id) == "Laboratory") { ?>
 									<li>
 										<a href="<?php echo site_url("laboratory/new_results"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/laboratory/new_results") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed Results</span></a>
@@ -488,22 +498,181 @@
 							<?php } ?>
 						<?php } elseif (($user_info->role) == 5) { ?>
 							<?php $this->load->view("sidebars/sale_officer");  ?>
+						<?php } elseif (($user_info->role) == 14) {
+//						    exit();
+						    ?>
+							<?php $this->load->view("sidebars/branch_managers");  ?>
 
 						<?php } elseif (($user_info->role) == 4) { ?>
-							<?php foreach ($allowed_modules->result() as $module) { ?>
+							<?php foreach ($allowed_modules as $module) { ?>
 								<?php if ($this->lang->line("module_" . $module->module_id) == "Items") {
-
-											?>
-									<?php $this->load->view("sidebars/inventory")  ?>
+                        $this->load->view("sidebars/inventory")  ?>
 								<?php } ?>
 							<?php } ?>
-						<?php } else { ?>
-							<?php foreach ($allowed_modules->result() as $module) { ?>
-								<li>
-									<a href="<?php echo site_url("$module->module_id"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/$module->module_id") : ?>class="waves-effect waves-light active" <?php else : ?> class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?></span></a>
-								</li>
-							<?php } ?>
-						<?php } ?>
+						<?php } else {
+						    //added here lekans
+//                            var_dump($all_subpermissions);
+						    ?>
+							<?php foreach ($allowed_modules as $module) {
+                            if ($this->lang->line("module_" . $module->module_id) == "Sales") { ?>
+
+                                <li class="has_sub">
+                                    <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="<?php echo site_url("sales"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/sales") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> New Sales </span></a>
+                                        </li>
+                                        <!-- <li>
+                                                <a href="<?php echo site_url("sales/pill"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/sales/pill") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> Pill Reminder </span></a>
+                                            </li> -->
+                                        <!-- <li>
+                                                <a href="<?php echo site_url("sales/manage"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/sales/manage") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> Sale History </span></a>
+                                            </li> -->
+
+                                        <li>
+                                            <a href="<?php echo site_url("items/check_price"); ?>" class="waves-effect waves-light"><i class="md md-call-split"></i>  <span> Check Price </span></a>
+                                        </li>
+
+                                        <li>
+                                            <a href="<?php echo site_url("sales/check_receipt"); ?>" class="waves-effect waves-light"> <i class="md md-call-split"></i> <span> Print Receipt </span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <?php }elseif ($this->lang->line("module_" . $module->module_id) == "Laboratory") { ?>
+
+                                <li class="has_sub">
+                                    <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="<?php echo site_url("laboratory/new_results"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/laboratory/new_results") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed Results</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("laboratory/pending_results"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/laboratory/pending_results") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Pending Results</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("laboratory/completed_results"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/laboratory/completed_results") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Completed Results</span></a>
+                                        </li>
+                                        <li> <a href="<?php echo site_url("laboratory"); ?>"><i class="md md-label"> </i>Available Test</a></li>
+                                        <li><a href="<?php echo site_url("laboratory/test_start"); ?>"><i class="md md-label"> </i>New Test</a></li>
+                                        <!-- <li id="search"><a><i class="md md-label"> </i>Test Results Status</a></li> -->
+                                        <li><a href="<?php echo site_url("laboratory/search_patients"); ?>"><i class="md md-label"> </i>Search Patient</a></li>
+                                        <li>
+                                            <a href="<?php echo site_url("account/unprocessed_payment"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/account/unprocessed_payment") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>UnProcessed Payments</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("account/processed_payment"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/account/processed_payment") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Processed Payments</span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <?php } elseif ($this->lang->line("module_" . $module->module_id) == "Items") { ?>
+
+                                <li class="has_sub">
+                                    <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="<?php echo site_url("$module->module_id"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/$module->module_id") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-layers"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("items/categories"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/items/categories") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-extension"></i><span>Categories</span></a>
+                                        </li>
+
+                                        <li>
+                                            <a href="<?php echo site_url("items/global_search"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/items/global_search") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-extension"></i><span>Global Search</span></a>
+                                        </li>
+
+                                        <!-- <li>
+											<a href="<?php echo site_url("receivings"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/receivings") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-fast-rewind"></i><span>Returns</span></a>
+										</li> -->
+                                    </ul>
+                                </li>
+                            <?php } elseif ($this->lang->line("module_" . $module->module_id) == "Receivings") { ?>
+
+                                <li class="has_sub">
+                                    <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span> Stock Taking </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                    <ul class="list-unstyled">
+
+                                        <li>
+                                            <a href="<?php echo site_url("stockintake/new"); ?>"><i class="md md-label"> </i>New Stock Intake</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="<?php echo site_url("stockintake/history"); ?>"><i class="md md-label"> </i>View Stock Intakes</a>
+                                        </li>
+
+                                        <?php $stkid = $this->Receiving->get_inprogress_stock_taking()->stock_id;
+                                        if($stkid > 0){ ?>
+                                            <li>
+                                                <a href="<?php echo site_url("stockintake"); ?>"><i class="md md-label"> </i> Join Stock Taking </a>
+                                            </li>
+                                        <?php  } ?>
+                                    </ul>
+                                </li>
+
+
+                                <li class="has_sub">
+                                    <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                    <ul class="list-unstyled">
+
+                                        <li>
+                                            <a href="<?php echo site_url("items/push"); ?>"><i class="md md-label"> </i>Product Transfer</a>
+                                        </li>
+                                        <li><a href="<?php echo site_url("receivings"); ?>"><i class="md md-label"> </i> Update Inventory</a></li>
+                                        <li>
+                                            <a href="<?php echo site_url("receivings/transfer_history"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/receivings/transfer_history") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-assessment"></i><span>Transfer History</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("receivings/history"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/receivings/history") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-subject"></i><span>Inventory History</span></a>
+                                        </li>
+                                        <!-- <li>
+											<a href="<?php echo site_url("receivings"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/receivings") : ?>class="waves-effect waves-light active" <?php else :  ?> class="waves-effect waves-light" <?php endif; ?>><i class="md md-fast-rewind"></i><span>Returns</span></a>
+										</li> -->
+                                    </ul>
+                                </li>
+
+                            <?php }
+                            elseif ($this->lang->line("module_" . $module->module_id) == "Customers") { ?>
+
+                                <li class="has_sub">
+                                    <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="<?php echo site_url("customers"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/customers") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> <?php echo $this->lang->line("module_" . $module->module_id); ?> </span></a>
+                                        </li>
+
+                                        <li>
+                                            <a href="<?php echo site_url("companies"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/companies") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> Companies </span></a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            <?php } elseif ($this->lang->line("module_" . $module->module_id) == "Suppliers") { ?>
+
+                                <li class="has_sub">
+                                    <a href="#" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="<?php echo site_url("suppliers"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/suppliers") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span> <?php echo $this->lang->line("module_" . $module->module_id); ?> </span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <?php }
+                            else{
+                                $mName = $module->module_id;
+                                if($mName == 'reports'){
+                                    $mName .= '/account_report';
+                                }
+                                $mGrants = $u_mod_grants[$mName];
+                                $numGrants = (!isset($mGrants))?0:count($mGrants);
+                                ?>
+                                <li <?php
+                                if((($mGrants != null)&& ($numGrants>0) && $module->module_id != 'reports' && $module->module_id != 'employees')) echo "class='has_sub'";
+                                ?>>
+                                    <a href="<?php echo site_url("$mName"); ?>" class="waves-effect waves-light"><i class="<?php echo $module->icon; ?>"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?></span></a>
+                                </li>
+                                <?php
+                                }
+                            }
+						} ?>
 					</ul>
 					<!-- </li>
                         </ul> -->

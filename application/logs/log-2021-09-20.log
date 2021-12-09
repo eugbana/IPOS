@@ -1,0 +1,197 @@
+DEBUG - 2021-09-20 14:12:14 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:12:14 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:12:14 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:12:15 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:12:15 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:12:15 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:12:19 --> Total execution time: 4.0447
+DEBUG - 2021-09-20 14:12:38 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:12:38 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:12:38 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:12:38 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-20 15:12:41 --> Total execution time: 3.1923
+DEBUG - 2021-09-20 14:12:42 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:12:42 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:12:42 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:12:42 --> Sale_lib class already loaded. Second attempt ignored.
+ERROR - 2021-09-20 15:12:43 --> Severity: Warning --> Failed to set memory limit to 134217728 bytes (Current memory usage is 138682368 bytes) /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Items.php 481
+DEBUG - 2021-09-20 15:12:43 --> Total execution time: 1.1582
+DEBUG - 2021-09-20 14:15:08 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:15:08 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:15:08 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:15:10 --> Total execution time: 2.3733
+DEBUG - 2021-09-20 14:15:10 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:15:10 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:15:10 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:15:10 --> Total execution time: 0.1040
+DEBUG - 2021-09-20 14:15:32 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:15:32 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:15:32 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-20 15:15:34 --> Could not find the language line "receivings_no_receivings_to_display (TBD)"
+DEBUG - 2021-09-20 15:15:34 --> Total execution time: 2.7945
+DEBUG - 2021-09-20 14:15:35 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:15:35 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:15:35 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:15:35 --> Total execution time: 0.5016
+DEBUG - 2021-09-20 14:15:50 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:15:50 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:15:50 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:15:51 --> Total execution time: 0.0994
+DEBUG - 2021-09-20 14:15:57 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:15:57 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:15:57 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:15:58 --> Total execution time: 0.1521
+DEBUG - 2021-09-20 14:16:10 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:16:10 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:16:10 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:16:10 --> Total execution time: 0.1590
+DEBUG - 2021-09-20 14:16:19 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:16:19 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:16:19 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:16:19 --> Total execution time: 0.1357
+DEBUG - 2021-09-20 14:16:38 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:16:38 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:16:38 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:16:38 --> Total execution time: 0.1254
+DEBUG - 2021-09-20 14:16:50 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:16:50 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:16:50 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:16:50 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-20 15:16:53 --> Total execution time: 2.1833
+DEBUG - 2021-09-20 14:16:59 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:16:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:16:59 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:16:59 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-20 15:16:59 --> Total execution time: 0.1757
+DEBUG - 2021-09-20 14:17:14 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:17:14 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:17:14 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:17:17 --> Total execution time: 2.6569
+DEBUG - 2021-09-20 14:17:21 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:17:21 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:17:21 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:17:21 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-20 15:17:21 --> Total execution time: 0.2076
+DEBUG - 2021-09-20 14:17:24 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:17:24 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:17:24 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:17:24 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-20 15:17:26 --> Total execution time: 2.4871
+DEBUG - 2021-09-20 14:17:36 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:17:36 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:17:36 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:17:49 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:17:49 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:17:49 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:18:10 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:10 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:10 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:18:11 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:11 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:11 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-20 15:18:11 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Supplier.php 323
+DEBUG - 2021-09-20 15:18:11 --> Total execution time: 0.1359
+DEBUG - 2021-09-20 14:18:12 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:12 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:12 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-20 15:18:12 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Supplier.php 323
+DEBUG - 2021-09-20 15:18:12 --> Total execution time: 0.1108
+DEBUG - 2021-09-20 14:18:13 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:13 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-20 15:18:14 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Supplier.php 323
+DEBUG - 2021-09-20 15:18:14 --> Total execution time: 0.5197
+DEBUG - 2021-09-20 14:18:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:16 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:18 --> Total execution time: 2.4168
+DEBUG - 2021-09-20 14:18:49 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:49 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:49 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:50 --> Total execution time: 0.2770
+DEBUG - 2021-09-20 14:18:50 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:50 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:50 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:50 --> Total execution time: 0.1519
+DEBUG - 2021-09-20 14:18:51 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:51 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:51 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:51 --> Total execution time: 0.6462
+DEBUG - 2021-09-20 14:18:51 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:51 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:51 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:51 --> Total execution time: 0.1449
+DEBUG - 2021-09-20 14:18:52 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:52 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:52 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:52 --> Total execution time: 0.1603
+DEBUG - 2021-09-20 14:18:52 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:52 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:52 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:53 --> Total execution time: 0.1038
+DEBUG - 2021-09-20 14:18:53 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:53 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:53 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:53 --> Total execution time: 0.0762
+DEBUG - 2021-09-20 14:18:54 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:54 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:54 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:54 --> Total execution time: 0.1232
+DEBUG - 2021-09-20 14:18:54 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:54 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:54 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:54 --> Total execution time: 0.1342
+DEBUG - 2021-09-20 14:18:55 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:55 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:55 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:55 --> Total execution time: 0.2186
+DEBUG - 2021-09-20 14:18:55 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:55 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:55 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:55 --> Total execution time: 0.1106
+DEBUG - 2021-09-20 14:18:55 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:55 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:55 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:55 --> Total execution time: 0.1008
+DEBUG - 2021-09-20 14:18:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:18:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:18:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:18:58 --> Total execution time: 0.1659
+DEBUG - 2021-09-20 14:19:08 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:19:08 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:19:08 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:19:12 --> Total execution time: 3.8792
+DEBUG - 2021-09-20 14:19:15 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:19:15 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:19:15 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-20 15:19:18 --> Could not find the language line "receivings_no_receivings_to_display (TBD)"
+DEBUG - 2021-09-20 15:19:18 --> Total execution time: 2.2032
+DEBUG - 2021-09-20 14:19:18 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:19:18 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:19:18 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:19:18 --> Total execution time: 0.2592
+DEBUG - 2021-09-20 14:26:01 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:26:01 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:26:01 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-20 15:26:03 --> Could not find the language line "receivings_no_receivings_to_display (TBD)"
+DEBUG - 2021-09-20 15:26:03 --> Total execution time: 2.5178
+DEBUG - 2021-09-20 14:26:03 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:26:03 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:26:03 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 15:26:03 --> Total execution time: 0.0858
+DEBUG - 2021-09-20 14:26:32 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:26:32 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:26:32 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:26:32 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-20 15:26:35 --> Total execution time: 3.1906
+DEBUG - 2021-09-20 14:26:35 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:26:35 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:26:35 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:26:35 --> Sale_lib class already loaded. Second attempt ignored.
+ERROR - 2021-09-20 15:26:36 --> Severity: Warning --> Failed to set memory limit to 134217728 bytes (Current memory usage is 142876672 bytes) /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Items.php 481
+DEBUG - 2021-09-20 15:26:36 --> Total execution time: 1.1445
+DEBUG - 2021-09-20 14:28:38 --> UTF-8 Support Enabled
+DEBUG - 2021-09-20 14:28:38 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-20 14:28:38 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-20 14:28:38 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-20 15:28:39 --> Total execution time: 0.2748

@@ -89,13 +89,20 @@ function get_sales_manage_table_headers()
 		array('sale_id' => $CI->lang->line('common_id')),
 		array('sale_time' => $CI->lang->line('sales_sale_time')),
 		array('customer_name' => $CI->lang->line('customers_customer')),
-		array('amount_due' => $CI->lang->line('sales_amount_due')),
+		array('employee_name' => 'Employee'),
+		array('item_qty' => "Item Qty"),
+		array('discount' => 'Discount'),
+		array('vat' => 'VAT'),
+		array('credit' => 'Credit'),
+		array('amount_due' => "Discounted Amount"),
 		array('amount_tendered' => $CI->lang->line('sales_amount_tendered')),
 		array('change_due' => $CI->lang->line('sales_change_due')),
-		array('payment_type' => $CI->lang->line('sales_payment_type'))
+		array('payment_type' => $CI->lang->line('sales_payment_type')),
+
 	);
 
-	if ($CI->config->item('invoice_enable') == TRUE) { }
+	if ($CI->config->item('invoice_enable') == TRUE) {
+	}
 
 	return transform_headers(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE))));
 }
@@ -125,7 +132,7 @@ function get_sale_data_last_row($sales, $controller)
 	);
 }
 
-function get_sale_data_row($sale, $controller)
+function get_sale_data_row($sale, $controller, $payment_types)
 {
 	$CI = &get_instance();
 	$controller_name = $CI->uri->segment(1);
@@ -133,11 +140,16 @@ function get_sale_data_row($sale, $controller)
 	$row = array(
 		'sale_id' => $sale->sale_id,
 		'sale_time' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time)),
-		'customer_name' => $sale->customer_name,
-		'amount_due' => to_currency($sale->amount_due),
-		'amount_tendered' => to_currency($sale->amount_tendered),
+		'customer_name' => $sale->customer_last_name . ' ' . $sale->customer_first_name,
+		'employee_name' => $sale->employee_last_name . ' ' . $sale->employee_first_name,
+		'item_qty' => round($sale->item_qty),
+		'discount' => to_currency($sale->total_discount),
+		'vat' => to_currency($sale->total_vat),
+		'credit' => to_currency($sale->credit),
+		'amount_due' => to_currency($sale->total_amount_due),
+		'amount_tendered' => to_currency($sale->total_amount_paid),
 		'change_due' => to_currency($sale->change_due),
-		'payment_type' => $sale->payment_type
+		'payment_type' => $payment_types
 	);
 
 	if ($CI->config->item('invoice_enable')) {
@@ -151,12 +163,14 @@ function get_sale_data_row($sale, $controller)
 
 	$row['receipt'] = anchor(
 		$controller_name . "/receipt/$sale->sale_id",
-		'<span class="glyphicon glyphicon-edit"></span>',
-		array('title' => $CI->lang->line('sales_show_receipt'))
+		'<span class="glyphicon glyphicon-print"></span>',
+		array('target' => '_blank', 'title' => $CI->lang->line('sales_show_receipt'))
 	);
-	/*$row['edit'] = anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
-		array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $CI->lang->line('common_delete'), 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
-	);*/
+	// $row['edit'] = anchor(
+	// 	$controller_name . "/edit/$sale->sale_id",
+	// 	'<span class="glyphicon glyphicon-edit"></span>',
+	// 	array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $CI->lang->line('common_delete'), 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name . '_update'))
+	// );
 
 	return $row;
 }
@@ -180,6 +194,23 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 			}
 		}
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
+	}
+	$table .= '</div>';
+
+	return $table;
+}
+/*
+Get the sales payments summary
+*/
+function get_sales_payments_summary($payments, $controller)
+{
+	$CI = &get_instance();
+	$table = '<div id="report_summary">';
+	$table .= '<small align="center"></small>';
+
+	foreach ($payments as $key => $payment) {
+
+		$table .= '<div class="summary_row">' . $key . ': ' . to_currency($payment) . '</div>';
 	}
 	$table .= '</div>';
 
@@ -228,6 +259,8 @@ function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 	return json_encode($result);
 }
 
+
+
 function get_people_manage_table_headers()
 {
 	$CI = &get_instance();
@@ -242,6 +275,8 @@ function get_people_manage_table_headers()
 	if ($CI->Employee->has_grant('employees', $CI->session->userdata('person_id'))) {
 		$headers[] = array('branch' => 'Branch');
 		$headers[] = array('role' => 'Role');
+		$headers[] = array('username' => 'Username');
+		$headers[] = array('auth_code' => 'Auth Code');
 	}
 	$headers[] = array('email' => $CI->lang->line('common_email'));
 	$headers[] = array('phone_number' => $CI->lang->line('common_phone_number'));
@@ -268,6 +303,9 @@ function get_person_data_row($person, $controller)
 		'first_name' => $person->first_name,
 		'branch' => $branch_info->location_name,
 		'role' => $item_info->role,
+		'username' => $person->username,
+		// 'auth_code' => $person->auth_code,
+		'auth_code' => !empty($person->auth_code) ? '****' : '',
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'status' => ($person->deleted) == 0 ? 'active' : 'deactivated',
 		'phone_number' => $person->phone_number,
@@ -284,7 +322,7 @@ function get_person_data_row($person, $controller)
 		'assign' => anchor(
 			$controller_name . "/view_assign/$person->person_id",
 			'<span class="glyphicon glyphicon-user"></span>',
-			array('title' => 'Assign Employee')
+			array('title' => 'Assign Role')
 		)
 	);
 }
@@ -292,15 +330,24 @@ function get_person_data_row($person, $controller)
 function get_customer_manage_table_headers()
 {
 	$CI = &get_instance();
-
+	$role = $CI->Employee->get_logged_in_employee_info()->role;
 	$headers = array(
-		//array('people.person_id' => $CI->lang->line('common_id')),
+		array('people.person_id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
 		array('first_name' => $CI->lang->line('common_first_name')),
 		array('email' => $CI->lang->line('common_email')),
 		array('phone_number' => $CI->lang->line('common_phone_number')),
-		array('total' => $CI->lang->line('common_total_spent'), 'sortable' => FALSE)
+		array('total' => $CI->lang->line('common_total_spent'), 'sortable' => FALSE),
+		array('type' => 'Type'),
+		array('wallet' => 'Wallet'),
+		array('credit_limit' => 'Credit Limit'),
+
+
 	);
+	if ($role == 12 || $role == 3) {
+		//admin and accountant
+		$headers[] = array('edit_wallet' => '');
+	}
 
 	if ($CI->Employee->has_grant('messages', $CI->session->userdata('person_id'))) {
 		$headers[] = array('messages' => '', 'sortable' => FALSE);
@@ -312,25 +359,135 @@ function get_customer_manage_table_headers()
 function get_customer_data_row($person, $stats, $controller)
 {
 	$CI = &get_instance();
+	$role = $CI->Employee->get_logged_in_employee_info()->role;
 	$controller_name = strtolower(get_class($CI));
 
-	return array(
+	$row =  array(
 		'people.person_id' => $person->person_id,
 		'last_name' => $person->last_name,
 		'first_name' => $person->first_name,
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'phone_number' => $person->phone_number,
 		'total' => to_currency($stats->total),
+		'type' => $person->staff ? 'Staff' : 'Customer',
+		'wallet' => to_currency($person->wallet),
+		'credit_limit' => to_currency($person->credit_limit),
 		'messages' => empty($person->phone_number) ? '' : anchor(
 			"Messages/view/$person->person_id",
 			'<span class="glyphicon glyphicon-phone"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line('messages_sms_send'))
 		),
-		'edit' => anchor(
+		'edit_wallet' => ($role == 12 || $role == 3) ? anchor(
+			$controller_name . "/view_wallet/$person->person_id",
+			'<span class="glyphicon glyphicon-credit-card"></span>',
+			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => 'Update Customer Wallet')
+		) : '',
+		'edit' =>  anchor(
 			$controller_name . "/view/$person->person_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name . '_update'))
 		)
+	);
+
+	return $row;
+}
+
+// function get_customer_data_row($person, $stats, $controller)
+// {
+// 	$CI = &get_instance();
+// 	$role = $CI->Employee->get_logged_in_employee_info()->role;
+// 	$controller_name = strtolower(get_class($CI));
+
+// 	return array(
+// 		'people.person_id' => $person->person_id,
+// 		'last_name' => $person->last_name,
+// 		'first_name' => $person->first_name,
+// 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
+// 		'phone_number' => $person->phone_number,
+// 		'total' => to_currency($stats->total),
+// 		'type' => $person->staff ? 'Staff' : 'Customer',
+// 		'wallet' => to_currency($person->wallet),
+// 		'credit_limit' => to_currency($person->credit_limit),
+// 		'messages' => empty($person->phone_number) ? '' : anchor(
+// 			"Messages/view/$person->person_id",
+// 			'<span class="glyphicon glyphicon-phone"></span>',
+// 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line('messages_sms_send'))
+// 		),
+// 		'edit_wallet' => ($role == 12 || $role == 3) ? anchor(
+// 			$controller_name . "/view_wallet/$person->person_id",
+// 			'<span class="glyphicon glyphicon-credit-card"></span>',
+// 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => 'Update Customer Wallet')
+// 		) : '',
+// 		'edit' =>  anchor(
+// 			$controller_name . "/view/$person->person_id",
+// 			'<span class="glyphicon glyphicon-edit"></span>',
+// 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name . '_update'))
+// 		)
+
+// 	);
+// }
+
+function get_company_manage_table_headers()
+{
+	$CI = &get_instance();
+	$role = $CI->Employee->get_logged_in_employee_info()->role;
+	$headers = array(
+		array('company.company_id' => $CI->lang->line('common_id')),
+		array('company_name' => 'Company Name'),
+		array('email' => $CI->lang->line('common_email')),
+		array('phone_number' => $CI->lang->line('common_phone_number')),
+		// array('total' => $CI->lang->line('common_total_spent'), 'sortable' => FALSE),
+		// array('type' => 'Type'),
+		array('wallet' => 'Wallet'),
+		array('credit_limit' => 'Credit Limit')
+
+
+	);
+	if ($role == 12 || $role == 3) {
+		//admin and accountant
+		$headers[] = array('edit_wallet' => '');
+	}
+
+	if ($CI->Employee->has_grant('messages', $CI->session->userdata('person_id'))) {
+		$headers[] = array('messages' => '', 'sortable' => FALSE);
+	}
+
+	return transform_headers($headers);
+}
+
+function get_company_data_row($company, $controller)
+{
+	$CI = &get_instance();
+	$role = $CI->Employee->get_logged_in_employee_info()->role;
+	$controller_name = strtolower(get_class($CI));
+
+	return array(
+		'company.company_id' => $company->company_id,
+		'company_name' => $company->company_name,
+		// 'tin' => $company->tin,
+		// 'cac' => $company->cac,
+		'email' => empty($company->contact_email) ? '' : mailto($company->contact_email, $company->contact_email),
+		'phone_number' => $company->contact_phone,
+		// 'total' => to_currency($stats->total),
+		// 'type' => $person->staff ? 'Staff' : 'Customer',
+		'wallet' => to_currency($company->wallet),
+		'credit_limit' => to_currency($company->credit_limit),
+		// 'messages' => empty($person->phone_number) ? '' : anchor(
+		// 	"Messages/view/$person->person_id",
+		// 	'<span class="glyphicon glyphicon-phone"></span>',
+		// 	array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line('messages_sms_send'))
+		// ),
+		'edit_wallet' => ($role == 12 || $role == 3) ? anchor(
+			$controller_name . "/view_wallet/$company->company_id",
+			'<span class="glyphicon glyphicon-credit-card"></span>',
+			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => 'Update Company Wallet')
+		) : '',
+		'edit' =>  anchor(
+			$controller_name . "/view/$company->company_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => 'Update Company')
+		)
+
 	);
 }
 
@@ -341,9 +498,10 @@ function get_suppliers_manage_table_headers()
 	$headers = array(
 		//array('people.person_id' => $CI->lang->line('common_id')),
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
-		array('agency_name' => $CI->lang->line('suppliers_agency_name')),
-		array('last_name' => $CI->lang->line('common_last_name')),
-		array('first_name' => $CI->lang->line('common_first_name')),
+		array('address_1' => 'Address'),
+		// array('agency_name' => $CI->lang->line('suppliers_agency_name')),
+		// array('last_name' => $CI->lang->line('common_last_name')),
+		// array('first_name' => $CI->lang->line('common_first_name')),
 		array('email' => $CI->lang->line('common_email')),
 		array('phone_number' => $CI->lang->line('common_phone_number'))
 	);
@@ -363,9 +521,10 @@ function get_supplier_data_row($supplier, $controller)
 	return array(
 		'people.person_id' => $supplier->person_id,
 		'company_name' => $supplier->company_name,
-		'agency_name' => $supplier->agency_name,
-		'last_name' => $supplier->last_name,
-		'first_name' => $supplier->first_name,
+		'address_1' => $supplier->address_1,
+		// 'agency_name' => $supplier->agency_name,
+		// 'last_name' => $supplier->last_name,
+		// 'first_name' => $supplier->first_name,
 		'email' => empty($supplier->email) ? '' : mailto($supplier->email, $supplier->email),
 		'phone_number' => $supplier->phone_number,
 		'messages' => empty($supplier->phone_number) ? '' : anchor(
@@ -416,13 +575,56 @@ function get_items_manage_table_headers()
 		array('batch' => 'Batch'),
 		array('item_number' => 'Code'),
 		array('name' => $CI->lang->line('items_pname')),
+		array('type' => 'Department'), //categorization
 		array('category' => 'Category'),
 		array('pack' => $CI->lang->line('items_pack')),
 		array('cost_price' => $CI->lang->line('items_cost_price')),
-		array('unit_price' => $CI->lang->line('items_unit_price')),
+		array('unit_price' => 'Vat Excl. Price'),
+		array('vated_unit_price' => 'VAT Incl. Price'),
+		array('whole_price' => 'VAT Excl. Wholesale Price'),
+		array('vated_whole_price' => 'VAT Incl. WholeSale Price'),
 		array('quantity' => $CI->lang->line('items_quantity')),
 		//array('inventory' => ''),
 		array('stock' => '')
+	);
+	return transform_headers($headers);
+}
+
+
+function get_expense_manage_table_headers($showBalance = true)
+{
+	$CI = &get_instance();
+	//if($filters['expiry'] != FALSE){
+	//$headers[] =array('batch' => 'Batch');
+	//}
+
+	$headers = array(
+		array('date' => 'Date'),
+		array('details' => 'Details / Description'),
+		array('receipt_no' => 'Reference NO'),
+		array('category_name' => 'Expense Category'),
+		array('employee_name' => 'Employee'), 
+		array('type' => 'Type'),
+		array('amount' => 'Amount'),
+		$showBalance ? array('balance' => 'Balance') : array('' => ''),
+		// array('edit' => '')
+	);
+	return transform_headers($headers);
+}
+
+function get_audits_manage_table_headers()
+{
+	$CI = &get_instance();
+	//if($filters['expiry'] != FALSE){
+	//$headers[] =array('batch' => 'Batch');
+	//}
+
+	$headers = array(
+		array('audit_id' => 'Audit ID'),
+		array('audit_time' => 'Audit Time'),
+		array('employee_name' => 'Employee'),
+		array('action_type' => 'Action'),
+		array('description' => 'Description')
 	);
 	return transform_headers($headers);
 }
@@ -439,6 +641,48 @@ function get_inventory_history_headers()
 	);
 	return transform_headers($headers);
 }
+
+function get_stock_intake_history_headers()
+{
+	$CI = &get_instance();
+	$headers = array(
+		array('title' 		=> 'Title'),
+		array('description' 		=> 'Description'),
+		array('status' 		=> 'Status'),
+		array('employee_id' 	=> 'Created By'),
+		array('receiving_time'  => 'Timestamp'),
+	);
+	return transform_headers($headers);
+}
+
+// function get_pending_request_headers()
+// {
+// 	$CI = &get_instance();
+// 	$headers = array(
+// 		array('lpos.lpo_id' 	=> 'LPO ID'),
+// 		array('supplier_id' 	=> 'Supplier'),
+// 		array('employee_id' 	=> 'Created By'),
+// 		// array('payment_type' 	=> 'Payment Type'),
+// 		// array('reference' 		=> 'Invoice NO.'),
+// 		array('receiving_time'  => 'Date'),
+// 	);
+// 	return transform_headers($headers);
+// }
+
+function get_lpo_history_headers()
+{
+	$CI = &get_instance();
+	$headers = array(
+		array('lpos.lpo_id' 	=> 'LPO ID'),
+		array('supplier_id' 	=> 'Supplier'),
+		array('employee_id' 	=> 'Created By'),
+		// array('payment_type' 	=> 'Payment Type'),
+		// array('reference' 		=> 'Invoice NO.'),
+		array('receiving_time'  => 'Date'),
+	);
+	return transform_headers($headers);
+}
+
 function get_transfer_history_headers()
 {
 	$CI = &get_instance();
@@ -446,11 +690,68 @@ function get_transfer_history_headers()
 		array('transfer' 		=> 'Transfer ID'),
 		array('request_to_branch_id' 	=> 'Receiving Branch'),
 		array('employee_id' 	=> 'Transfered By'),
-		
+		//array('total' => 'Total')
+
+		array('transfer_time'  => 'Timestamp'),
+        array('reference'=>'Transfer Reference'),
+        array('recall'=>'Action'),
+	);
+	return transform_headers($headers);
+}
+
+function get_request_history_headers()
+{
+	$CI = &get_instance();
+	$headers = array(
+		array('request' 		=> 'Request ID'),
+		array('request_to_branch_id' 	=> 'Requesting from Branch'),
+		array('employee_id' 	=> 'Requested By'),
+		//array('total' => 'Total'),
+
 		array('transfer_time'  => 'Timestamp'),
 	);
 	return transform_headers($headers);
 }
+
+function get_pending_request_headers()
+{
+	$CI = &get_instance();
+	$headers = array(
+		array('request.request_id' 		=> 'Request ID'),
+		array('from_branch' 	=> 'From Branch'),
+		// array('to_branch' 	=> 'To Branch'),
+		array('created_at'  => 'Request Time'),
+	);
+	return transform_headers($headers);
+}
+
+function get_incoming_transfers_headers()
+{
+	$CI = &get_instance();
+	$headers = array(
+		array('transfer.transfer_id' 		=> 'Transfer ID'),
+		array('from_branch' 	=> 'From Branch'),
+		// array('to_branch' 	=> 'To Branch'),
+		array('created_at'  => 'Transfer Time'),
+		array('status'  => 'Status'),
+	);
+	return transform_headers($headers);
+}
+
+function get_pending_item_headers()
+{
+	$CI = &get_instance();
+	$headers = array(
+		array('item.id' 		=> 'ID'),
+		array('name' 	=> 'Item Name'),
+		array('item_number' 	=> 'Item Number'),
+		array('category' 	=> 'Category'),
+		array('unit_price'  => 'Unit Price'),
+		array('created_at'  => 'Time'),
+	);
+	return transform_headers($headers);
+}
+
 function get_transfer_item_data_row($item, $id, $controller)
 {
 	$CI = &get_instance();
@@ -460,9 +761,51 @@ function get_transfer_item_data_row($item, $id, $controller)
 		'transfer'					=> $id,
 		'request_to_branch_id'			=> $item->stock_location,
 		'employee_id'					=> $item->first_name . ' ' . $item->last_name,
-		
+		//'total'					=> to_currency($item->total),
+
 		'transfer_time'				=> $item->transfer_time ? date_formatter($item->transfer_time) : 'N/A',
+		'reference'                 => $item->reference ? $item->reference:'N/A',
+		'recall'                    => ($item->reference && !$item->status)? '<div>
+                                                        <div id="'.$item->reference.'">
+                                                            <a class="btn btn-danger recall-button" onclick="switchTo(\''.$item->reference.'\', \'recall-'.$item->reference.'\')" data-transref="'.$item->reference.'">recall</a>
+                                                        </div>
+                                                        <div id="recall-'.$item->reference.'" class="form-group" style="display: none">
+                                                            <textarea id="remark-'.$item->reference.'" class="form-control" placeholder="Reason to recall.."></textarea>
+                                                            <a class="btn" onclick="switchTo(\''.$item->reference.'\', \'recall-'.$item->reference.'\')" data-transref="'.$item->reference.'">Cancel</a>
+                                                            <a class="btn btn-primary recall-button" onclick="recall_transfer(this)" data-transref="'.$item->reference.'">Continue</a>
+                                                        </div>
+		                                            </div>':'N/A',
 		'edit' 							=> anchor($controller_name . "/transfer_reprint/$item->transfer_id", 'view items', 'title="View Transfer Items"')
+	);
+}
+
+function get_request_item_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'request.request_id'		=> $id,
+		'request'					=> $id,
+		'request_to_branch_id'			=> $item->stock_location,
+		'employee_id'					=> $item->first_name . ' ' . $item->last_name,
+		//'total'					=> to_currency($item->total),
+
+		'request_time'				=> $item->request_time ? date_formatter($item->request_time) : 'N/A',
+		'edit' 							=> anchor($controller_name . "/request_reprint/$item->request_id", 'view items', 'title="View Requested Items"')
+	);
+}
+
+function get_pending_request_item_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'request.request_id'		=> $id,
+		'request'					=> $id,
+		'from_branch'			=> $item['from_branch'],
+		'to_branch'			=> $item['to_branch'],
+		'created_at'				=> $item['created_at'] ? date_formatter($item['created_at']) : 'N/A',
+		'edit' 							=> anchor($controller_name . "/transfer/$id", 'view items', 'title="View Requested Items"')
 	);
 }
 
@@ -515,6 +858,78 @@ function get_receiving_item_data_row($item, $id, $controller)
 		'reference'						=> $item->reference ? $item->reference : "No Ref.",
 		'receiving_time'				=> $item->receiving_time ? date_formatter($item->receiving_time) : 'N/A',
 		'edit' 							=> anchor($controller_name . "/history_view/$item->receiving_id", 'view items', 'title="View Inventory Items"')
+	);
+}
+
+function get_stock_intake_item_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'stock_intakes.stock_id'		=> $id,
+		'employee_id'					=> $item->first_name . ' ' . $item->last_name,
+		'title'					=> $item->title ? $item->title : "N/A",
+		'description'						=> $item->description ? $item->description : "No Desc.",
+		'status'					=> ucfirst($item->status),
+		'receiving_time'				=> $item->receiving_time ? date_formatter($item->receiving_time) : 'N/A',
+		'edit' 							=> anchor($controller_name . "/history_view/$item->stock_id", 'View Items', 'title="View Stock Intake Items"')
+	);
+}
+
+function get_lpo_item_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'lpos.lpo_id'		=> $id,
+		'supplier_id'					=> $item->company_name ? $item->company_name : 'N/A',
+		'employee_id'					=> $item->first_name . ' ' . $item->last_name,
+		'payment_type'					=> $item->payment_type ? $item->payment_type : "N/A",
+		'reference'						=> $item->reference ? $item->reference : "No Invoice No",
+		'receiving_time'				=> $item->receiving_time ? date_formatter($item->receiving_time) : 'N/A',
+		'edit' 							=> anchor($controller_name . "/history_view/$item->lpo_id", 'view items', 'title="View Inventory Items"')
+	);
+}
+
+function get_pending_requests_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'request.request_id'		=> $id,
+		'from_branch'					=> $item['from_branch'],
+		// 'to_branch'					=> $item['to_branch'],
+		'status'					=> $item['status'],
+		'created_at'				=> $item['created_at'] ? date_formatter($item['created_at']) : 'N/A',
+		'edit' 							=> anchor($controller_name . "/transfer_item/$id", 'view items', 'title="View Items"')
+	);
+}
+
+function get_incoming_transfer_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'transfer.transfer_id'		=> $id,
+		'from_branch'					=> $item['to_branch'],
+		// 'to_branch'					=> $item['to_branch'],
+		'status'					=> $item['status'],
+		'created_at'				=> $item['created_at'] ? date_formatter($item['created_at']) : 'N/A',
+		'edit' 						=> anchor($controller_name . "/view_transfer/$id", 'view items', 'title="View Items"')
+	);
+}
+function get_pending_items_data_row($item, $id, $controller)
+{
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array(
+		'item.id'		=> $id,
+		'name'					=> $item['name'],
+		'item_number'					=> $item['item_number'],
+		'category'					=> $item['category'],
+		'unit_price'					=> $item['unit_price'],
+		'created_at'				=> $item['created_at'] ? date_formatter($item['created_at']) : 'N/A',
+		'edit' 						=> anchor($controller_name . "/view_pending_item/$id", 'view items', 'title="View Items"')
 	);
 }
 
@@ -582,24 +997,35 @@ function get_item_data_row($item, $controller)
 			}
 		}
 
-
 		return array(
-			'batch' => $item->batch,
+			'batch' => ($item->batch==''||$item->batch==null)?'<a class="modal-dlg" href="'.site_url("items/view_expiry_batch/$item->item_id").'">View</a>':$item->batch,
 			'items.item_id' => $item->item_id,
 			'item_number' => $item->item_number,
 			'name' => $item->name,
+			'type' => $item->type,
 			'category' => $item->category,
 			'company_name' => $item->company_name,
 			'pack' => to_quantity_decimals($item->pack),
 			'cost_price' => to_currency($item->cost_price),
-			'unit_price' => to_currency($item->unit_price),
+
+			// 'unit_price' => to_currency(get_nearest_five($item->unit_price)),
+			// 'vated_unit_price' => ($item->apply_vat == "YES") ? to_currency(get_nearest_five($item->unit_price + vat_amount($item->unit_price))) : to_currency(get_nearest_five($item->unit_price)),
+			// 'whole_price' => to_currency($item->whole_price),
+			// 'vated_whole_price' => ($item->apply_vat == "YES") ? to_currency(get_nearest_five($item->whole_price + vat_amount($item->whole_price))) : to_currency($item->whole_price),
+
+			// 'unit_price' => to_currency(get_nearest_five($item->unit_price)),
+			// 'unit_price' => ($item->apply_vat == "YES") ? to_currency(vat_excl($item->unit_price)) : to_currency(get_nearest_five($item->unit_price)), //Vat Excl
+			'unit_price' => ($item->apply_vat == "YES") ? to_currency(vat_excl($item->unit_price)) : to_currency(get_nearest_five($item->unit_price)), //Vat Excl
+			'vated_unit_price' => to_currency(get_nearest_five($item->unit_price)), //Vat Incl.
 			'whole_price' => to_currency($item->whole_price),
+			'vated_whole_price' => ($item->apply_vat == "YES") ? to_currency(get_nearest_five($item->whole_price + vat_amount($item->whole_price))) : to_currency($item->whole_price),
+
 			'quantity' => to_quantity_decimals($item->quantity),
 			'tax_percents' => !$tax_percents ? '-' : $tax_percents,
 			'inventory' => anchor(
 				$controller_name . "/inventory/$item->item_id",
 				'<span class="glyphicon glyphicon-pushpin"></span>',
-				array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name . '_count'))
+				array('class' => 'mod al-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name . '_count'))
 			),
 			'stock' => anchor(
 				$controller_name . "/count_details/$item->item_id",
@@ -656,7 +1082,7 @@ function get_item_data_row($item, $controller)
 
 
 			return array(
-				'batch' => $item->batch,
+				'batch' => ($item->batch==''||$item->batch==null)?'<a class="modal-dlg" href="'.site_url("items/view_expiry_batch/$item->item_id").'">View</a>':$item->batch,
 				'items.item_id' => $item->item_id,
 				'item_number' => $item->item_number,
 				'name' => $item->name,
@@ -687,6 +1113,43 @@ function get_item_data_row($item, $controller)
 		}
 	}
 }
+
+function get_expense_data_row($expense, $controller)
+{
+
+	// [id] => 1
+    // [expense_category_id] => 1
+    // [details] => Electrical Works for us
+    // [receipt_no] => 1234
+    // [amount] => 5000.00
+    // [type] => CREDIT
+    // [balance] => 10000.00
+    // [location_id] => 2
+    // [employee_id] => 28
+    // [employee_name] => Giwa  Ade
+	// [category_name] => Eletrical Works
+
+	$CI = &get_instance();
+	$controller_name = strtolower(get_class($CI));
+	
+	return array(
+		'expense.id' => $expense->id,
+		'date' => $expense->created_at,
+		'details' => $expense->details,
+		'receipt_no' => $expense->receipt_no,
+		'category_name' => $expense->category_name . " &nbsp; &nbsp; &nbsp; <small> (" . $expense->category_type . ")</small>",
+		'employee_name' => $expense->employee_name,
+		'type' => $expense->type,
+		'amount' => to_currency($expense->amount),
+		'balance' => to_currency($expense->balance),
+		// 'edit' => anchor(
+		// 	$controller_name . "/view_update/$expense->id",
+		// 	'<span class="glyphicon glyphicon-edit"></span>',
+		// 	array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name . '_update'))
+		// )
+	);
+}
+
 
 function get_giftcards_manage_table_headers()
 {
@@ -800,7 +1263,7 @@ function get_patients_headers()
 {
 	$CI = &get_instance();
 	$headers = array(
-		
+
 		array('person_id' 		=> 'Person ID'),
 		array('first_name'		=> 'First Name'),
 		array('last_name'		=> 'Last Name'),
@@ -816,7 +1279,7 @@ function get_patients_row($item, $controller)
 	$controller_name = strtolower(get_class($CI));
 	$id = $item['person_id'];
 	return array(
-		'people.person_id'=>$id,
+		'people.person_id' => $id,
 		'person_id'		=> $id,
 		'first_name'	=> $item['first_name'],
 		'last_name'		=> $item['last_name'],

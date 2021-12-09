@@ -187,7 +187,7 @@
                             <li>
                                 <a href="<?= site_url(); ?>" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
                             </li>
-							<?php foreach($allowed_modules->result() as $module) { ?>
+							<?php foreach($allowed_modules as $module) { ?>
 								<?php if($this->lang->line("module_".$module->module_id)=="Account"){?>
                                     <li class="has_sub">
                                         <a href="#" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_".$module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
@@ -321,8 +321,8 @@
                                
                 </div> <!-- content -->
 
-                <footer class="footer text-right">
-                    <?php echo date('Y')?> &copy; Infostrategy.
+                <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?>   <a href="www.istrategytech.com">Powered By Infostrategy.</a>
                 </footer>
 
             </div>

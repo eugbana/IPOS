@@ -276,14 +276,16 @@
 
                             <div class="col-md-6 col-sm-6 col-lg-3">
                                 <div class="mini-stat clearfix bg-primary bx-shadow">
-                                    <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
+                                    <a href="<?php echo site_url("laboratory/pending_invoices");?>"><span class="mini-stat-icon bg-danger"><i class="ion-eye"></i></span></a>
+
+<!--                                    <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>-->
                                     <div class="mini-stat-info text-right">
                                         <span class="counter">0</span>
                                         
                                     </div>
                                     <div class="tiles-progress">
                                         <div class="m-t-20">
-                                            <h5 class="text-uppercase text-white m-0"><span class="pull-right">136</span></h5>
+                                            <h5 class="text-uppercase text-white m-0"><span class="pull-right">Pending invoices</span></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -311,8 +313,8 @@
                                
                 </div> <!-- content -->
 
-                <footer class="footer text-right">
-                    <?php echo date('Y')?> © Infostrategy.
+                <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?>   <a href="www.istrategytech.com">Powered By Infostrategy.</a>
                 </footer>
 
             </div>

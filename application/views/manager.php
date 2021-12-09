@@ -69,22 +69,22 @@
                             </button>
                             <span class="clearfix"></span>
                         </div>
-                        <form class="navbar-form pull-left" role="search">
+                        <!-- <form class="navbar-form pull-left" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control search-bar" placeholder="Type here for search...">
                             </div>
                             <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                        </form>
+                        </form> -->
 
                         <ul class="nav navbar-nav navbar-right pull-right">
-                            <li class="dropdown hidden-xs">
+                            <!-- <li class="dropdown hidden-xs">
                                 <a href="#" data-target="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true">
                                     <i class="md md-notifications"></i> <span class="badge badge-xs badge-danger">3</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-lg">
                                     <li class="text-center notifi-title">Notification</li>
                                     <li class="list-group">
-                                        <!-- list item-->
+                                       
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -98,7 +98,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- list item-->
+                                        
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -112,7 +112,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- list item-->
+                                      
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -127,7 +127,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- last list item -->
+                                        
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <small>See all notifications</small>
                                         </a>
@@ -139,7 +139,7 @@
                             </li>
                             <li class="hidden-xs">
                                 <a href="#" class="right-bar-toggle waves-effect"><i class="md md-chat"></i></a>
-                            </li>
+                            </li> -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/user-default.png" alt="user-img" class="img-circle"> </a>
                                 <ul class="dropdown-menu">
@@ -150,6 +150,7 @@
                                     <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
                                 </ul>
                             </li>
+
                         </ul>
                     </div>
                     <!--/.nav-collapse -->
@@ -188,37 +189,9 @@
                         <li>
                             <a href="<?= site_url(); ?>" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
                         </li>
-                        <?php
-                        foreach ($allowed_modules->result() as $module) {
-                            ?>
-                            <?php if ($this->lang->line("module_" . $module->module_id) == "Reports") { ?>
-
-                                <li class="has_sub">
-                                    <a href="#" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                    <ul class="list-unstyled">
-                                        <li><a href="<?php echo site_url("$module->module_id"); ?>">Detailed Report</a></li>
-
-                                    </ul>
-                                </li>
-
-                            <?php } elseif ($this->lang->line("module_" . $module->module_id) == "Employees") { ?>
-
-                                <li>
-                                    <a href="<?php echo site_url("$module->module_id"); ?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?></span></a>
-                                </li>
-
-                            <?php } else { ?>
-                                <li class="has_sub">
-
-                                    <a href="<?php echo site_url("$module->module_id"); ?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo $this->lang->line("module_" . $module->module_id) ?> </span><span class="pull-right"><i class="md md-add"></i></span></a>
-
-                                </li>
-                        <?php
-                            }
-                        }
-                        ?>
 
 
+                        <?php $this->load->view("sidebars/branch_managers");  ?>
 
 
                     </ul>
@@ -240,62 +213,329 @@
             <!-- Start content -->
             <div class="content">
                 <div class="container">
-
                     <!-- Page-Title -->
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="pull-left page-title">Welcome <?= $user_info->first_name . ' ' . $user_info->last_name;  ?>!</h4>
                             <ol class="breadcrumb pull-right">
-                                <li><a href="#">Moltran</a></li>
+                                <!-- <li><a href="#">Moltran</a></li> -->
                                 <li class="active">Dashboard</li>
                             </ol>
                         </div>
                     </div>
 
-                    <!-- Start Widget -->
-                    <div class="row">
+
+                    <!-- <div class="row">
                         <div class="col-md-6 col-sm-6 col-lg-3">
                             <div class="mini-stat clearfix bg-success bx-shadow">
-                                <a href="<?php echo site_url("items"); ?>"><span class="mini-stat-icon"><i class="ion-eye"></i></span></a>
+                                <a href="<?php echo site_url("sales"); ?>"><span class="mini-stat-icon"><i class="md md-plus-cart"></i></span></a>
                                 <div class="mini-stat-info text-right">
                                     <span></span>
-                                    Product Inventory
+                                    New Sales
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">History<span class="pull-right">0</span></h5>
+                                        <h5 class="text-uppercase text-white m-0">History<span class="pull-right">0</span></h5> 
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php $i = 1; ?>
-                        <?php foreach ($sale_stuff as $row => $value) { ?>
-                            <div class="col-md-6 col-sm-6 col-lg-3">
-                                <div class="mini-stat clearfix bx-shadow bg-info">
-                                    <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></span>
-                                    <div class="mini-stat-info text-right">
-                                        <span class="counter"><?php echo $value['sales_amount']; ?></span>
-                                        Today's Sales
-                                    </div>
-                                    <div class="tiles-progress">
-                                        <div class="m-t-20">
-                                            <h5 class="text-uppercase text-white m-0"><?php echo $value['location_name']; ?> <span class="pull-right"><?php echo $i ?></span></h5>
-                                        </div>
+                        <?php //$i = 1; 
+                        ?>
+                        <?php //foreach ($sale_stuff as $row => $value) { 
+                        ?>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-info">
+                                <a href="<?php echo site_url("receivings"); ?>"><span class="mini-stat-icon"><i class="md md-plus-cart"></i></span></a>
+
+                               <span class="mini-stat-icon"><img src="<?php //echo base_url() . 'images/images.ico'; 
+                                                                        ?>" width="30" height="30" /></span> 
+                                <div class="mini-stat-info text-right">
+                                    <span class="counter"><?php //echo $value['sales_amount']; 
+                                                            ?></span>
+                                    New Inventory
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                    <h5 class="text-uppercase text-white m-0"><?php //echo $value['location_name']; 
+                                                                                ?> <span class="pull-right"><?php //echo $i 
+                                                                                                            ?></span></h5> 
                                     </div>
                                 </div>
                             </div>
-                            <?php $i++; ?>
-                        <?php } ?>
+                        </div>
+                        <?php //$i++; 
+                        ?>
+                        <?php //} 
+                        ?>
 
 
-                    </div>
+                    </div> -->
                     <!-- End row-->
+
+                    <!-- Start Widget -->
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-primary">
+                                <a href="<?php echo site_url("sales/manage"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Sales History
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow" style="background-color: #C0C0C0;">
+                                <a href="<?php echo site_url("sales"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/sales.png'; ?>" width="30" height="30" /></span></a>
+                                <div class="mini-stat-info text-right">
+                                    New Sales
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-success">
+                                <a href="<?php echo site_url("receivings"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/receivings.png'; ?>" width="30" height="30" /></span></a>
+                                <div class="mini-stat-info text-right">
+                                    New Stock Intake
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-info">
+                                <a href="<?php echo site_url("items/push"); ?>"><span class="mini-stat-icon"><i class="ion-share"></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Transfers
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"><span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <div class="cal1 cal_2">
+                                <div class="clndr">
+                                    <div class="clndr-controls">
+                                        <div class="clndr-control-button ">
+                                            <p class="clndr-previous-button">previous</p>
+                                        </div>
+                                        <div class="month">July 2015</div>
+                                        <div class="clndr-control-button rightalign">
+                                            <p class="clndr-next-button">next</p>
+                                        </div>
+                                    </div>
+                                    <table class="clndr-table" border="0" cellspacing="0" cellpadding="0">
+                                        <thead>
+                                            <tr class="header-days">
+                                                <td class="header-day">S</td>
+                                                <td class="header-day">M</td>
+                                                <td class="header-day">T</td>
+                                                <td class="header-day">W</td>
+                                                <td class="header-day">T</td>
+                                                <td class="header-day">F</td>
+                                                <td class="header-day">S</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-28">
+                                                    <div class="day-contents">28</div>
+                                                </td>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-29">
+                                                    <div class="day-contents">29</div>
+                                                </td>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-30">
+                                                    <div class="day-contents">30</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-01">
+                                                    <div class="day-contents">1</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-02">
+                                                    <div class="day-contents">2</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-03">
+                                                    <div class="day-contents">3</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-04">
+                                                    <div class="day-contents">4</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-05">
+                                                    <div class="day-contents">5</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-06">
+                                                    <div class="day-contents">6</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-07">
+                                                    <div class="day-contents">7</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-08">
+                                                    <div class="day-contents">8</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-09">
+                                                    <div class="day-contents">9</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-10">
+                                                    <div class="day-contents">10</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-11">
+                                                    <div class="day-contents">11</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-12">
+                                                    <div class="day-contents">12</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-13">
+                                                    <div class="day-contents">13</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-14">
+                                                    <div class="day-contents">14</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-15">
+                                                    <div class="day-contents">15</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-16">
+                                                    <div class="day-contents">16</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-17">
+                                                    <div class="day-contents">17</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-18">
+                                                    <div class="day-contents">18</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-19">
+                                                    <div class="day-contents">19</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-20">
+                                                    <div class="day-contents">20</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-21">
+                                                    <div class="day-contents">21</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-22">
+                                                    <div class="day-contents">22</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-23">
+                                                    <div class="day-contents">23</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-24">
+                                                    <div class="day-contents">24</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-25">
+                                                    <div class="day-contents">25</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-26">
+                                                    <div class="day-contents">26</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-27">
+                                                    <div class="day-contents">27</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-28">
+                                                    <div class="day-contents">28</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-29">
+                                                    <div class="day-contents">29</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-30">
+                                                    <div class="day-contents">30</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-31">
+                                                    <div class="day-contents">31</div>
+                                                </td>
+                                                <td class="day adjacent-month next-month calendar-day-2015-08-01">
+                                                    <div class="day-contents">1</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div> <!-- end col -->
+
+                        <div class="col-md-3 col-sm-3 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-info">
+                                <a href="<?php echo site_url("reports/expiry_report"); ?>"><span class="mini-stat-icon"><i class="ion-share"></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Expiry Items (Next 90 days)
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0" >
+                                        <span class="pull-right" style="font-size: 19px">
+                                            <?php
+                                            echo $expiryItemsCount;
+                                            ?>
+                                        </span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="row">
+                                <?php
+                                //                var_dump($u_mod_grants['config']);
+                                $granted_perm = $u_mod_grants['config'];
+
+                                $granted_permissions=[];
+                                if(isset($granted_perm)&& count($granted_perm)>0){
+//                    var_dump($granted_perm);
+                                    foreach ($granted_perm as $perm){
+                                        $granted_permissions[] = $perm["permission_id"];
+                                    }
+                                }
+                                // print_r($granted_perm);
+                                echo in_array("config_backup_database",$granted_permissions);
+                                // var_dump($granted_permissions);
+                                if(in_array('config_database_backup',$granted_permissions)){
+                                    echo form_label($this->lang->line('config_backup_database'),
+                                        'config_backup_database', array('class' => 'control-label col-xs-6'));
+                                    ?>
+                                    <div class='col-xs-6'>
+                                        <button id="backup_db" class="btn btn-default btn-sm">
+                                            <span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
+                                        </button>
+                                    </div>
+                                <?php }
+                                ?>
+                            </div>
+                        </div>
+                    </div> <!-- End row -->
+
                 </div> <!-- container -->
 
             </div> <!-- content -->
 
-            <footer class="footer text-right">
-                <?php echo date('Y') ?> &copy; Infostrategy.
+            <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?> <a href="www.istrategytech.com">Powered By Infostrategy.</a>
             </footer>
 
         </div>
@@ -350,7 +590,15 @@
     <script src="dist/assets/plugins/flot-chart/jquery.flot.stack.js"></script>
     <script src="dist/assets/plugins/flot-chart/jquery.flot.crosshair.js"></script>
 
+    <link rel="stylesheet" href="dist/assets/css/clndr.css" type="text/css" />
+    <script src="dist/assets/js/underscore-min.js" type="text/javascript"></script>
+    <script src="dist/assets/js/moment-2.2.1.js" type="text/javascript"></script>
+    <script src="dist/assets/js/clndr.js" type="text/javascript"></script>
+    <script src="dist/assets/js/site.js" type="text/javascript"></script>
+
     <!-- todos app  -->
+
+
     <script src="dist/assets/pages/jquery.todo.js"></script>
 
     <!-- chat app  -->
@@ -365,7 +613,16 @@
                 delay: 100,
                 time: 1200
             });
+
+            $("#backup_db").click(function() {
+                console.log('clicked');
+                var backup_db = $(this);
+                backup_db.html("Backup in Progress...");
+                backup_db.attr("disabled", "disabled");
+                window.location='<?php echo site_url('config/backup_db/1') ?>';
+            });
         });
+
     </script>
 
 

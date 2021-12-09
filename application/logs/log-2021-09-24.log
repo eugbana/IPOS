@@ -1,0 +1,479 @@
+DEBUG - 2021-09-24 07:55:35 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 07:55:35 --> No URI present. Default controller set.
+DEBUG - 2021-09-24 07:55:35 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 07:55:35 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 08:55:35 --> Total execution time: 0.0737
+DEBUG - 2021-09-24 07:55:41 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 07:55:41 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 07:55:41 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+ERROR - 2021-09-24 08:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+DEBUG - 2021-09-24 07:55:41 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 07:55:41 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 07:55:41 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 07:55:41 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+DEBUG - 2021-09-24 08:55:42 --> Total execution time: 1.1714
+DEBUG - 2021-09-24 08:12:45 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 08:12:45 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 08:12:45 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 08:12:45 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+DEBUG - 2021-09-24 08:12:45 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 08:12:45 --> Tax_lib class already loaded. Second attempt ignored.
+ERROR - 2021-09-24 09:12:45 --> Could not find the language line "laboratory_no_laboratory_to_display (TBD)"
+ERROR - 2021-09-24 09:12:45 --> Could not find the language line "laboratory_confirm_delete (TBD)"
+DEBUG - 2021-09-24 09:12:45 --> Total execution time: 0.0629
+DEBUG - 2021-09-24 08:12:46 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 08:12:46 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 08:12:46 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 08:12:46 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+DEBUG - 2021-09-24 08:12:46 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 08:12:46 --> Tax_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 09:12:46 --> Total execution time: 0.1078
+DEBUG - 2021-09-24 08:13:00 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 08:13:00 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 08:13:00 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 08:13:00 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+DEBUG - 2021-09-24 08:13:00 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 08:13:00 --> Tax_lib class already loaded. Second attempt ignored.
+ERROR - 2021-09-24 09:13:00 --> Severity: Warning --> Invalid argument supplied for foreach() /Users/user/Desktop/ISTRATEGYTECH/ipos/application/views/laboratory/form.php 211
+ERROR - 2021-09-24 09:13:00 --> Severity: Warning --> Invalid argument supplied for foreach() /Users/user/Desktop/ISTRATEGYTECH/ipos/application/views/laboratory/form.php 255
+ERROR - 2021-09-24 09:13:00 --> Could not find the language line "items_tax_percent_number (TBD)"
+DEBUG - 2021-09-24 09:13:00 --> Total execution time: 0.0584
+DEBUG - 2021-09-24 08:47:59 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 08:47:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 08:47:59 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 08:47:59 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+DEBUG - 2021-09-24 08:47:59 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 08:47:59 --> Tax_lib class already loaded. Second attempt ignored.
+ERROR - 2021-09-24 09:47:59 --> Could not find the language line "account_no_account_to_display (TBD)"
+ERROR - 2021-09-24 09:47:59 --> Could not find the language line "account_confirm_delete (TBD)"
+DEBUG - 2021-09-24 09:47:59 --> Total execution time: 0.0623
+DEBUG - 2021-09-24 08:48:00 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 08:48:00 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 08:48:00 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 08:48:00 --> Severity: Warning --> socket_connect(): Host lookup failed [-10001]: Unknown host /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/ins0/google-measurement-php-client/src/Racecore/GATracking/Client/Adapter/Socket.php 32
+DEBUG - 2021-09-24 08:48:00 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 08:48:00 --> Tax_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 09:48:00 --> Total execution time: 0.0354
+DEBUG - 2021-09-24 10:54:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:54:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:54:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 10:54:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:54:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:54:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:54:58 --> Total execution time: 0.0296
+DEBUG - 2021-09-24 10:55:21 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:55:21 --> No URI present. Default controller set.
+DEBUG - 2021-09-24 10:55:21 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:55:21 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:55:21 --> Total execution time: 0.0261
+DEBUG - 2021-09-24 10:55:24 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:55:24 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:55:24 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 10:55:25 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:55:25 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:55:25 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:55:27 --> Total execution time: 1.4899
+DEBUG - 2021-09-24 10:55:30 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:55:30 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:55:30 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 10:55:30 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 11:55:30 --> Total execution time: 0.1708
+DEBUG - 2021-09-24 10:55:34 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:55:34 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:55:34 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 10:55:34 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 11:55:35 --> Total execution time: 0.6914
+DEBUG - 2021-09-24 10:56:19 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:56:19 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2021-09-24 10:56:19 --> 404 Page Not Found: Synccontroller/pushexpense
+DEBUG - 2021-09-24 10:56:40 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 10:56:40 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 10:56:40 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 11:56:40 --> Severity: error --> Exception: Call to a member function push_expenses_batch() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Synccontroller.php 43
+DEBUG - 2021-09-24 11:04:27 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:04:27 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:04:27 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 12:04:27 --> Severity: error --> Exception: Call to a member function get_branchinfo() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Expenses.php 144
+DEBUG - 2021-09-24 11:12:24 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:12:24 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:12:24 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 12:12:24 --> Query error: Unknown column 'people.first_name' in 'field list' - Invalid query: SELECT `ipos_expense_categories`.`name` as `category`, `ipos_expense_categories`.`type` as `category_type`, `ipos_expenses`.`type`, `ipos_expenses`.`amount`, `ipos_expenses`.`details`, `ipos_expenses`.`balance`, CONCAT(people.first_name, people.last_name) as employee_name
+FROM `ipos_expenses`
+JOIN `ipos_expense_categories` ON `ipos_expenses`.`expense_category_id` = `ipos_expense_categories`.`id`
+JOIN `ipos_people` ON `ipos_expenses`.`employee_id` = `ipos_people`.`person_id`
+WHERE `ipos_expenses`.`registered` =0
+ LIMIT 50
+DEBUG - 2021-09-24 11:17:54 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:17:54 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:17:54 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 12:17:54 --> Severity: error --> Exception: Unable to locate the model you have specified: External_calls /Users/user/Desktop/ISTRATEGYTECH/ipos/vendor/codeigniter/framework/system/core/Loader.php 344
+DEBUG - 2021-09-24 11:19:34 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:19:34 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:19:34 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:21:54 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:21:54 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:21:54 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 12:21:54 --> Query error: Unknown column 'ipos_expense.id' in 'field list' - Invalid query: SELECT `ipos_expense_categories`.`name` as `category`, `ipos_expense_categories`.`type` as `category_type`, `ipos_expenses`.`type`, `ipos_expense`.`id` as `expense_id`, `ipos_expenses`.`amount`, `ipos_expenses`.`details`, `ipos_expenses`.`balance`, CONCAT(ipos_people.first_name, ipos_people.last_name) as employee_name
+FROM `ipos_expenses`
+JOIN `ipos_expense_categories` ON `ipos_expenses`.`expense_category_id` = `ipos_expense_categories`.`id`
+JOIN `ipos_people` ON `ipos_expenses`.`employee_id` = `ipos_people`.`person_id`
+WHERE `ipos_expenses`.`registered` =0
+ LIMIT 50
+DEBUG - 2021-09-24 11:22:17 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:22:17 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:22:17 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 12:22:17 --> Query error: Unknown column 'ipos_expense.id' in 'field list' - Invalid query: SELECT `ipos_expense_categories`.`name` as `category`, `ipos_expense_categories`.`type` as `category_type`, `ipos_expenses`.`type`, `ipos_expense`.`id` as `expense_id`, `ipos_expenses`.`amount`, `ipos_expenses`.`details`, `ipos_expenses`.`balance`, CONCAT(ipos_people.first_name, ipos_people.last_name) as employee_name
+FROM `ipos_expenses`
+JOIN `ipos_expense_categories` ON `ipos_expenses`.`expense_category_id` = `ipos_expense_categories`.`id`
+JOIN `ipos_people` ON `ipos_expenses`.`employee_id` = `ipos_people`.`person_id`
+WHERE `ipos_expenses`.`registered` =0
+ LIMIT 50
+DEBUG - 2021-09-24 11:23:14 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:23:14 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:23:14 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:25:17 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:25:17 --> No URI present. Default controller set.
+DEBUG - 2021-09-24 11:25:17 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:25:17 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:25:17 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:25:17 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:25:17 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:25:18 --> Total execution time: 0.7387
+DEBUG - 2021-09-24 11:25:21 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:25:21 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:25:21 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:25:21 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:25:22 --> Total execution time: 0.9981
+DEBUG - 2021-09-24 11:26:05 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:26:05 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:26:05 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:26:05 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:26:05 --> Total execution time: 0.1793
+DEBUG - 2021-09-24 11:26:10 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:26:10 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:26:10 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:26:10 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:26:11 --> Total execution time: 0.7970
+DEBUG - 2021-09-24 11:26:15 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:26:15 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:26:15 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:26:15 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:26:16 --> Total execution time: 0.3056
+DEBUG - 2021-09-24 11:26:30 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:26:30 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:26:30 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:34:24 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:34:24 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:34:24 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 11:35:39 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 11:35:39 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 11:35:39 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:15:33 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:15:33 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:15:33 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:17:53 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:17:53 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:17:53 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:18:29 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:18:29 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:18:29 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:18:49 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:18:49 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:18:49 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:20:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:20:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:20:16 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:23:53 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:23:53 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:23:53 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:25:06 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:25:06 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:25:06 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:25:23 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:25:23 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:25:23 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:27:36 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:27:36 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:27:36 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:29:20 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:29:20 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:29:20 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:30:00 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:30:00 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:30:00 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:30:04 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:30:04 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:30:04 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:30:37 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:30:37 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:30:37 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:38:48 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:38:48 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:38:48 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:38:48 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 13:38:48 --> Total execution time: 0.1674
+DEBUG - 2021-09-24 12:38:52 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:38:52 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:38:52 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:38:52 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 13:38:53 --> Total execution time: 0.8251
+DEBUG - 2021-09-24 12:39:02 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:39:02 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:39:02 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:39:39 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:39:39 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:39:39 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:42:05 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:42:05 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:42:05 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:45:28 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:45:28 --> No URI present. Default controller set.
+DEBUG - 2021-09-24 12:45:28 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:45:28 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:45:28 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:45:28 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:45:28 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:45:28 --> Total execution time: 0.3776
+DEBUG - 2021-09-24 12:46:09 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:09 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:09 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:09 --> Sale_lib class already loaded. Second attempt ignored.
+ERROR - 2021-09-24 13:46:09 --> Severity: Warning --> array_fill_keys() expects parameter 1 to be array, null given /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Expense.php 22
+ERROR - 2021-09-24 13:46:09 --> Severity: Warning --> array_merge(): Expected parameter 1 to be an array, null given /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Expense.php 23
+ERROR - 2021-09-24 13:46:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Expense.php 25
+ERROR - 2021-09-24 13:46:09 --> Could not find the language line "expense_no_expense_to_display (TBD)"
+ERROR - 2021-09-24 13:46:09 --> Could not find the language line "expense_confirm_delete (TBD)"
+ERROR - 2021-09-24 13:46:09 --> Could not find the language line "expense_new (TBD)"
+ERROR - 2021-09-24 13:46:09 --> Severity: Warning --> Invalid argument supplied for foreach() /Users/user/Desktop/ISTRATEGYTECH/ipos/application/views/expenses/manage.php 149
+DEBUG - 2021-09-24 13:46:09 --> Total execution time: 0.1498
+DEBUG - 2021-09-24 12:46:09 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:09 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:09 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:09 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 13:46:09 --> Total execution time: 0.0937
+DEBUG - 2021-09-24 12:46:15 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:15 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:15 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:15 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 13:46:15 --> Total execution time: 0.1647
+DEBUG - 2021-09-24 12:46:49 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:49 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:49 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:49 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:54 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:54 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:54 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:54 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:57 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:57 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:57 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:57 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:58 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:58 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:58 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:58 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:58 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:58 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:59 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:59 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:59 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:59 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:59 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:59 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:59 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:59 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:59 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:46:59 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:46:59 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:46:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:46:59 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:47:00 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:47:00 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:47:00 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:47:00 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:47:00 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:47:00 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:47:00 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:47:00 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:47:00 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:49:02 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:49:02 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:49:02 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:49:02 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:49:02 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:49:02 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:49:02 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:49:02 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:49:02 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:49:02 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:49:02 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:49:02 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:49:02 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:49:02 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:49:02 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:49:03 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:49:05 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:49:05 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:49:05 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:49:05 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:49:25 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:49:25 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:49:25 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:52:48 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:52:48 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:52:48 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:52:49 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 13:52:49 --> Total execution time: 0.1385
+DEBUG - 2021-09-24 12:55:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:55:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:55:16 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:55:16 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 12:59:40 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 12:59:40 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 12:59:40 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 12:59:40 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 13:01:37 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:01:37 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:01:37 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:01:37 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:01:39 --> Total execution time: 1.7537
+DEBUG - 2021-09-24 13:01:39 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:01:39 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:01:39 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:01:39 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:01:39 --> Total execution time: 0.0976
+DEBUG - 2021-09-24 13:01:47 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:01:47 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:01:47 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:01:47 --> Sale_lib class already loaded. Second attempt ignored.
+ERROR - 2021-09-24 14:01:47 --> Severity: Warning --> array_fill_keys() expects parameter 1 to be array, null given /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Expense.php 22
+ERROR - 2021-09-24 14:01:47 --> Severity: Warning --> array_merge(): Expected parameter 1 to be an array, null given /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Expense.php 23
+ERROR - 2021-09-24 14:01:47 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable /Users/user/Desktop/ISTRATEGYTECH/ipos/application/controllers/Expense.php 25
+ERROR - 2021-09-24 14:01:47 --> Could not find the language line "expense_no_expense_to_display (TBD)"
+ERROR - 2021-09-24 14:01:47 --> Could not find the language line "expense_confirm_delete (TBD)"
+ERROR - 2021-09-24 14:01:47 --> Could not find the language line "expense_new (TBD)"
+ERROR - 2021-09-24 14:01:47 --> Severity: Warning --> Invalid argument supplied for foreach() /Users/user/Desktop/ISTRATEGYTECH/ipos/application/views/expenses/manage.php 149
+DEBUG - 2021-09-24 14:01:47 --> Total execution time: 0.1268
+DEBUG - 2021-09-24 13:01:47 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:01:47 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:01:47 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:01:47 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:01:47 --> Total execution time: 0.0780
+DEBUG - 2021-09-24 13:39:02 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:39:02 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:39:02 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:39:02 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:39:02 --> Total execution time: 0.1277
+DEBUG - 2021-09-24 13:39:38 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:39:38 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:39:38 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:39:38 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:39:40 --> Total execution time: 1.8152
+DEBUG - 2021-09-24 13:39:40 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:39:40 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:39:40 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:39:40 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:39:40 --> Total execution time: 0.0904
+DEBUG - 2021-09-24 13:43:35 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:43:35 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:43:35 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:43:36 --> Tracking_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:43:36 --> Total execution time: 0.2643
+DEBUG - 2021-09-24 13:43:43 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:43:43 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:43:43 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:43:43 --> Tracking_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:43:43 --> Total execution time: 0.1794
+DEBUG - 2021-09-24 13:44:06 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:44:06 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:44:06 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:44:06 --> Tracking_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:44:06 --> Total execution time: 0.3664
+DEBUG - 2021-09-24 13:44:26 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:44:26 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:44:26 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:44:26 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:44:26 --> Total execution time: 0.1174
+DEBUG - 2021-09-24 13:45:13 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:45:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:45:13 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:45:13 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:45:13 --> Total execution time: 0.0759
+DEBUG - 2021-09-24 13:45:35 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:45:35 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:45:35 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:45:35 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:45:37 --> Total execution time: 1.5497
+DEBUG - 2021-09-24 13:45:37 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 13:45:37 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 13:45:37 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 13:45:37 --> Sale_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:45:37 --> Total execution time: 0.0781
+DEBUG - 2021-09-24 14:05:11 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:05:11 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:05:11 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 15:05:12 --> Tracking_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:05:12 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:05:12 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:05:12 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 15:05:12 --> Total execution time: 0.0325
+DEBUG - 2021-09-24 14:05:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:05:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:05:16 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2021-09-24 15:05:16 --> Severity: error --> Exception: Call to a member function get_logged_in_employee_info() on null /Users/user/Desktop/ISTRATEGYTECH/ipos/application/models/Stock_location.php 49
+DEBUG - 2021-09-24 14:07:10 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:07:10 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:07:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:07:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:07:16 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 14:07:16 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:07:16 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:07:16 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 15:07:17 --> Total execution time: 1.0982
+DEBUG - 2021-09-24 14:07:26 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:07:26 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:07:26 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 15:07:26 --> Tracking_lib class already loaded. Second attempt ignored.
+DEBUG - 2021-09-24 14:07:26 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:07:26 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:07:26 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 15:07:26 --> Total execution time: 0.0249
+DEBUG - 2021-09-24 14:07:30 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:07:30 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:07:30 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 14:07:32 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:07:32 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:07:32 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 15:07:33 --> Total execution time: 1.0948
+DEBUG - 2021-09-24 14:22:54 --> UTF-8 Support Enabled
+DEBUG - 2021-09-24 14:22:54 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2021-09-24 14:22:54 --> Encryption: Auto-configured driver 'openssl'.
+DEBUG - 2021-09-24 15:22:55 --> Total execution time: 1.4760

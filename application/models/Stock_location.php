@@ -24,6 +24,101 @@ class Stock_location extends CI_Model
 
 		return $this->db->get();
 	}
+	public function get_all_form()
+	{
+		$all = $this->get_all()->result_array();
+		$ret = array();
+		foreach ($all as $k => $value) {
+			$ret[$value['location_id']] = $value['location_name'];
+		}
+		return $ret;
+	}
+	public function update_phone($phone){
+        return $this->update($phone,'phone');
+    }
+    public function update_mail($mail){
+        return $this->update($mail,'mail');
+    }
+    public function update_name($name){
+	    return $this->update($name,'name');
+    }
+    public function update_address($name){
+        return $this->update($name,'address');
+    }
+    public function get_updated_locations(){
+        // $employee = $this->CI->Employee->get_logged_in_employee_info();
+        // $location = $this->db->get_where('stock_locations',['location_id'=>$employee->branch_id])->row();
+        $this->load->library('External_calls');
+        $resp = json_decode(External_calls::makeRequest(ERD_BASE_URL.'/branches'));
+        if($resp->status == '00'){
+            $branches = $resp->data->data;
+            if(count($branches) > 0){
+                foreach ($branches as $branch){
+                    $e_br = $this->db->get_where('stock_locations',['location_name'=>$branch->branch_name])->row();
+                    if($e_br){
+                        if($e_br->brid == null){
+                            $this->db->update('stock_locations',['brid'=>$branch->brid],['location_id'=>$e_br->location_id]);
+                        }
+                        continue;
+                    }
+                    $e_br = $this->db->get_where('stock_locations',['brid'=>$branch->brid])->row();
+                    if($e_br){
+                        if($e_br->location_name !== $branch->branch_name){
+                            $this->db->update('stock_locations',['location_name'=>$branch->branch_name],['location_id'=>$e_br->location_id]);
+                        }
+                        continue;
+                    }
+                    $this->db->insert('stock_locations',['location_name'=>$branch->branch_name,
+                        'location_number'=>$branch->phone,'location_address'=>$branch->address,
+                        'location_email'=>$branch->email,'brid'=>$branch->brid,'deleted'=>$branch->status=='active'?0:1]);
+                }
+            }
+            return ['message'=>"Available branch data synced, Please refresh",'success'=>true];
+        }
+        return ['message'=>$resp->message?$resp->message:$resp->error];
+    }
+    public function register_online(){
+        $employee = $this->CI->Employee->get_logged_in_employee_info();
+        $location = $this->db->get_where('stock_locations',['location_id'=>$employee->branch_id])->row();
+        $this->load->library('External_calls');
+        $resp = External_calls::makeRequest(ERD_BASE_URL.'/branches/register',
+            [
+                'branch_name'=>$location->location_name,
+                'address'=>$location->location_address,
+                'phone'=>$location->location_number,
+                'email'=>$location->location_email,
+				'brid'=>$location->brid,
+                'caller'=>'HaslekIsBae'
+            ],'POST');
+        $resp = json_decode($resp);
+        if($resp->status == '00'){
+            $this->db->update('stock_locations',['brid'=>$resp->branch_id],['location_id'=>$employee->branch_id]);
+            return ['message'=>$resp->message,'success'=>true];
+        }
+        return ['message'=>$resp->message?$resp->message:$resp->error];
+    }
+	private function update($name,$type){
+        $employee = $this->CI->Employee->get_logged_in_employee_info();
+        if($type == 'name'){
+            $exist = $this->db->get_where('stock_locations',['location_'.$type=>$name])->row();
+            if($exist && $exist->location_id != $employee->branch_id){
+                return ['message'=>'Name used already by another branch'];
+            }
+        }
+        $exist = $this->db->get_where('stock_locations',['location_id'=>$employee->branch_id])->row();
+        $this->db->update('stock_locations',['location_'.$type=>$name],['location_id'=>$employee->branch_id]);
+//        $exist->
+        if($exist->brid){
+            $this->load->library('External_calls');
+            $resp = External_calls::makeRequest(ERD_BASE_URL.'/branches/'.$exist->brid.'/update/'.$type,['caller'=>'HaslekIsBae',$type=>$name],'POST');
+            $resp = json_decode($resp);
+            if($resp->status == '00'){
+                return ['message'=>"Branch $type updated successfully",'success'=>true];
+            }
+            return ['message'=>$resp->message?$resp->message:$resp->error];
+        }
+        return ['message'=>"Branch name updated locally, please click on the register button to make it visible to other branches!!"];
+    }
 
 	public function get_undeleted_all($module_id = 'items')
 	{

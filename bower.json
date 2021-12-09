@@ -7,22 +7,11 @@
     "jekkos <jeroen.peelaerts - at - gmail.com>",
     "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
   ],
-  "keywords": [
-    "point-of-sale",
-    "POS"
-  ],
+  "keywords": ["point-of-sale", "POS"],
   "homepage": "https://github.com/jekkos/opensourcepos",
   "private": true,
-  "moduleType": [
-    "globals"
-  ],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "moduleType": ["globals"],
+  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests"],
   "dependencies": {
     "jquery-form": "~3.46.0",
     "jquery-validate": "~1.13.1",
@@ -47,22 +36,18 @@
   },
   "overrides": {
     "jquery-ui": {
-      "main": [
-        "themes/base/jquery-ui.css",
-        "jquery-ui.js"
-      ]
+      "main": ["themes/base/jquery-ui.css", "jquery-ui.js"]
     },
     "table-export": {
-      "main": [
-        "tableExport.js"
-      ]
+      "main": ["tableExport.js"]
     },
     "bootstrap-table": {
       "main": [
         "src/bootstrap-table.js",
         "src/bootstrap-table.css",
         "dist/extensions/export/bootstrap-table-export.js",
-        "dist/extensions/mobile/bootstrap-table-mobile.js"
+        "dist/extensions/mobile/bootstrap-table-mobile.js",
+        "dist/extensions/print/bootstrap-table-print.js"
       ]
     }
   }

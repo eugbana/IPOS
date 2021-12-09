@@ -300,7 +300,7 @@ Gets information about a particular tax_code
 		}
 	}
 
-	public function get_sales_tax_codes_search_suggestions($search, $limit = 25)
+	public function get_sales_tax_codes_search_suggestions($search, $limt = 99999)
 	{
 
 		$suggestions = array();

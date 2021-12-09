@@ -139,7 +139,7 @@ class Person extends CI_Model
 	 *
 	 * @return array array with the suggestion strings
 	 */
-	public function get_search_suggestions($search, $limit = 25)
+	public function get_search_suggestions($search, $limt = 99999)
 	{
 		$suggestions = array();
 

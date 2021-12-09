@@ -35,7 +35,8 @@
 			<table class="table table-striped table-bordered" id="table">
 				<thead>
 					<tr>
-
+					<!-- categorization -->
+						<th>Department</th> 
 						<th>Category Name</th>
 						<th></th>
 						<th></th>
@@ -49,9 +50,12 @@
 					foreach ($categories as $key => $cat) {
 						$id = $cat['id'];
 						$name = $cat['name'];
+						$dept = $cat['type']; //categorization
 						?>
 						<tr>
 
+					<!-- categorization -->
+							<td><?= $dept ?></td> 
 							<td><?= $name ?></td>
 							<td><a title="Apply Vat" data-id="<?php echo $id; ?>" href="<?php echo site_url("/items/category_apply_vat/$id"); ?>" class="btn btn-success btn-sm text-sm apply_vat_bt"><span class="glyphicon glyphicon-pencil"></span> Apply Vat</a></td>
 							<td><a title="Remove Vat" href="<?php echo site_url("/items/remove_vat_category/$id"); ?>" class="btn btn-success btn-sm text-sm"><span class="glyphicon glyphicon-pencil"></span> Remove Vat</a></td>
@@ -183,6 +187,16 @@
 				<h4 class="modal-title">Add/Update Category</h4>
 			</div>
 			<div class="modal-body">
+
+			<div class="form-group">
+				<label>Select Department</label>
+				<select name="dept" id="dept" class="form-control">
+					<option value="Pharmacy">Pharmacy</option>
+					<option value="Superstore">Superstore</option>
+				</select>
+			</div>
+			<!-- categorization -->
+				
 				<div class="form-group">
 					<label>Select Category</label>
 					<select name="category" id="category" class="form-control">
@@ -198,6 +212,10 @@
 					<label>Category Name</label>
 					<input type="text" name="category_name" id="category_name" class="form-control" />
 				</div>
+
+				
+
+				
 
 			</div>
 			<div class="modal-footer">

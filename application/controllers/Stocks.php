@@ -15,7 +15,8 @@ class Stocks extends Secure_Controller {
 
     public function outofstocks() {
         $data = null;
-		$this->db->select('items.name, items.category, items.availability, items.grammage');
+		// $this->db->select('items.name, items.category, items.availability, items.grammage');
+		$this->db->select('items.name, items.category, items.grammage');
 		$this->db->select('item_quantities.quantity as quantity');
 		$this->db->select('suppliers.company_name');
 		$this->db->from('items');
@@ -30,7 +31,8 @@ class Stocks extends Secure_Controller {
 
     public function ItemsAtReorderLevel() {
         $data = null;
-        $this->db->select('items.name, items.category, items.availability, items.grammage');
+        // $this->db->select('items.name, items.category, items.availability, items.grammage');
+        $this->db->select('items.name, items.category, items.grammage');
 		$this->db->select('items.reorder_level as reorder_level');
         $this->db->select('item_quantities.quantity as quantity');
         $this->db->select('suppliers.company_name');

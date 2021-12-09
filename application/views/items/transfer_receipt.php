@@ -15,14 +15,14 @@
 			<a href="javascript:printdoc();">
 				<div class="btn btn-info btn-sm" , id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div>
 			</a>
-			<?php echo anchor("items/push", '<span class="glyphicon glyphicon-save">&nbsp</span> New Transfer', array('class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')); ?>
+			<?php //echo anchor("items/request_item", '<span class="glyphicon glyphicon-save">&nbsp</span> New Request', array('class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')); ?>
 		</div>
 
 		<div id="receipt_wrapper">
 			<div id="receipt_header">
 				<?php
 				if ($this->config->item('company_logo') != '') {
-					?>
+				?>
 					<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
 				<?php
 				}
@@ -30,7 +30,7 @@
 
 				<?php
 				if ($this->config->item('receipt_show_company_name')) {
-					?>
+				?>
 					<div id="company_name"><?php echo $this->config->item('company'); ?></div>
 				<?php
 				}
@@ -46,13 +46,12 @@
 				<div class="clearfix">
 					<div class="pull-right">
 
-
 						<div id="customer"><?php echo "<b>TO</b>: " . $to_branch; ?></div>
 
 					</div>
 
 					<div class="pull-left">
-						<div id="sale_id"><?php echo "<b>Transfer ID</b>: PUSH " . $transfer_id; ?></div>
+						<div id="sale_id"><?php echo "<b>Transfer ID</b>: TRN " . $transfer_id; ?></div>
 
 						<div id="employee"><?php echo '<b>' . $user_role . "</b>: " . $employee; ?></div>
 
@@ -69,7 +68,8 @@
 							<th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">S/N</th>
 							<th style="width:40%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Product Name</th>
 							<th style="width:20%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Item Number</th>
-							<th style="width:10%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Qty</th>
+							<th style="width:10%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Requested Qty</th>
+							<th style="width:10%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Accepted Qty</th>
 
 							<th style="width:10%;color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Price</th>
 							<th style="width:10%;text-align:right;color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Total</th>
@@ -79,21 +79,18 @@
 					$total = 0;
 					$sn = 1;
 					foreach ($push as $line => $item) {
-						$total += $item['quantity'] * $item['unit_price'];
-						?>
+						$total += $item['accepted_quantity'] * $item['transfer_price'];
+					?>
 						<tr>
 							<td><?php echo $sn++; ?></td>
 							<td><?php echo $item['name']; ?></td>
 							<td><?php echo $item['item_number']; ?></td>
-							<td><?php echo to_quantity_decimals(abs($item['quantity'])); ?>
-							</td>
-							<!-- <td><?php //echo to_currency($item['cost_price']); 
-											?></td> -->
-							<td><?php echo to_currency($item['unit_price']);
-									?></td>
-
+							<td><?php echo to_quantity_decimals(abs($item['quantity'])); ?></td>
+							<td><?php echo to_quantity_decimals(abs($item['accepted_quantity'])); ?></td>
+							<td><?php echo to_currency($item['transfer_price']);
+								?></td>
 							<td>
-								<div class="total-value"><?php echo to_currency($item['quantity'] * $item['unit_price']); ?></div>
+								<div class="total-value"><?php echo to_currency($item['accepted_quantity'] * $item['transfer_price']); ?></div>
 							</td>
 						</tr>
 
@@ -115,7 +112,7 @@
 
 			<div id='barcode'>
 				<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
-				<?php echo 'PUSH ' . $transfer_id; ?>
+				<?php echo 'TRN ' . $transfer_id; ?>
 			</div>
 		</div>
 	</div>

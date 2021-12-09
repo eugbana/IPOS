@@ -9,6 +9,14 @@ class Inventory extends CI_Model
 	{
 		$this->db->insert('item_expiry', $inventory_data);
 	}
+	public function insert_batch($inventory_data)
+	{
+		if (count($inventory_data) == 1) {
+			$this->insert($inventory_data);
+		} elseif (count($inventory_data) > 1) {
+			return $this->db->insert_batch('inventory', $inventory_data);
+		}
+	}
 
 	public function get_inventory_data_for_item($item_id, $location_id = FALSE, $start = null, $end = null)
 	{

@@ -24,6 +24,9 @@
         <link href="dist/assets/css/menu.css" rel="stylesheet" type="text/css">
         <link href="dist/assets/css/responsive.css" rel="stylesheet" type="text/css">
 
+        <link rel="stylesheet" type="text/css" href="dist/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=033102c5d3" />
+
         <script src="dist/assets/js/modernizr.min.js"></script>
         <!-- <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -43,6 +46,8 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
         
+      
+
     </head>
 
 
@@ -69,12 +74,12 @@
                                 </button>
                                 <span class="clearfix"></span>
                             </div>
-                            <form class="navbar-form pull-left" role="search">
+                            <!-- <form class="navbar-form pull-left" role="search">
                                 <div class="form-group">
                                     <input type="text" class="form-control search-bar" placeholder="Type here for search...">
                                 </div>
                                 <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                            </form>
+                            </form> -->
 
                             <ul class="nav navbar-nav navbar-right pull-right">
                               <!--  <li class="dropdown hidden-xs">
@@ -144,7 +149,7 @@
                                     <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/user-default.png" alt="user-img" class="img-circle"> </a>
                                     <ul class="dropdown-menu">
 									
-                                    <li><?php //echo anchor('employees/change_password/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li>
+                                    <li><?php //echo anchor('employees/change_password1/' . $user_info->person_id, '<i class="md md-face-unlock"></i> Profile', array('class' => 'modal-dlg', 'data-btn-submit' => 'Submit', 'title' => $this->lang->line('employees_change_password'))); ?></li>
                                         <!-- <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
                                         <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li> -->
                                         <li><a href="<?= site_url('home/logout'); ?>"><i class="md md-settings-power"></i> Logout</a></li>
@@ -218,7 +223,7 @@
                             <div class="col-sm-12">
                                 <h4 class="pull-left page-title">Welcome <?= $user_info->first_name . ' ' . $user_info->last_name;  ?>!</h4>
                                 <ol class="breadcrumb pull-right">
-                                    <li><a href="#">Cashier</a></li>
+                                    <li><a href="#">Sales Officer(Cashier)</a></li>
                                     <li class="active">Dashboard</li>
                                 </ol>
                             </div>
@@ -226,34 +231,53 @@
 
                         <!-- Start Widget -->
                         <div class="row">
-                            <div class="col-md-6 col-sm-6 col-lg-3">
-                                <div class="mini-stat clearfix bx-shadow bg-primary">
-                                <a href="<?php echo site_url("sales/manage");?>"><span class="mini-stat-icon"><img src="<?php echo base_url().'images/images.ico';?>" width="30" height="30"/></i></span></a>
-                                    <div class="mini-stat-info text-right">
-                                        <span class="counter"></span>
-                                        Sales History
-                                    </div>
-                                    <div class="tiles-progress">
-                                        <div class="m-t-20">
-                                            <h5 class="text-uppercase text-white m-0">Sales <span class="pull-right"></span></h5>
-                                        </div>
+                        <!-- <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-primary">
+                                <a href="<?php echo site_url("sales/manage"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Sales History
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
                             <div class="col-md-6 col-sm-6 col-lg-3">
                                 <div class="mini-stat clearfix bx-shadow" style="background-color: #C0C0C0;">
-                                    <a href="<?php echo site_url("sales");?>"><span class="mini-stat-icon bg-danger"><i class="ion-share"></i></span></a>
+                                    <a href="<?php echo site_url("sales"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/sales.png'; ?>" width="30" height="30" /></span></a>
                                     <div class="mini-stat-info text-right">
-                                        <span >Click</span>
-                                        New Sale
+                                            New Sales
                                     </div>
                                     <div class="tiles-progress">
                                         <div class="m-t-20">
-                                            <h5 class="text-uppercase text-white m-0">Begins Sales <span class="pull-right"></span></h5>
+                                            <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6 col-sm-6 col-lg-3">
+                                <div class="mini-stat clearfix bx-shadow bg-info">
+                                    <a href="<?php echo site_url("reports/expiry_report"); ?>"><span class="mini-stat-icon"><i class="ion-share"></i></span></a>
+                                    <div class="mini-stat-info text-right">
+                                        Expiry Items (Next 90 days)
+                                    </div>
+                                    <div class="tiles-progress">
+                                        <div class="m-t-20">
+                                            <h5 class="text-uppercase text-white m-0" >
+                                        <span class="pull-right" style="font-size: 19px">
+                                            <?php
+                                            echo $expiryItemsCount;
+                                            ?>
+                                        </span></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             
                             <!-- <div class="col-md-6 col-sm-6 col-lg-3">
                                 <div class="mini-stat clearfix bx-shadow" style="background-color: #C0C0C0;">
@@ -307,8 +331,8 @@
                                
                 </div> <!-- content -->
 
-                <footer class="footer text-right">
-                    2018 © InfoStrategy.
+                <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?>   <a href="www.istrategytech.com">Powered By Infostrategy.</a>
                 </footer>
 
             </div>
@@ -378,6 +402,8 @@
         <!-- dashboard  -->
         <script src="dist/assets/pages/jquery.dashboard.js"></script>
         
+
+        <!-- <script type="text/javascript" src="dist/opensourcepos.min.js?rel=406c44e716"></script> -->
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 $('.counter').counterUp({

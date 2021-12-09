@@ -17,7 +17,7 @@
 		?>
 		<center>
 
-			<div id="register_wrapper">
+			<div id="register_wrapper" style="width:100%;">
 
 
 				<!-- Top register controls -->
@@ -33,10 +33,19 @@
 
 				<?php echo form_open($controller_name . "/add_push", array('id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default')); ?>
 				<div class="panel-body form-group">
+
 					<ul>
+						<li class="pull-center">
+
+
+							<?php echo anchor("receivings/transfer_history", '<span class="md md-history">&nbsp</span>Transfer History', array('class' => 'btn btn-info btn-sm pull-right', 'id' => 'show_transfer_history_button')); ?>
+
+
+						</li>
 
 						<li class="pull-center">
-							<?php echo form_input(array('name' => 'item', 'id' => 'item', 'class' => 'form-control input-sm', 'size' => '50', 'tabindex' => ++$tabindex)); ?>
+							<?php echo form_input(array('name' => 'item', 'id' => 'item', 'class' => 'form-control input-sm', 'size' => '50',
+                                'tabindex' => ++$tabindex,'placeholder'=>$this->lang->line('sales_start_typing_item'))); ?>
 							<span class="ui-helper-hidden-accessible" role="status"></span>
 						</li><br>
 
@@ -65,57 +74,74 @@
 				<table class="sales_table_100" id="register">
 					<thead>
 						<tr>
-							<th style="width: 10%;"><?php echo $this->lang->line('common_delete'); ?></th>
-							<th style="width: 50%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
-							<th style="width: 10%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-							<th style="width: 15%;">Qty Type </th>
-							<th style="width: 15%;">Batch</th>
+							<th style="width: 5%;"><?php echo $this->lang->line('common_delete'); ?></th>
+							<th style="width: 30%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
+							<th style="width: 5%;">Item Number</th>
+							<th style="width: 5%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+							<th style="width: 12%;">Transfer Unit Price</th>
+                            <th style="width: 15%;">Transfer Price</th>
+							<th style="width: 13%;">Qty Type </th>
+							<th style="width: 10%;">Batch</th>
+							<th style="width: 5%;"></th>
 						</tr>
 					</thead>
 
 					<tbody id="cart_contents">
 						<?php
 						if (count($push) == 0) {
-							?>
+						?>
 							<tr>
 								<td colspan='5'>
 									<div class='alert alert-dismissible alert-info'><?php echo $this->lang->line('sales_no_items_in_push'); ?></div>
 								</td>
 							</tr>
 							<?php
-							} else {
-								foreach (array_reverse($push, TRUE) as $line => $item) {
-									?>
-
-								<?php if ($item['reference'] == 0) { ?>
-									<?php echo form_open($controller_name . "/edit_item_batch_pushed/$line", array('class' => 'form-horizontal', 'id' => 'cart_' . $line)); ?>
-									<tr>
-										<td><?php echo anchor($controller_name . "/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>'); ?></td>
+						} else {
+							foreach (array_reverse($push, TRUE) as $line => $item) {
+							 if ($item['reference'] == 0) {
+//                                 var_dump($item);
+//                                 exit();
+							     echo form_open($controller_name . "/edit_item_batch_pushed/$line", array('class' => 'form-horizontal', 'id' => 'cart_' . $line)); ?>
+									<tr id="<?=$item['item_id']?>">
+										<td><?php echo anchor($controller_name . "/delete_item/$line",'<span class="glyphicon glyphicon-trash"></span>', ['class'=>"selected-items-del-anchor",'data-itemId'=>$item['item_id']]
+                                                ); ?></td>
 										<td style="align: center;">
-											<?php echo $item['name']; ?><br /> <?php if ($item['stock_type'] == '0') : echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']';
-																							endif; ?>
+											<?php echo $item['name']; ?><br />
+                                            <?php if ($item['stock_type'] == '0') : echo '<b>Qty</b> [' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']';
+                                            endif; ?>
 											<?php echo form_hidden('item_name', $item['name']); ?>
 											<?php echo form_hidden('item_location', $item['item_location']); ?>
 											<?php echo form_hidden('stockno', $item['in_stock']); ?>
+										</td>
+										<td style="align: center;">
+											<?php echo $item['item_number']; ?>
 										</td>
 
 
 										<td>
 											<?php
-														if ($item['is_serialized'] == 1) {
-															echo to_quantity_decimals($item['quantity']);
-															echo form_hidden('quantity', $item['quantity']);
-														} else {
-															echo form_input(array('name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']), 'tabindex' => ++$tabindex));
-														}
-														?>
+											if (((int) $item['is_serialized']) == 1) {
+												echo to_quantity_decimals($item['quantity']);
+												echo form_hidden('quantity', $item['quantity']);
+											} else {
+												echo form_input(array('name' => 'quantity', 'data-itemId'=>$item['item_id'], 'class' => 'form-control input-sm selected-item-quantity',
+                                                    'value' => to_quantity_decimals($item['quantity']), 'tabindex' => ++$tabindex,'id'=>'selected-item-quantity-'.$item['item_id']));
+											}
+											?>
 										</td>
 
+										<td><?php echo form_dropdown('transfer_price', array($item['cost_price'] => 'Cost: N' . number_format($item['cost_price']),
+                                                $item['unit_price'] => 'Sell: ' . number_format($item['unit_price'])), $item['transfer_price'],
+                                                array('class' => 'form-control selected-item-transfer-price','data-itemId'=>$item['item_id'],
+                                                    'id'=>'selected-item-transfer-price-'.$item['item_id'])); ?></td/>
+                                        <td>
+                                            <label id="item-price-<?=$item['item_id']?>"><?='N'.($item['quantity']*$item['transfer_price'])?></label>
+                                        </td>
+										<td><?php echo form_dropdown('pack_type', $pack_type, $item['pack_type'], array('class' => 'form-control selected-item-pack_type',
+                                                'data-itemId'=>$item['item_id'])); ?></td>
 
-
-										<td><?php echo form_dropdown('pack_type', $pack_type, $item['pack_type'], array('class' => 'form-control',)); ?></td>
-
-										<td><?php echo form_input(array('name' => 'batch', 'id' => 'batch', 'class' => 'form-control input-sm', 'size' => '50', 'tabindex' => ++$tabindex, 'placeholder' => 'Add Batch')); ?>
+										<td>
+                                            <?php echo form_input(array('name' => 'batch', 'id' => 'batch', 'class' => 'form-control input-sm', 'size' => '50', 'tabindex' => ++$tabindex, 'placeholder' => 'Add Batch')); ?>
 											<?php echo form_hidden('item_id', $item['item_id']); ?>
 											<?php echo form_hidden('request_from_branch_id', $item['item_location']); ?>
 											<?php echo form_hidden('request_to_branch_id', $item['location']); ?>
@@ -125,7 +151,10 @@
 											<?php echo form_hidden('reference', $item['reference']); ?>
 											<?php echo form_hidden('line', $item['line']); ?>
 										</td>
+										<td>
+											<a href="items/view_update/<?php echo $item['item_id']; ?>" class="modal-dlg" data-btn-submit="Submit" title="Update Item"><span class="glyphicon glyphicon-edit"></span> </a>
 
+										</td>
 									</tr>
 
 									<?php echo form_close(); ?>
@@ -160,12 +189,12 @@
 											</tr>
 
 										<?php
-															echo form_close();
-														}
-														?>
+											echo form_close();
+										}
+										?>
 									<?php
-												}
-												?>
+									}
+									?>
 						<?php
 								}
 							}
@@ -175,12 +204,12 @@
 				</table>
 				<?php
 				if (count($push) > 0) {
-					?>
+				?>
 					<div class="row " style="background:#BBB;padding-top:5px;padding-bottom:5px;">
 
 						<div class="col-sm-6">
 							<?php //echo form_dropdown('to_branch', ['one' => "One", 'two' => 'Two', 'three' => 'Three'], 'two', array('class' => 'form-control',  'id' => 'to_branch')); 
-								?>
+							?>
 							<?php echo form_open($controller_name . "/change_location", array('class' => 'form-horizontal bg-dark', 'id' => 'change_location_form')); ?>
 
 							<?php echo form_dropdown('location', $locator, $item['location'], array('id' => 'location', 'style' => 'width:55%;', 'class' => 'form-control',)); ?>
@@ -218,33 +247,51 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+        let selected_items_arr = [];
+        let selected_items_arr_index = {};
+        let selected_items_count = 0;
 		$("#item").autocomplete({
-			source: '<?php echo site_url("items/item_search"); ?>',
-			minChars: 0,
+			//source: '<?php //echo site_url("items/item_search"); ?>//',
+            source: '<?php echo site_url("items/item_search/1"); ?>',
+			// minChars: 0,
+            minLength: 3,
 			autoFocus: false,
 			delay: 500,
 			select: function(a, ui) {
+                // console.log('all',ui);
 				$(this).val(ui.item.value);
+				// console.log(ui.item.value);
 				$("#add_item_form").submit();
+                // $.post('<?php echo site_url("items/add_push/1"); ?>',{'item':ui.item.value},
+                //     function (data) {
+                //         console.log('from batch requests: ',data);
+                //     },'json'
+                // )
 				return false;
 			}
 		});
 
-		$('#item').focus();
+		// $('#item').focus();
 
 		$('#item').keypress(function(e) {
 			if (e.which == 13) {
-				$('#add_item_form').submit();
+			    var s_term = $(this).val();
+			    if(s_term != '') {
+			        $('#add_item_form').submit();
+			    }else{
+			        alert("Enter a search term");
+                }
 				return false;
 			}
 		});
 
-		$('#item').blur(function() {
-			$(this).val("<?php echo $this->lang->line('sales_start_typing_item'); ?>");
-		});
+		//$('#item').blur(function() {
+		//	$(this).val("<?php //echo $this->lang->line('sales_start_typing_item'); ?>//");
+		//});
 		$("#batch").autocomplete({
 			source: '<?php echo site_url("items/batch_search"); ?>',
-			minChars: 0,
+			// minChars: 0,
+            minLength:2,
 			autoFocus: false,
 			delay: 500,
 			select: function(a, ui) {
@@ -258,7 +305,7 @@
 
 		$('#batch').keypress(function(e) {
 			if (e.which == 13) {
-				$(this).parents("tr").prevAll("form:first").submit();
+				// $(this).parents("tr").prevAll("form:first").submit();
 				return false;
 			}
 		});
@@ -270,7 +317,7 @@
 			}
 		};
 		$('[name="location"]').on("change", function() {
-			$(this).parents("tr").prevAll("form:first").submit()
+			// $(this).parents("tr").prevAll("form:first").submit()
 
 			//alert($(this).val()); 
 		});
@@ -291,7 +338,8 @@
 
 		$("#customer").autocomplete({
 			source: '<?php echo site_url("customers/suggest"); ?>',
-			minChars: 0,
+			// minChars: 0,
+            minLength:2,
 			delay: 10,
 			select: function(a, ui) {
 				$(this).val(ui.item.value);
@@ -301,7 +349,8 @@
 
 		$(".giftcard-input").autocomplete({
 			source: '<?php echo site_url("giftcards/suggest"); ?>',
-			minChars: 0,
+			// minChars: 0,
+            minLength:2,
 			delay: 10,
 			select: function(a, ui) {
 				$(this).val(ui.item.value);
@@ -325,7 +374,7 @@
 
 		<?php
 		if ($this->config->item('invoice_enable') == TRUE) {
-			?>
+		?>
 			$('#sales_invoice_number').keyup(function() {
 				$.post('<?php echo site_url($controller_name . "/set_invoice_number"); ?>', {
 					sales_invoice_number: $('#sales_invoice_number').val()
@@ -422,14 +471,14 @@
 					if (stay_open) {
 						$("#add_item_form").ajaxSubmit();
 					} else {
-						$("#add_item_form").submit();
+						//$("#add_item_form").submit();
 					}
 				}
 			}
 		}
 
-		$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').focusout(function() {
-			$(this).parents("tr").prevAll("form:first").submit()
+		$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="transfer_price"]').focusout(function() {
+			// $(this).parents("tr").prevAll("form:first").submit()
 		});
 
 	});
@@ -462,5 +511,5 @@
 		}
 	}
 </script>
-
+<?php $this->load->view("items/scripts/push_script"); ?>
 <?php $this->load->view("partial/footer"); ?>

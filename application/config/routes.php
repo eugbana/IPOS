@@ -71,8 +71,59 @@ $route['reports/detailed_sales'] = 'reports/date_input_sales';
 $route['reports/(detailed_receivings)/([^/]+)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4/$5';
 $route['reports/detailed_receivings'] = 'reports/date_input_recv';
 
+//for product specific reports
+$route['reports/(detailed_product_sales)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/detailed_product_sales'] = 'reports/date_product_input_sales';
+
+//item_inventory_report
+$route['reports/(item_inventory_report)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/item_inventory_report'] = 'reports/date_item_inventory_input';
+
+//fpor product specific reports
+$route['reports/(detailed_product_receivings)/([^/]+)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4/$5';
+$route['reports/detailed_product_receivings'] = 'reports/date_product_input_recv';
+
+//expiry items
+// $route['reports/(date_expiry_items)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3';
+$route['reports/(date_expiry_items)/([^/]+)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4/$5';
+$route['reports/expiry_items'] = 'reports/date_expiry_items';
+
+
+//expired items
+$route['reports/(date_expired_items)/([^/]+)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4/$5';
+$route['reports/expired_items'] = 'reports/date_expired_items';
+
+//price list report
+$route['reports/(price_list)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/price_list'] = 'reports/date_input_price_list';
+
+//stock value report
+$route['reports/(stock_value)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/stock_value'] = 'reports/date_input_stock_value';
+
+//all items report
+$route['reports/(all_items)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/all_items'] = 'reports/date_input_all_items';
+
+//vat / tax report
+$route['reports/(vat_tax)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/vat_tax'] = 'reports/date_input_vat_tax';
+
+//markup report
+$route['reports/(markup_report)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/markup_report'] = 'reports/date_input_markup_report';
+
+//sales markup report
+$route['reports/(sales_markup_report)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/sales_markup_report'] = 'reports/date_input_sales_markup_report';
+
+//out of stock report
+$route['reports/(out_of_stock)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
+$route['reports/out_of_stock'] = 'reports/date_input_out_of_stock';
+
 $route['reports/(detailed_transfers)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
 $route['reports/detailed_transfers'] = 'reports/date_input_trans';
+$route['reports/irecharge_sales'] = 'reports/date_input_ir';
 
 $route['reports/(specific_:any)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
 $route['reports/specific_customer'] = 'reports/specific_customer_input';

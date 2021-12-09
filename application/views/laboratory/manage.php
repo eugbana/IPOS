@@ -27,7 +27,7 @@
 								
 									<div class="col-md-4">
 										<button class='btn btn-info btn-sm pull-right' id="submitButton">
-											<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_process'); ?>
+											<span class="glyphicon glyphicon-tag">&nbsp</span><?php if(isset($editing)){echo 'Update';}else{echo $this->lang->line($controller_name. '_process');} ?>
 										</button>
 									</div>
 								</div>
@@ -204,7 +204,7 @@
 							<div class="row" style="margin-top:10px">
 								<fieldset>
 									<div class="col-md-2">
-										<button class='btn btn-info btn-sm modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url("customers/view"); ?>'
+										<button class='btn btn-info btn-sm modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url("customers/view/-1/true"); ?>'
 										title='<?php echo $this->lang->line($controller_name. '_new_customer'); ?>'>
 										New Customer
 										</button>
@@ -230,15 +230,25 @@
 						<?php } ?>
 					</div>
 					<div class="row" style="height:10px"></div>
-					<?php echo form_open("laboratory/lab_cart", array('id'=>'process_lab_test')); ?>
+					<?php
+                    $url = "laboratory/lab_cart";
+                    if(isset($editing)){
+                        $url = "laboratory/update_invoice/".$inv_id;
+                    }
+                    echo form_open($url, array('id'=>'process_lab_test')); ?>
 						<div class="row" style="background-color:white">
 							<div class="row">
+							<div class="col-md-8" style="margin-left:5px">
+									<b><h4 id="name_demo"></h4></b>
+								</div>
 								<div class="col-md-4" style="margin-left:5px">
 									<b><h4 id="demo"></h4></b>
 								</div>
-								<div class="col-md-4">
+							</div>
+							<div class="row">
+								<div class="col-md-12">
 									<h3 align="center">Request Form</h3>
-								</div>
+								</>
 							</div>
 							<div class="form-group has-feedback">
 								<input type="text" class="form-control" id="myInput" onkeyup="searchFunction()" placeholder="Search for names.." title="Type in a name"/>
@@ -248,10 +258,14 @@
 								<div class="col-md-12">
 									<fieldset>
 										<ul id="myUL">
-											<?php foreach($laboratory_test as $row=>$value){ ?>
+											<?php
+                                            if(!isset($itemised)){
+                                                $itemised = [];
+                                            }
+                                            foreach($laboratory_test as $row=>$value){ ?>
 												<li class="column">
 													<a>
-														<?php echo form_checkbox("grants[]",$value['item_id'], false,array('id'=>'checkbutton'.$value['item_id'],'class'=>'module'));?>
+														<?php echo form_checkbox("grants[]",$value['item_id'], in_array($value['item_id'],$itemised),array('id'=>'checkbutton'.$value['item_id'],'class'=>'module'));?>
 															<label style="font-weight:200;" for="checkbutton<?=$value['item_id']?>" class="medium"><?php echo $value['test_name'];?></label>
 													</a>
 												</li>
@@ -272,13 +286,31 @@
 
 <script>
 	var check_list = [];
+	var check_name_list = [];
 	var favorite=[];
+
+	//if empty
+	if(check_list.length == 0){
+		$("#submitButton").attr("disabled", true);
+	}
 	var elements = document.getElementsByClassName("column");
 	$('#datetimepicker2').datetimepicker( {
 		locale: "ar"
 	});
 	$('#datetimepicker3').datetimepicker();
+    $("input:checked").each(function () {
+        var checking=$(this).val();
+        // console.log('test message');
+        var checkreturn=myFunction(checking);
+        var checkname=returnTestName(checking);
+        check_list.push(checkreturn);
+        check_name_list.push(checkname);
+        item_sum();
+        collate_names();
+        buttonState();
+    });
     $(document).ready(function() {
+        // console.log('Halleluyah');
 		$("#customer").autocomplete({
 			source: '<?php echo site_url("customers/suggest"); ?>',
 			minChars: 0,
@@ -292,25 +324,39 @@
 
 		$('#submitButton').click(function(e){
 			e.preventDefault();
+			$("#submitButton").attr("disabled", true);
+			document.getElementById("submitButton").innerHTML = 'Please wait..';
 			$('#process_lab_test').submit();
 		});
 		$("#butmin").click(function(){
             $('#buttons_form').submit();
 		});
+
 		
 		$('input[type="checkbox"]').click(function(event){
             if($(this).prop("checked") == true){
                 var checking=$(this).val();
 				var checkreturn=myFunction(checking);
+				var checkname=returnTestName(checking);
 				check_list.push(checkreturn);
+				check_name_list.push(checkname);
 				item_sum();
+				collate_names();
+				buttonState();
             }
             else if($(this).prop("checked") == false){
                 var checking=$(this).val();
 				var checkreturnd=myFunction(checking);
+				var checknamed=returnTestName(checking);
 				check_list.splice( $.inArray(checkreturnd, check_list), 1 );
+				check_name_list.splice( $.inArray(checknamed, check_name_list), 1 );
 				item_sum();
+				collate_names();
+				buttonState();
             }
+			console.log(check_name_list);
+
+
         });
 		$("input[type='checkbox']").val();  
         
@@ -358,6 +404,22 @@
 		});
 		return checklick;
 	}
+
+	function returnTestName(value_checker) {
+		<?php	
+			$php_array = array(array('a'=>'abc','b'=>'def','c'=>'ghi'), array('a'=>'fgh','b'=>'efg','c'=>'asd'));
+			$js_array = json_encode($laboratory_test);
+			echo "var javascript_array = ". $js_array . ";\n";
+		?>
+		var checklick;
+		$.each(javascript_array, function (i,item) {
+			var flick=javascript_array[i].item_id;
+			if (flick==value_checker) {
+				checklick=javascript_array[i].test_name;
+			}
+		});
+		return checklick;
+	}
 	function changer(value_checker) {
 		<?php 
 			$php_array = array('a'=>'abc','b'=>'def','c'=>'ghi');
@@ -385,16 +447,40 @@
 	}
 
 	function anoFunction(item) {
+		if(check_list.length > 0){
+			$("#submitButton").attr("disabled", false);
+			// document.getElementById("submitButton").innerHTML = 'Please wait..';
+		}else{
+			$("#submitButton").attr("disabled", true);
+		}
 		document.getElementById("demo").innerHTML = check_list.join(", ").reduce(getSum);
 	}
 
 	function item_sum() {
 		var total = 0;
-		var currency="₦";
+		var currency="<b>Total:</b> ₦";
 		for (var i = 0; i < check_list.length; i++) {
 			total += check_list[i] << 0;
 		}
 		document.getElementById("demo").innerHTML=currency+" "+total;
+	}
+
+
+	function collate_names() {
+		var names = "";
+		var prefix = "<b>Selected Tests:</b> <br> ";
+		for (var i = 0; i < check_name_list.length; i++) {
+			names = check_name_list.join(", <br/> ");
+		}
+		document.getElementById("name_demo").innerHTML = prefix + names;
+	}
+
+	function buttonState(){
+		if(check_list.length == 0){
+			$("#submitButton").attr("disabled", true);
+		}else{
+			$("#submitButton").attr("disabled", false);
+		}
 	}
 	
 	function searchFunction() {

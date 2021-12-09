@@ -6804,6 +6804,7 @@ if (function(a, b) {
    showHeader: !0,
    showFooter: !1,
    showColumns: !1,
+   showPrint: !1,
    showPaginationSwitch: !1,
    showRefresh: !1,
    showToggle: !1,

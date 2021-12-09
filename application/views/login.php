@@ -20,21 +20,21 @@
 		 </div>
         <div class="login-box-body">
             
-            <p class="login-box-msg"><?php echo $this->lang->line('login_to_account')?></p>
+            <p class="login-box-msg">Please login to your account<?php //echo $this->lang->line('login_to_account')?></p>
             <?php echo form_open('login'); ?>
 			<div align="center" style="color:red"><?php echo validation_errors(); ?></div>
             <div class="form-group has-feedback">
-                <input type="text" name="username" value="" class="form-control" placeholder="<?php echo $this->lang->line('login_username')?>" />
+                <input type="text" name="username" value="" class="form-control" placeholder="Username<?php //echo $this->lang->line('login_username')?>" />
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" name="password" value="" class="form-control" placeholder="<?php echo $this->lang->line('login_password')?>" />
+                <input type="password" name="password" value="" class="form-control" placeholder="Password<?php //echo $this->lang->line('login_password')?>" />
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
 			<div class="checkbox pull-left" style="margin-top: 0;">
                 <div class="custom-checkbox">
                     <?php echo form_checkbox('remember', '1', TRUE, 'id="remember"'); ?>
-                    <label for="remember" style="padding-left:5px;"><?php echo $this->lang->line('remember_me')?></label>
+                    <label for="remember" style="padding-left:5px;">Remember me<?php //echo $this->lang->line('remember_me')?></label>
                 </div>
             </div>
 

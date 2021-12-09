@@ -5,7 +5,7 @@ function load_stats()
     $CI =& get_instance();
     $line = $CI->lang->line('common_you_are_using_ospos');
 
-    if(count($CI->session->userdata('session_sha1')) == 0)
+    if($CI->session->userdata('session_sha1')!= null && count($CI->session->userdata('session_sha1')) == 0)
     {
         $footer_tags = file_get_contents(APPPATH . 'views/partial/footer.php');
         $d = preg_replace('/\$Id:\s.*?\s\$/', '$Id$', $footer_tags);

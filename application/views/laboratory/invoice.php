@@ -48,6 +48,7 @@ $(document).ready(function()
 			<?php if(isset($customer_email) && !empty($customer_email)): ?>
 				<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . $this->lang->line('sales_send_invoice'); ?></div></a>
 			<?php endif; ?>
+            <?php echo anchor("laboratory/edit_test", '<span class="glyphicon glyphicon-edit">&nbsp</span>' . 'Edit', array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 			<?php echo anchor("laboratory/test_start", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . 'New Test', array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 			
 		</div>
@@ -72,7 +73,7 @@ $(document).ready(function()
 					{ 
 					?>
 						<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' .$this->config->item('laboratory_logo'));// $this->Appconfig->get('company_logo')); ?>" alt="company_logo" /></div>			
-						<div id="company_name"><h3><b><?php echo 'Tonia Medical Laboratories Ltd.'; ?></b></h3></div>
+						<div id="company_name"><h3><b><?php echo 'Tonia Medical Diagnostics Services LTD..'; ?></b></h3></div>
 					<?php
 					}
 					?>

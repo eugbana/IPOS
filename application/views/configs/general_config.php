@@ -302,15 +302,30 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<div id="backup_db" class="btn btn-default btn-sm">
-						<span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
-					</div>
-				</div>
-			</div>
+				<?php
+//                var_dump($u_mod_grants['config']);
+                $granted_perm = $u_mod_grants['config'];
 
-			<?php echo form_submit(array(
+                $granted_permissions=[];
+                if(isset($granted_perm)&& count($granted_perm)>0){
+//                    var_dump($granted_perm);
+                    foreach ($granted_perm as $perm){
+                        $granted_permissions[] = $perm["permission_id"];
+                    }
+                }
+                if(in_array('config_database backup',$granted_permissions)){
+                    echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2'));
+                ?>
+                <div class='col-xs-2'>
+                    <button id="backup_db" class="btn btn-default btn-sm">
+                        <span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <?php
+                }
+                 echo form_submit(array(
 				'name' => 'submit_form',
 				'id' => 'submit_form',
 				'value'=>$this->lang->line('common_submit'),
@@ -325,6 +340,10 @@ $(document).ready(function()
 {
 
 	$("#backup_db").click(function() {
+		console.log('clicked');
+		var backup_db = $(this);
+		backup_db.html("Backup in Progress...");
+		backup_db.attr("disabled", "disabled");
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});
 

@@ -2,6 +2,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+	    var is_me = '';
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		table_support.init({
@@ -33,10 +34,10 @@
 		<div id="title_bar" class="btn-toolbar">
 			<?php
 			if ($controller_name == 'customers') {
-				?>
-				<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name . "/excel_import"); ?>' title='<?php echo $this->lang->line('customers_import_items_excel'); ?>'>
+			?>
+				<!-- <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name . "/excel_import"); ?>' title='<?php echo $this->lang->line('customers_import_items_excel'); ?>'>
 					<span class="glyphicon glyphicon-import">&nbsp</span><?php echo $this->lang->line('common_import_excel'); ?>
-				</button>
+				</button> -->
 
 			<?php
 			}
@@ -48,7 +49,7 @@
 			</a>
 			<?php
 			if ($controller_name == 'employees') {
-				?>
+			?>
 				<button id="delete" class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name . "/view_role"); ?>'>
 					<span class="glyphicon glyphicon-new">&nbsp</span><?php echo "Add Role"; ?>
 				</button>
@@ -61,14 +62,14 @@
 			<div class="pull-left btn-toolbar">
 				<?php
 				if ($controller_name == 'employees') {
-					?>
-					<button id="delete" class="btn btn-default btn-sm">
+				?>
+					<!-- <button id="delete" class="btn btn-default btn-sm">
 						<span class="fa fa-close">&nbsp</span><?php echo $this->lang->line("common_terminate"); ?>
-					</button>
+					</button> -->
 					<?php
-					} else {
-						if ($user_info->role == 3) {
-							?>
+				} else {
+					if ($user_info->role == 3) { //admin. this will be changed when the permission is revamped
+					?>
 						<button id="delete" class="btn btn-default btn-sm">
 							<span class="fa fa-close">&nbsp</span><?php echo $this->lang->line("common_delete"); ?>
 						</button>
@@ -76,9 +77,9 @@
 					}
 				}
 				?>
-				<button id="email" class="btn btn-default btn-sm">
+				<!-- <button id="email" class="btn btn-default btn-sm">
 					<span class="glyphicon glyphicon-envelope">&nbsp</span><?php echo $this->lang->line("common_email"); ?>
-				</button>
+				</button> -->
 			</div>
 		</div>
 

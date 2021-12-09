@@ -224,6 +224,9 @@ $(document).ready(function()
 		  //data:dataSet,
 		  aoColumns: columlab,
 		  columns:columnDe,
+      order: [
+        [0, 'desc']
+      ]
           //columns: columnDefs,
 		  //columns: columneDef,
           //dom: 'Bfrtip',        // Needs button container

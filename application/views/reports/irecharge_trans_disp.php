@@ -1,0 +1,124 @@
+<?php $this->load->view("partial/header"); ?>
+    <div class="content-page">
+        <!-- Start content -->
+        <div class="content">
+            <div id="page_title">
+                PRINT REPORT
+
+                <p style="font-size:16px;">
+<!--                    <a href="--><?php //echo site_url('reports/print_filtered_report/' . $start . '/' . $end . '/' . $employee_id . '/' . $location_id . '/' . $sale_type . '/'  . $credit . '/' . $vatable . '/' . $customer_id . '/' . $discount . '/' . $payment_type); ?><!--">Print Sales Items</a> |-->
+<!--                    <a href="--><?php //echo site_url('reports/print_filtered_report_items/' . $start . '/' . $end . '/' . $employee_id . '/' . $location_id  . '/' . $sale_type .  '/' . $credit . '/' . $vatable . '/' . $customer_id . '/' . $discount . '/' . $payment_type); ?><!--">Print Detailed Sales Items</a> |-->
+<!--                    <a href="--><?php //echo site_url('reports/print_filtered_summary_report_items/' . $start . '/' . $end . '/' . $employee_id . '/' . $location_id . '/' . $sale_type .  '/' . $credit . '/' . $vatable . '/' . $customer_id . '/' . $discount . '/' . $payment_type); ?><!--">Print Sales Summary</a>-->
+
+                </p>
+            </div>
+
+            <div id="table_holder">
+                <table class="table table-advance table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Value</th>
+                        <th>Provider</th>
+                        <th>Status</th>
+                        <th>Staff</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if(isset($trans) && count($trans)>0){
+                        $sn = 0;
+                        foreach ($trans as $tran) {
+                            $sn++;
+                            ?>
+                            <tr>
+                                <td><?=$sn?></td>
+                                <td><?=$tran->order_title?></td>
+                                <td><?=$tran->service_type?></td>
+                                <td><?=$tran->amount?></td>
+                                <td><?=$tran->value?></td>
+                                <td><?=$tran->provider?></td>
+                                <td><?=$tran->response_message?></td>
+                                <td><?=$tran->first_name.' '.$tran->last_name?></td>
+                                <td><?=$tran->date?></td>
+                            </tr>
+                    <?php
+                        }
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="report_summary">
+                <div class="summary_row">Current Wallet Balance: <span>&#8358;</span><?=$bal['wallet_balance']?></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+<!--            --><?php //$this->load->view('partial/bootstrap_tables_locale'); ?>
+//
+//            var detail_data = <?php //echo json_encode($details_data); ?>//;
+//            <?php
+//            if ($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards)) {
+//            ?>
+//            var details_data_rewards = <?php //echo json_encode($details_data_rewards); ?>//;
+//            <?php
+//            }
+//            ?>
+//            var init_dialog = function() {
+//
+//                <?php //if (isset($editable)) : ?>
+//                table_support.submit_handler('<?php //echo site_url("reports/get_detailed_" . $editable . "_row") ?>//');
+//                dialog_support.init("a.modal-dlg");
+//                <?php //endif; ?>
+//            };
+//
+//            $('#table').bootstrapTable({
+//                columns: <?php //echo transform_headers($headers['summary'], TRUE); ?>//,
+//                pageSize: <?php //echo $this->config->item('lines_per_page'); ?>//,
+//                striped: true,
+//                pagination: true,
+//                sortable: true,
+//                showColumns: true,
+//                uniqueId: 'id',
+//                showExport: true,
+//                data: <?php //echo json_encode($summary_data); ?>//,
+//                iconSize: 'sm',
+//                paginationVAlign: 'bottom',
+//                detailView: true,
+//
+//                escape: false,
+//                onPageChange: init_dialog,
+//                onPostBody: function() {
+//                    dialog_support.init("a.modal-dlg");
+//                },
+//                onExpandRow: function(index, row, $detail) {
+//                    $detail.html('<table></table>').find("table").bootstrapTable({
+//                        columns: <?php //echo transform_headers_readonly($headers['details']); ?>//,
+//                        data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
+//                    });
+//                    <?php
+//                    if ($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards)) {
+//                    ?>
+//                    $detail.append('<table></table>').find("table").bootstrapTable({
+//                        columns: <?php //echo transform_headers_readonly($headers['details_rewards']); ?>//,
+//                        data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
+//                    });
+//                    <?php
+//                    }
+//                    ?>
+//                }
+//            });
+//
+//            init_dialog();
+        });
+    </script>
+
+<?php $this->load->view("partial/footer"); ?>

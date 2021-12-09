@@ -7,7 +7,7 @@
 	<!-- Start content -->
 	<div class="content">
 
-		<div id="page_title"><?php echo $this->lang->line('reports_report_input'); ?></div>
+		<div id="page_title"><?php echo $this->lang->line('reports_report_input'); ?> </div>
 
 		<?php
 		if (isset($error)) {
@@ -64,8 +64,8 @@
 		<?php $this->load->view('partial/daterangepicker'); ?>
 
 		$("#generate_report").click(function() {
-			//The last 2 parameters are for category(all) and vatable(both)
-			window.location = [window.location, start_date, end_date, $('#specific_input_data').val(), $("#input_type").val() || 0, 'all', 'all'].join("/");
+			//The last 5 parameters are for category(all) credit(all), vatable(all i.e both), customer_id(all),discount(all),payment_type(all)
+			window.location = [window.location, start_date, end_date, $('#specific_input_data').val(), 'all', $("#input_type").val() || 0, 'all', 'all', 'all', 'all', 'all'].join("/");
 		});
 	});
 </script>

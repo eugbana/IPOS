@@ -43,6 +43,14 @@
 
 	</div>
 
+    <div class="form-group form-group-sm">
+        <?php echo form_label('Department', 'dept', array('class' => 'required control-label col-xs-3')); ?>
+        <div class='col-xs-8'>
+            <?php echo form_dropdown('dept', $departments, strtolower($selected_dept), array('class' => 'form-control')); ?>
+        </div>
+
+    </div>
+
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_category'), 'company', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
@@ -57,13 +65,13 @@
 					)
 				); ?>
 				<?php echo form_hidden('stock_type', 0); ?>
-				<?php echo form_hidden('receiving_quantity', to_quantity_decimals(0)); ?>
 				<?php echo form_hidden('item_type', 0); ?>
+				<?php echo form_hidden('current_apply_vat', !$item_info->apply_vat ? 'NO' : $item_info->apply_vat); ?>
 			</div>
 		</div>
 	</div>
 	<div class="form-group form-group-sm">
-		<?php echo form_label('Apply V.A.T.', 'apply_vat', array('class' => 'control-label col-xs-3 text-danger')); ?>
+		<?php echo form_label('Apply V.A.T.', 'apply_vat_label', array('class' => 'control-label col-xs-3 ')); ?>
 		<div class="col-xs-4">
 			<label class="radio-inline">
 				<?php echo form_radio(
@@ -82,7 +90,7 @@
 					array(
 						'name'		=>	'apply_vat',
 						'type'		=>	'radio',
-						'id'		=>	'apply_vat',
+						'id'		=>	'apply_vat2',
 						'value'		=>	'NO',
 						'checked'	=> $item_info->apply_vat == 'NO' || !$item_info->apply_vat ? 'checked' : ''
 					)
@@ -92,7 +100,7 @@
 		</div>
 	</div>
 	<div class="form-group form-group-sm">
-		<?php echo form_label('prescription', 'prescriptions', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label('prescription', 'prescriptions_label', array('class' => 'control-label col-xs-3')); ?>
 		<div class="col-xs-4">
 			<label class="radio-inline">
 				<?php echo form_radio(
@@ -110,7 +118,7 @@
 					array(
 						'name' => 'prescriptions',
 						'type' => 'radio',
-						'id' => 'prescriptions',
+						'id' => 'prescriptions2',
 						'value' => 'NO',
 						'checked' => $item_info->prescriptions === 'NO' || empty($item_info->prescriptions)
 					)
@@ -134,7 +142,7 @@
 		</div>
 	</div>
 	<div class="form-group form-group-sm">
-		<?php echo form_label('Type', 'category', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label('Type', 'type_label', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-3'>
 			<div class="input-group">
 				<?php echo form_dropdown('product_type', $product_type, $selected_product_type, array('class' => 'form-control')); ?>
@@ -158,7 +166,7 @@
 
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label("Expiry Warning Period", 'category', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label("Expiry Warning Period", 'expiry_warning_period', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-5'>
 			<div class="input-group">
 				<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
@@ -182,7 +190,7 @@
 	</div>
 	<div class="form-group form-group-sm">
 
-		<?php echo form_label($this->lang->line('items_per_pack'), 'category', array('class' => 'required control-label col-xs-2')); ?>
+		<?php echo form_label($this->lang->line('items_per_pack'), 'items_per_pack_label', array('class' => ' control-label col-xs-2')); ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
 				<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
@@ -208,7 +216,7 @@
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price', array('class' => 'required control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price_label', array('class' => 'required control-label col-xs-3')); ?>
 		<div class="col-xs-8">
 			<div class="input-group input-group-sm">
 				<?php if (!currency_side()) : ?>
@@ -219,7 +227,7 @@
 						'name' => 'cost_price',
 						'id' => 'cost_price',
 						'class' => 'form-control input-sm',
-						'value' => to_currency_no_money($item_info->cost_price)
+						'value' => $item_info->cost_price
 					)
 				); ?>
 				<?php if (currency_side()) : ?>
@@ -233,7 +241,7 @@
 
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price', array('class' => 'required control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price_label', array('class' => 'required control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<div class="input-group input-group-sm">
 				<?php if (!currency_side()) : ?>
@@ -244,18 +252,41 @@
 						'name' => 'unit_price',
 						'id' => 'unit_price',
 						'class' => 'form-control input-sm',
+						// 'readonly' => 'readonly',
 						'value' => to_currency_no_money($item_info->unit_price)
 					)
 				); ?>
 				<?php if (currency_side()) : ?>
 					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 				<?php endif; ?>
+
 			</div>
+
+		</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<?php echo form_label('Retail Price Markup', 'unit_price_markup_label', array('class' => 'required control-label col-xs-3')); ?>
+		<div class='col-xs-8'>
+			<div class="input-group input-group-sm">
+
+				<?php echo form_input(
+					array(
+						'name' => 'unit_price_markup',
+						'id' => 'unit_price_markup',
+
+						'class' => 'form-control input-sm',
+						'value' =>  $item_info->unit_price_markup
+					)
+				); ?>
+
+
+			</div>
+
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('items_whole_price'), 'unit_price', array('class' => 'required control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_whole_price'), 'unit_price', array('class' => ' control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<div class="input-group input-group-sm">
 				<?php if (!currency_side()) : ?>
@@ -266,6 +297,7 @@
 						'name' => 'whole_price',
 						'id' => 'whole_price',
 						'class' => 'form-control input-sm',
+						'readonly' => 'readonly',
 						'value' => to_currency_no_money($item_info->whole_price)
 					)
 				); ?>
@@ -275,21 +307,58 @@
 			</div>
 		</div>
 	</div>
+	<div class="form-group form-group-sm">
+		<?php echo form_label('Wholesale Price Markup', 'wholesale_price_markup_label', array('class' => ' control-label col-xs-3')); ?>
+		<div class='col-xs-8'>
+			<div class="input-group input-group-sm">
+
+				<?php echo form_input(
+					array(
+						'name' => 'wholesale_price_markup',
+						'id' => 'wholesale_price_markup',
+						'class' => 'form-control input-sm',
+
+						'value' => $item_info->wholesale_price_markup
+					)
+				); ?>
 
 
+			</div>
 
-	<?php if ($customer_sales_tax_enabled) { ?>
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('taxes_tax_category'), 'tax_category', array('class' => 'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
-				<?php echo form_dropdown('tax_category_id', $tax_categories, $selected_tax_category, array('class' => 'form-control')); ?>
+		</div>
+	</div>
+
+	<div class="form-group form-group-sm">
+		<?php echo form_label("Zero Quantity", 'zero_quantity', array('class' => ' control-label col-xs-3')); ?>
+		<div class='col-xs-8'>
+			<div class="input-group input-group-sm">
+
+				<?php echo form_checkbox("zero_quantity",  1, FALSE); ?>
+
+
 			</div>
 		</div>
-	<?php } ?>
+	</div>
+
+	<div class="form-group form-group-sm">
+		<?php echo form_label("Delete", 'is_deleted', array('class' => ' control-label col-xs-3')); ?>
+		<div class='col-xs-8'>
+			<div class="input-group input-group-sm">
+
+				<?php echo form_checkbox("is_deleted",  1, $item_info->deleted ? TRUE : FALSE); ?>
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+
 
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class' => 'required control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class' => ' control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<?php echo form_input(
 				array(
@@ -343,22 +412,22 @@
 
 	<?php
 	for ($i = 1; $i <= 10; ++$i) {
-		?>
+	?>
 		<?php
-			if ($this->config->item('custom' . $i . '_name') != null) {
-				$item_arr = (array) $item_info;
-				?>
+		if ($this->config->item('custom' . $i . '_name') != null) {
+			$item_arr = (array) $item_info;
+		?>
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->config->item('custom' . $i . '_name'), 'custom' . $i, array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
 					<?php echo form_input(
-								array(
-									'name' => 'custom' . $i,
-									'id' => 'custom' . $i,
-									'class' => 'form-control input-sm',
-									'value' => $item_arr['custom' . $i]
-								)
-							); ?>
+						array(
+							'name' => 'custom' . $i,
+							'id' => 'custom' . $i,
+							'class' => 'form-control input-sm',
+							'value' => $item_arr['custom' . $i]
+						)
+					); ?>
 				</div>
 			</div>
 	<?php
@@ -387,35 +456,75 @@
 
 
 
+		//////////////////////////
+		//UPDATE THE WHOLE SALE PRICE WHILE INPUTING THE WHOLE SALE PRICE MARKUP
+		$("#wholesale_price_markup").on('input', function() {
+			var cost = parseFloat($("#cost_price").val());
+			var pack = parseFloat($("#items_per_pack").val());
+			var whole_markup = parseFloat($("#wholesale_price_markup").val());
+			var whole = Math.ceil(cost * whole_markup * pack * 100); //rounding up to 2 decimal places
+			//$("#whole_price").val(whole / 100);
+			set_nearest_five((whole / 100), $("#whole_price"));
+		});
 
+
+		// $("#unit_price_markup").on('input', function() {
+
+		// 	var cost = parseFloat($("#cost_price").val());
+
+		// 	var unit_markup = parseFloat($("#unit_price_markup").val());
+		// 	var unit = Math.ceil(cost * unit_markup * 100); //rounding up to 2 decimal places
+		// 	//$("#unit_price").val(unit / 100);
+		// 	set_nearest_five((unit / 100), $("#unit_price"));
+		// });
+
+		//update made here
+
+
+		$("#unit_price_markup").on('input', function() {
+			var cost = parseFloat($("#cost_price").val());
+
+			console.log('click');
+
+			var unit_markup = parseFloat($("#unit_price_markup").val());
+			var unit = Math.ceil(cost * unit_markup * 100); //rounding up to 2 decimal places
+			//$("#unit_price").val(unit / 100);
+			set_nearest_five((unit / 100), $("#unit_price"));
+		});
+
+		$("#unit_price").on('input', function() {
+			var cost = parseFloat($("#cost_price").val());
+			var retail_price = parseFloat($("#unit_price").val());
+
+			var unit_markup = parseFloat($("#unit_price_markup").val());
+			var markup = 0;
+			markup = retail_price / cost;
+			if(! Number.isNaN(markup) && markup && markup % 1 !== 0) markup = markup.toFixed(9);
+			var newMarkUp = Number.isNaN(markup) ? 0 : markup;
+			$("#unit_price_markup").val(newMarkUp);
+		});
+
+
+
+
+		//also update unit and whole price while typing the cost if the markups are available
+		$("#cost_price").on('input', function() {
+			var cost = parseFloat($(this).val());
+			var pack = parseFloat($("#items_per_pack").val());
+			var whole_markup = parseFloat($("#wholesale_price_markup").val());
+			var unit_markup = parseFloat($("#unit_price_markup").val());
+
+			var whole = Math.ceil(cost * whole_markup * pack * 100); //rounding up to 2 decimal places
+			//$("#whole_price").val(whole / 100);
+			set_nearest_five((whole / 100), $("#whole_price"));
+
+			var unit = Math.ceil(cost * unit_markup * 100); //rounding up to 2 decimal places
+			//$("#unit_price").val(unit / 100);
+			set_nearest_five((unit / 100), $("#unit_price"));
+		});
 
 		$("#submit").click(function() {
 			stay_open = false;
-		});
-		$('#items_per_pack').focusout(function() {
-
-			var items_per_pack = parseInt($('#items_per_pack').val());
-			var pack = parseInt($('#pack').val());
-			var total = items_per_pack * pack;
-			//var unit=round5(selling);
-			$('#quantity').val(total);
-		});
-		$('#pack').focusout(function() {
-			var items_per_pack = parseInt($('#items_per_pack').val());
-			var pack = parseInt($('#pack').val());
-			var total = items_per_pack * pack;
-			//var unit=round5(selling);
-			$('#quantity').val(total);
-		});
-		$('#quantity').focusout(function() {
-
-			var items_per_pack = parseInt($('#items_per_pack').val());
-			var pack = parseInt($('#pack').val());
-			var total = items_per_pack * pack;
-			//var unit=round5(selling);
-			$('#quantity').val(total);
-
-
 		});
 
 		var no_op = function(event, data, formatted) {};
@@ -426,7 +535,7 @@
 		});
 
 		<?php for ($i = 1; $i <= 10; ++$i) {
-			?>
+		?>
 			$("#custom" + <?php echo $i; ?>).autocomplete({
 				source: function(request, response) {
 					$.ajax({
@@ -469,10 +578,10 @@
 							// set action of item_form to url without item id, so a new one can be created
 							$("#item_form").attr("action", "<?php echo site_url("items/save/") ?>");
 							// use a whitelist of fields to minimize unintended side effects
-							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' +
-								'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');
+							$(':text, :password, :file, #description, #item_form').not('#reorder_level' +
+								'#reference_number, #name, #cost_price, #unit_price,').val('');
 							// de-select any checkboxes, radios and drop-down menus
-							$(':input', '#item_form').not('#item_category_id').removeAttr('checked').removeAttr('selected');
+							$(':input', '#item_form').removeAttr('checked').removeAttr('selected');
 						} else {
 							dialog_support.hide();
 						}
@@ -507,23 +616,12 @@
 					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
 				},
 
-				quantity: {
+				unit_price_markup: {
 					required: true,
 					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
 				},
 
-				receiving_quantity: {
-					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
-				},
-				reorder_level: {
-					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
-				},
-				tax_percent: {
-					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
-				}
+
 			},
 
 			messages: {
@@ -538,29 +636,21 @@
 					required: "<?php echo $this->lang->line('items_unit_price_required'); ?>",
 					number: "<?php echo $this->lang->line('items_unit_price_number'); ?>"
 				},
-				<?php
-				foreach ($stock_locations as $key => $location_detail) {
-					?>
-					<?php echo 'quantity_' . $key ?>: {
-						required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
-						number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
-					},
-				<?php
-				}
-				?>
-				receiving_quantity: {
-					required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
-					number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
+
+				unit_price_markup: {
+					required: "<?php echo 'Retail Price Markup is required'; ?>",
+					number: "<?php echo 'Retail Price Markup must be a number'; ?>"
 				},
-				reorder_level: {
-					required: "<?php echo $this->lang->line('items_reorder_level_required'); ?>",
-					number: "<?php echo $this->lang->line('items_reorder_level_number'); ?>"
-				},
-				tax_percent: {
-					required: "<?php echo $this->lang->line('items_tax_percent_required'); ?>",
-					number: "<?php echo $this->lang->line('items_tax_percent_number'); ?>"
-				}
+
 			}
 		}, form_support.error));
 	});
+
+	function set_nearest_five(amount, input) {
+		$.post("items/set_nearest_five", {
+			"amount": amount
+		}, function(data, status) {
+			input.val(data.amount);
+		}, "json");
+	}
 </script>

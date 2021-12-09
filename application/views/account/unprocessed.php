@@ -79,12 +79,19 @@
       <table class="table table-striped table-bordered" id="table">
         <thead>
           <tr>
-            <th width="10%">Invoice No</th>
-            <th width="30%">Customer Name</th>
-            <th width="15%">Date</th>
-            <th width="15%">Doctor</th>
-            <th width="10%">Status</th>
-            <th width="10%"></th>
+              <th width="5%">Invoice No</th>
+              <th width="30%">Customer Name</th>
+              <th width="10%">Date</th>
+              <th width="15%">Doctor</th>
+              <th width="10%">Status</th>
+              <th width="10%"></th>
+              <?php
+              if(isset($from_cashier)){
+                  ?>
+                  <th width="10%"></th>
+              <?php
+              }
+              ?>
 
           </tr>
         </thead>
@@ -194,6 +201,16 @@
       }, {
         "mData": "print"
       }
+      <?php
+            if(isset($from_cashier)){
+                ?>
+        , {
+            "mData": "edit_invoice"
+        }
+      <?php
+            }
+        ?>
+
     ];
 
     var columnDefs = [{
@@ -208,6 +225,8 @@
       title: "Start date"
     }, {
       title: "Salary"
+    }, {
+        title: "Salarye"
     }];
 
     var columneDef = [{
@@ -234,14 +253,14 @@
 
     myTable = $('#table').DataTable({
       "sPaginationType": "full_numbers",
-      "sAjaxSource": "<?php echo site_url('account/unprocessed_laboratory_items'); ?>",
+      "sAjaxSource": "<?php if(isset($from_cashier)){echo site_url('account/unprocessed_laboratory_items/1');}else{echo site_url('account/unprocessed_laboratory_items');} ?>",
       //aoColumns: colum,
       //data:dataSetter,
       //data:dataSet,
       aoColumns: columlab,
       columns: columnDe,
       order: [
-        [2, 'desc']
+        [0, 'desc']
       ]
       //columns: columnDefs,
       //columns: columneDef,
@@ -251,6 +270,14 @@
 
 
     });
+
+    $('#action').click(function(e){
+			e.preventDefault();
+			$("#action").attr("disabled", true);
+      document.getElementById("action").innerHTML = 'Please wait..';
+      $('#item_form').submit();
+		});
+
     /*$().on('','', function(){
     	event.preventDefault
     });*/
@@ -274,7 +301,11 @@
       <div class="modal-footer">
 
         <input type="hidden" name="invoice_id" id="invoice_id" />
-        <input type="submit" name="action" id="action" class="btn btn-success" value="Submit" />
+        <!-- <input type="submit" name="action" id="action" class="btn btn-success" value="Submit" /> -->
+
+        <button class='btn btn-success' id="action" name="action" type="submit">
+						Submit
+				</button> 
       </div>
 
     </div>

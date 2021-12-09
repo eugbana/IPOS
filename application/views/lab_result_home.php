@@ -194,7 +194,8 @@
                                 <a href="<?= site_url(); ?>" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
                             </li>
 							<?php
-								foreach($allowed_modules->result() as $module)
+//								foreach($allowed_modules->result() as $module)
+                            foreach($allowed_modules as $module)
 								{
 								?>
 								<?php if($this->lang->line("module_".$module->module_id)=="Laboratory"){?>
@@ -340,8 +341,8 @@
                                
                 </div> <!-- content -->
 
-                <footer class="footer text-right">
-                    <?php echo date('Y')?> &copy; Infostrategy.
+                <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?>   <a href="www.istrategytech.com">Powered By Infostrategy.</a>
                 </footer>
 
             </div>

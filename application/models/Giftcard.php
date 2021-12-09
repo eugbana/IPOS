@@ -157,7 +157,7 @@ class Giftcard extends CI_Model
  	/*
 	Get search suggestions to find giftcards
 	*/
-	public function get_search_suggestions($search, $limit = 25)
+	public function get_search_suggestions($search, $limt = 99999)
 	{
 		$suggestions = array();
 

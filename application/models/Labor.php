@@ -479,7 +479,7 @@ class Labor extends CI_Model
 		return $success;
 	}
 
-	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limt = 99999)
 	{
 		$suggestions = array();
 
@@ -586,7 +586,7 @@ class Labor extends CI_Model
 	}
 
 
-	public function get_stock_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+	public function get_stock_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limt = 99999)
 	{
 		$suggestions = array();
 
@@ -752,7 +752,7 @@ class Labor extends CI_Model
 	}
 
 
-	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limt = 99999)
 	{
 		$suggestions = array();
 

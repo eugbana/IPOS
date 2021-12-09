@@ -52,12 +52,12 @@
 		</div>
 	</div>
 
-	<div class="form-group form-group-sm">
+	<!-- <div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_stock_location'), 'stock_location', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), array('onchange' => 'display_stock(this.value);', 'class' => 'form-control'));	?>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_current_quantity'), 'quantity', array('class' => 'control-label col-xs-3')); ?>
@@ -140,7 +140,7 @@
 				window.location = ["<?php echo site_url('items/print_inventory_count');  ?>", $("#item_id").val(), stock_location, $("#start_date").val(), $("#end_date").val()].join("/");
 			}
 			//$("#item_form").submit();
-		})
+		});
 	});
 
 	function display_stock(location_id) {

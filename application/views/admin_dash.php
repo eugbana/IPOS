@@ -48,7 +48,11 @@
 
 
 <body class="fixed-left">
-
+<?php
+//var_dump($allowed_modules);
+//exit();
+//var_dump($this->_ci_cached_vars);
+?>
     <!-- Begin page -->
     <div id="wrapper">
 
@@ -70,22 +74,22 @@
                             </button>
                             <span class="clearfix"></span>
                         </div>
-                        <form class="navbar-form pull-left" role="search">
+                        <!-- <form class="navbar-form pull-left" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control search-bar" placeholder="Type here for search...">
                             </div>
                             <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                        </form>
+                        </form> -->
 
                         <ul class="nav navbar-nav navbar-right pull-right">
-                            <li class="dropdown hidden-xs">
+                            <!-- <li class="dropdown hidden-xs">
                                 <a href="#" data-target="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true">
                                     <i class="md md-notifications"></i> <span class="badge badge-xs badge-danger"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-lg">
                                     <li class="text-center notifi-title">Notification</li>
                                     <li class="list-group">
-                                        <!-- list item-->
+                                        
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -99,7 +103,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- list item-->
+                                      
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -113,7 +117,7 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- list item-->
+                                       
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <div class="media">
                                                 <div class="pull-left">
@@ -128,19 +132,18 @@
                                                 </div>
                                             </div>
                                         </a>
-                                        <!-- last list item -->
                                         <a href="javascript:void(0);" class="list-group-item">
                                             <small>See all notifications</small>
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="hidden-xs">
+                            </li> -->
+                            <!-- <li class="hidden-xs">
                                 <a href="#" id="btn-fullscreen" class="waves-effect"><i class="md md-crop-free"></i></a>
                             </li>
                             <li class="hidden-xs">
                                 <a href="#" class="right-bar-toggle waves-effect"><i class="md md-chat"></i></a>
-                            </li>
+                            </li> -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/user-default.png" alt="user-img" class="img-circle"> </a>
                                 <ul class="dropdown-menu">
@@ -215,75 +218,291 @@
                         <div class="col-sm-12">
                             <h4 class="pull-left page-title">Welcome <?= $user_info->first_name . ' ' . $user_info->last_name;  ?> !</h4>
                             <ol class="breadcrumb pull-right">
-                                <li><a href="#">Admin</a></li>
+                                <!-- <li><a href="#">Admin</a></li> -->
                                 <li class="active">Dashboard</li>
                             </ol>
                         </div>
                     </div>
 
                     <!-- Start Widget -->
+
+                    <!-- Start Widget -->
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-primary">
+                                <a href="<?php echo site_url("items"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/items.png'; ?>" width="30" height="30" /></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Product Items
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow" style="background-color: #C0C0C0;">
+                                <a href="<?php echo site_url("sales"); ?>"><span class="mini-stat-icon "><img src="<?php echo base_url() . 'images/menubar/sales.png'; ?>" width="30" height="30" /></span></a>
+                                <div class="mini-stat-info text-right">
+                                    New Sales
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-success">
+                                <a href="<?php echo site_url("receivings"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/receivings.png'; ?>" width="30" height="30" /></span></a>
+                                <div class="mini-stat-info text-right">
+                                    New Stock Intake
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"><span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-lg-3">
                             <div class="mini-stat clearfix bx-shadow bg-info">
-                                <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></span>
+                                <a href="<?php echo site_url("reports/expiry_report"); ?>"><span class="mini-stat-icon"><i class="ion-share"></i></span></a>
                                 <div class="mini-stat-info text-right">
-                                    <span class="counter">100</span>
-                                    Total
+                                    Expiry Items (Next 90 days) 
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">Employees <span class="pull-right">1</span></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-lg-3">
-                            <div class="mini-stat clearfix bg-purple bx-shadow">
-                                <span class="mini-stat-icon"><i class="ion-ios7-cart"></i></span>
-                                <div class="mini-stat-info text-right">
-                                    <span class="counter">5</span>
-                                    Total
-                                </div>
-                                <div class="tiles-progress">
-                                    <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">Branches <span class="pull-right">2</span></h5>
+                                        <h5 class="text-uppercase text-white m-0" >
+                                        <span class="pull-right" style="font-size: 19px"> 
+                                            <?php 
+                                                echo $expiryItemsCount;
+                                            ?>
+                                        </span></h5>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-lg-3">
-                            <div class="mini-stat clearfix bg-success bx-shadow">
-                                <span class="mini-stat-icon"><i class="ion-eye"></i></span>
-                                <div class="mini-stat-info text-right">
-                                    <span class="counter">8</span>
-                                    New Roles
-                                </div>
-                                <div class="tiles-progress">
-                                    <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">Roles <span class="pull-right">3</span></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-6 col-lg-3">
-                            <div class="mini-stat clearfix bg-primary bx-shadow">
-                                <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
-                                <div class="mini-stat-info text-right">
-                                    <span class="counter">10</span>
-                                    New Users
-                                </div>
-                                <div class="tiles-progress">
-                                    <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">Last month's Users <span class="pull-right">4</span></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <!-- End row-->
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-primary">
+                                <a href="<?php echo site_url("reports/account_report"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/reports.png'; ?>" width="30" height="30" /></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Reports
 
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow " style="background-color: #C0C0C0;">
+                                <a href="<?php echo site_url("customers"); ?>"><span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/customers.png'; ?>" width="30" height="30" /></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Customers
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-success">
+                                <a href="<?php echo site_url("config"); ?>"><span class="mini-stat-icon"><i class="ion-settings"></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Settings
+
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0"> <span class="pull-right"></span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bx-shadow bg-info">
+                                <a href="<?php echo site_url("reports/below_reorder_level"); ?>"><span class="mini-stat-icon"><i class="ion-share"></i></span></a>
+                                <div class="mini-stat-info text-right">
+                                    Items Below Reorder Level
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0" ><span class="pull-right" style="font-size: 19px"> <?php  echo  $reorderLevelItemsCount ?> </span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <div class="cal1 cal_2">
+                                <div class="clndr">
+                                    <div class="clndr-controls">
+                                        <div class="clndr-control-button ">
+                                            <p class="clndr-previous-button">previous</p>
+                                        </div>
+                                        <div class="month">July 2015</div>
+                                        <div class="clndr-control-button rightalign">
+                                            <p class="clndr-next-button">next</p>
+                                        </div>
+                                    </div>
+                                    <table class="clndr-table" border="0" cellspacing="0" cellpadding="0">
+                                        <thead>
+                                            <tr class="header-days">
+                                                <td class="header-day">S</td>
+                                                <td class="header-day">M</td>
+                                                <td class="header-day">T</td>
+                                                <td class="header-day">W</td>
+                                                <td class="header-day">T</td>
+                                                <td class="header-day">F</td>
+                                                <td class="header-day">S</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-28">
+                                                    <div class="day-contents">28</div>
+                                                </td>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-29">
+                                                    <div class="day-contents">29</div>
+                                                </td>
+                                                <td class="day adjacent-month last-month calendar-day-2015-06-30">
+                                                    <div class="day-contents">30</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-01">
+                                                    <div class="day-contents">1</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-02">
+                                                    <div class="day-contents">2</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-03">
+                                                    <div class="day-contents">3</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-04">
+                                                    <div class="day-contents">4</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-05">
+                                                    <div class="day-contents">5</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-06">
+                                                    <div class="day-contents">6</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-07">
+                                                    <div class="day-contents">7</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-08">
+                                                    <div class="day-contents">8</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-09">
+                                                    <div class="day-contents">9</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-10">
+                                                    <div class="day-contents">10</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-11">
+                                                    <div class="day-contents">11</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-12">
+                                                    <div class="day-contents">12</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-13">
+                                                    <div class="day-contents">13</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-14">
+                                                    <div class="day-contents">14</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-15">
+                                                    <div class="day-contents">15</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-16">
+                                                    <div class="day-contents">16</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-17">
+                                                    <div class="day-contents">17</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-18">
+                                                    <div class="day-contents">18</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-19">
+                                                    <div class="day-contents">19</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-20">
+                                                    <div class="day-contents">20</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-21">
+                                                    <div class="day-contents">21</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-22">
+                                                    <div class="day-contents">22</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-23">
+                                                    <div class="day-contents">23</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-24">
+                                                    <div class="day-contents">24</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-25">
+                                                    <div class="day-contents">25</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="day calendar-day-2015-07-26">
+                                                    <div class="day-contents">26</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-27">
+                                                    <div class="day-contents">27</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-28">
+                                                    <div class="day-contents">28</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-29">
+                                                    <div class="day-contents">29</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-30">
+                                                    <div class="day-contents">30</div>
+                                                </td>
+                                                <td class="day calendar-day-2015-07-31">
+                                                    <div class="day-contents">31</div>
+                                                </td>
+                                                <td class="day adjacent-month next-month calendar-day-2015-08-01">
+                                                    <div class="day-contents">1</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div> <!-- end col -->
+
+                        <div class="col-lg-4">
+
+                        </div> <!-- end col -->
+                    </div> <!-- End row -->
 
 
 
@@ -293,8 +512,8 @@
 
             </div> <!-- content -->
 
-            <footer class="footer text-right">
-                2018 - <?php echo date('Y') ?> &copy; Infostrategy.
+            <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?> <a href="www.istrategytech.com">Powered By Infostrategy.</a>
             </footer>
 
         </div>
@@ -349,6 +568,14 @@
     <script src="dist/assets/plugins/flot-chart/jquery.flot.stack.js"></script>
     <script src="dist/assets/plugins/flot-chart/jquery.flot.crosshair.js"></script>
 
+
+    <link rel="stylesheet" href="dist/assets/css/clndr.css" type="text/css" />
+    <script src="dist/assets/js/underscore-min.js" type="text/javascript"></script>
+    <script src="dist/assets/js/moment-2.2.1.js" type="text/javascript"></script>
+    <script src="dist/assets/js/clndr.js" type="text/javascript"></script>
+    <script src="dist/assets/js/site.js" type="text/javascript"></script>
+
+
     <!-- todos app  -->
     <script src="dist/assets/pages/jquery.todo.js"></script>
 
@@ -364,6 +591,50 @@
                 delay: 100,
                 time: 1200
             });
+
+        $("body").keydown(function(e){
+
+            if ((e.metaKey || e.altKey) && ( String.fromCharCode(e.which).toLowerCase() === 'p') ) {
+                window.location = 'items/check_price';
+            }
+
+            if ((e.metaKey || e.altKey) && ( String.fromCharCode(e.which).toLowerCase() === 's') ) {
+                window.location = 'sales/receipt/<?php echo $this->Sale->get_latest_sale_id() ?>';
+            }
+
+            if ((e.metaKey || e.altKey) && ( String.fromCharCode(e.which).toLowerCase() === 'r') ) {
+                window.location = 'sales/check_receipt';
+            }
+
+            // var keyCode = e.keyCode || e.which;
+            // console.log(keyCode);      
+            // if(keyCode == 114){
+            //     window.location = 'sales/receipt/<?php echo $this->Sale->get_latest_sale_id() ?>';
+            // }else if(keyCode == 115){
+            //     window.location = 'items/check_price';
+            // }else if(keyCode == 116){
+            //     window.location = 'sales/check_receipt';
+            // }
+    	});
+
+        // $("body").keypress("p", function(e){
+		// 	if(e.altKey){
+		// 		window.location = 'items/check_price';
+		// 	}
+    	// });
+
+		// $("body").keypress("s", function(e){
+		// 	if(e.altKey){
+		// 		window.location = 'sales/receipt/<?php echo $this->Sale->get_latest_sale_id() ?>';
+		// 	}
+    	// });
+
+		// $("body").keypress("r", function(e){
+		// 	if(e.altKey){
+		// 		window.location = 'sales/check_receipt';
+		// 	}
+    	// });
+
         });
     </script>
 

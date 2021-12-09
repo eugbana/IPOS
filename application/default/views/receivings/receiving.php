@@ -1,6 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 
 <?php
+
 if (isset($error))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
@@ -117,6 +118,7 @@ if (isset($success))
 
 		<tbody id="cart_contents">
 			<?php
+			//$zero_cost = false;
 			if(count($cart) == 0)
 			{
 			?>
@@ -131,8 +133,12 @@ if (isset($success))
 			{
 				foreach(array_reverse($cart, TRUE) as $line=>$item)
 				{
+					// if($item['price'] ==0){
+					// 	$zero_cost = true;
+					// }
 			?>
-					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
+					<?php 
+					echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td style="align:center;">
@@ -466,7 +472,14 @@ $(document).ready(function()
 
     $("#finish_receiving_button").click(function()
     {
+		//check if there any cost that is zero, if any don't submit this form
+		//var zero_cost = <?php echo $zero_cost; ?>;
+		//if(zero_cost){
+			//window.alert("Please update and refresh all item costs.");
+		//}else{
+			//submit
    		$('#finish_receiving_form').submit();
+		//}
     });
 
     $("#cancel_receiving_button").click(function()

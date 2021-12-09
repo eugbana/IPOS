@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["common_address_1"] = "Address 1";
 $lang["common_status"] = "Status";
@@ -51,7 +51,8 @@ $lang["common_logout"] = "Logout";
 $lang["common_new"] = "New";
 $lang["common_request"] = "Request";
 $lang["common_no_persons_to_display"] = "There are no people to display";
-$lang["common_none_selected_text"] = "Nothing selected";
+$lang["companies_no_companies_to_display"] = "There are no companies to display";
+$lang["common_none_selected_text"] = "Select Filters";
 $lang["common_or"] = "OR";
 $lang["common_phone_number"] = "Phone Number";
 $lang["common_phone_number_required"] = "";
@@ -71,6 +72,6 @@ $lang["common_total_spent"] = "Total Spent";
 $lang["common_view_recent_sales"] = "View Recent Sales";
 $lang["common_website"] = "";
 $lang["common_welcome"] = "Welcome";
-$lang["common_welcome_message"] = "Welcome to IMAAG INVENTORY SYSTEM, click a module below to get started!";
-$lang["common_you_are_using_ospos"] = "Powered by IMAAG TECHNOLOGY Version";
+$lang["common_welcome_message"] = "Welcome to IPOS INVENTORY SYSTEM, click a module below to get started!";
+$lang["common_you_are_using_ospos"] = "Powered by Infostrategy Technology";
 $lang["common_zip"] = "Zip";

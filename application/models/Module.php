@@ -40,6 +40,19 @@ class Module extends CI_Model
 
 		return $this->db->get();
 	}
+
+	public function get_module_permissions($module = null){
+    	if($module){
+    		return ["$module"=>$this->db->from('permissions')->where(['module_id'=>$module])->get()];
+		}
+    	$modules = $this->db->distinct("module_id")->from("permissions")->get()->result();
+    	$perms = [];
+    	foreach ($modules as $module_i){
+    		$perms[$module_i->module_id] = $this->db->from('permissions')->where(['module_id'=>$module_i->module_id])->get()->result();
+		}
+    	return $perms;
+//    	return $this->db->from('permissions')->group_by("module_id")->get();
+	}
 	
 	public function get_all_subpermissions()
 	{
@@ -53,6 +66,7 @@ class Module extends CI_Model
 	
 	public function get_all_batches($item_id, $item_location)
 	{
+		//$this->db->cache_on();
 		$this->db->from('item_expiry');
 		//$this->db->order_by('sort', 'asc');
 		$this->db->where('item_id', $item_id);

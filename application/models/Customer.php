@@ -22,20 +22,15 @@ class Customer extends Person
 		return ($this->db->get()->num_rows() == 1);
 	}
 
-	/*
-	Checks if account number exists
-	*/
-	public function check_account_number_exists($account_number, $person_id = '')
+	public function company_exists($company_id)
 	{
-		$this->db->from('customers');
-		$this->db->where('account_number', $account_number);
-
-		if (!empty($person_id)) {
-			$this->db->where('person_id !=', $person_id);
-		}
+		$this->db->from('companies');
+		$this->db->where('companies.company_id', $company_id);
 
 		return ($this->db->get()->num_rows() == 1);
 	}
+
+
 
 	/*
 	Gets total of rows
@@ -65,6 +60,19 @@ class Customer extends Person
 		return $this->db->get();
 	}
 
+	//get all companies
+	public function get_all_companies($limit_from = 0, $rows = 0)
+	{
+		$this->db->from('companies');
+		$this->db->where('deleted', 0);
+		$this->db->order_by('company_name', 'asc');
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+
+		return $this->db->get();
+	}
+
 	/*
 	Gets information about a particular customer
 	*/
@@ -79,16 +87,73 @@ class Customer extends Person
 			return $query->row();
 		} else {
 			//Get empty base parent object, as $customer_id is NOT a customer
-			$person_obj = parent::get_info(-1);
+			$person_obj = array(); //parent::get_info(-1);
 
 			//Get all the fields from customer table
 			//append those fields to base parent object, we we have a complete empty object
 			foreach ($this->db->list_fields('customers') as $field) {
-				$person_obj->$field = '';
+				$person_obj[$field] = '';
 			}
 
-			return $person_obj;
+			return (object) $person_obj;
 		}
+	}
+
+	/*
+	Gets information about a particular company
+	*/
+	public function get_company_info($company_id)
+	{
+		$this->db->from('companies');
+		// $this->db->join('people', 'people.person_id = customers.person_id');
+		$this->db->where('companies.company_id', $company_id);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 1) {
+			return $query->row();
+		} else {
+			//Get empty base parent object, as $company_id is NOT a company
+			$company_obj = array(); //parent::get_info(-1);
+
+			//Get all the fields from company table
+			//append those fields to base parent object, we we have a complete empty object
+			foreach ($this->db->list_fields('companies') as $field) {
+				$company_obj[$field] = '';
+			}
+
+			return (object) $company_obj;
+		}
+	}
+
+	public function get_brought_forward($customer_id,$start){
+	    $bf = 0;
+	    $res = $this->db->from('wallet')
+            ->where(['customer_id'=>$customer_id,])
+            ->where('date <',$start)
+            ->order_by("date", 'desc')
+            ->limit(1)
+            ->get();
+	    if($res->num_rows() > 0){
+	        $wallet_info = $res->row();
+	        $bf = $wallet_info->balance;
+        }
+	    return $bf;
+    }
+	public function get_wallet_info($customer_id, $start, $end)
+	{
+//		$this->db->select('wallet.*,sales.*, employees.first_name as firstname, employees.last_name as lastname');
+        $this->db->select('wallet.*, employees.first_name as firstname, employees.last_name as lastname');
+		$this->db->from('wallet as wallet');
+//		$this->db->join('sales as sales', 'sales.sale_id = wallet.sale_id', "left");
+		$this->db->join('people as employees', 'employees.person_id = wallet.employee_id');
+		// $this->db->where('wallet.customer_id', $customer_id);
+		// $this->db->where("wallet.date between {ts '$start'} AND {ts '$end'}");
+		$this->db->where('wallet.date >=', $start);
+		$this->db->where('wallet.date <=', $end);
+		$this->db->order_by("wallet.id", 'desc');
+		$query = $this->db->get();
+
+		return $query->result();
 	}
 
 	public function get_lab_invoice_info($invoice_id)
@@ -101,15 +166,18 @@ class Customer extends Person
 			return $query->row();
 		} else {
 			//Get empty base parent object, as $customer_id is NOT a customer
-			$person_obj = parent::get_lab_invoice_info(-1);
+
+			//$person_obj = parent::get_lab_invoice_info(-1);
 
 			//Get all the fields from customer table
 			//append those fields to base parent object, we we have a complete empty object
+			$person_obj = array();
 			foreach ($this->db->list_fields('laboratory_invoice') as $field) {
-				$person_obj->$field = '';
+				//$person_obj->$field = '';
+				$person_obj[$field] = "";
 			}
 
-			return $person_obj;
+			return (object) $person_obj;
 		}
 	}
 
@@ -177,6 +245,40 @@ class Customer extends Person
 	}
 
 	/*
+	Gets information about multiple companies
+	*/
+	public function get_multiple_company_info($company_ids)
+	{
+		$this->db->from('companies');
+		$this->db->where_in('companies.company_id', $company_ids);
+		$this->db->order_by('company_name', 'asc');
+
+		return $this->db->get();
+	}
+
+	/*
+	Checks if customer phone number exists
+	*/
+	public function check_phone_exists($phone, $customer_id = '')
+	{
+		// if the phone is empty return like it is not existing
+		if (empty($phone)) {
+			return FALSE;
+		}
+
+		$this->db->from('customers');
+		$this->db->join('people', 'people.person_id = customers.person_id');
+		$this->db->where('people.phone_number', $phone);
+		$this->db->where('customers.deleted', 0);
+
+		if (!empty($customer_id)) {
+			$this->db->where('customers.person_id !=', $customer_id);
+		}
+
+		return ($this->db->get()->num_rows() >= 1);
+	}
+
+	/*
 	Checks if customer email exists
 	*/
 	public function check_email_exists($email, $customer_id = '')
@@ -195,8 +297,93 @@ class Customer extends Person
 			$this->db->where('customers.person_id !=', $customer_id);
 		}
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($this->db->get()->num_rows() >= 1);
 	}
+
+	/*
+	Checks if company phone number exists
+	*/
+	public function check_company_phone_exists($phone, $company_id = '')
+	{
+		// if the phone is empty return like it is not existing
+		if (empty($phone)) {
+			return FALSE;
+		}
+
+		$this->db->from('companies');
+		$this->db->where('companies.contact_phone', $phone);
+		$this->db->where('companies.deleted', 0);
+
+		if (!empty($company_id)) {
+			$this->db->where('companies.company_id !=', $company_id);
+		}
+
+		return ($this->db->get()->num_rows() >= 1);
+	}
+
+	/*
+	Checks if company email exists
+	*/
+	public function check_company_email_exists($email, $company_id = '')
+	{
+		// if the email is empty return like it is not existing
+		if (empty($email)) {
+			return FALSE;
+		}
+
+		$this->db->from('companies');
+		$this->db->where('companies.contact_email', $email);
+		$this->db->where('companies.deleted', 0);
+
+		if (!empty($company_id)) {
+			$this->db->where('companies.company_id !=', $company_id);
+		}
+
+		return ($this->db->get()->num_rows() >= 1);
+	}
+
+	/*
+	Checks if company cac number exists
+	*/
+	public function check_company_cac_exists($cac, $company_id = '')
+	{
+		// if the cac is empty return like it is not existing
+		if (empty($cac)) {
+			return FALSE;
+		}
+
+		$this->db->from('companies');
+		$this->db->where('companies.cac', $cac);
+		$this->db->where('companies.deleted', 0);
+
+		if (!empty($company_id)) {
+			$this->db->where('companies.company_id !=', $company_id);
+		}
+
+		return ($this->db->get()->num_rows() >= 1);
+	}
+
+	/*
+	Checks if company tin exists
+	*/
+	public function check_company_tin_exists($tin, $company_id = '')
+	{
+		// if the tin is empty return like it is not existing
+		if (empty($tin)) {
+			return FALSE;
+		}
+
+		$this->db->from('companies');
+		$this->db->where('companies.tin', $tin);
+		$this->db->where('companies.deleted', 0);
+
+		if (!empty($company_id)) {
+			$this->db->where('companies.company_id !=', $company_id);
+		}
+
+		return ($this->db->get()->num_rows() >= 1);
+	}
+
 
 	/*
 	Inserts or updates a customer
@@ -223,6 +410,64 @@ class Customer extends Person
 		$success &= $this->db->trans_status();
 
 		return $success;
+	}
+
+	/*
+	Inserts or updates a company
+	*/
+	public function save_company(&$company_data, $company_id = FALSE)
+	{
+		$success = FALSE;
+
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->trans_start();
+
+		if (!$company_id || !$this->company_exists($company_id)) {
+			// $customer_data['person_id'] = $person_data['person_id'];
+			$success = $this->db->insert('companies', $company_data);
+		} else {
+			$this->db->where('company_id', $company_id);
+			$success = $this->db->update('companies', $company_data);
+		}
+
+		$this->db->trans_complete();
+
+		$success &= $this->db->trans_status();
+
+		return $success;
+	}
+
+	public function update_customer_wallet($customer_id, $wallet_data)
+	{
+		//update wallet data
+		$this->insert_wallet($wallet_data);
+
+
+		//update customer table
+		$customer_data = array('wallet' => $wallet_data['balance']);
+		$this->db->where('person_id', $customer_id);
+		return $this->db->update('customers', $customer_data);
+	}
+
+	public function update_company_wallet($company_id, $wallet_data)
+	{
+		//update wallet data
+		$this->insert_company_wallet($wallet_data);
+
+		//update company table
+		$company_data = array('wallet' => $wallet_data['balance']);
+		$this->db->where('company_id', $company_id);
+		return $this->db->update('companies', $company_data);
+	}
+
+	public function insert_wallet($wallet_data)
+	{
+		$this->db->insert('wallet', $wallet_data);
+	}
+
+	public function insert_company_wallet($wallet_data)
+	{
+		$this->db->insert('company_wallet', $wallet_data);
 	}
 
 	/*
@@ -256,11 +501,22 @@ class Customer extends Person
 	}
 
 	/*
+	Deletes a list of companies
+	*/
+	public function delete_companies_list($company_ids)
+	{
+		$this->db->where_in('company_id', $company_ids);
+
+		return $this->db->update('companies', array('deleted' => 1));
+	}
+
+	/*
 	Get search suggestions to find customers
 	*/
-	public function get_search_suggestions($search, $unique = TRUE, $limit = 25)
+	public function get_search_suggestions($search, $unique = TRUE, $limt = 99999)
 	{
 		$suggestions = array();
+		//$this->db->cache_on();
 
 		$this->db->from('customers');
 		$this->db->join('people', 'customers.person_id = people.person_id');
@@ -294,14 +550,55 @@ class Customer extends Person
 			foreach ($this->db->get()->result() as $row) {
 				$suggestions[] = array('value' => $row->person_id, 'label' => $row->phone_number);
 			}
+		}
 
-			$this->db->from('customers');
-			$this->db->join('people', 'customers.person_id = people.person_id');
+		//only return $limit suggestions
+		if (count($suggestions > $limit)) {
+			$suggestions = array_slice($suggestions, 0, $limit);
+		}
+
+		return $suggestions;
+	}
+
+	/*
+	Get search suggestions to find companies
+	*/
+	public function get_companies_search_suggestions($search, $unique = TRUE, $limt = 99999)
+	{
+		$suggestions = array();
+		//$this->db->cache_on();
+
+		$this->db->from('companies');
+		// $this->db->join('people', 'customers.person_id = people.person_id');
+		$this->db->group_start();
+		$this->db->like('company_name', $search, 'after');
+		$this->db->or_like('cac', $search, 'after');
+		$this->db->or_like('tin', $search, 'after');
+		$this->db->or_like('contact_phone', $search, 'after');
+		$this->db->group_end();
+		$this->db->where('deleted', 0);
+		$this->db->order_by('company_name', 'asc');
+		foreach ($this->db->get()->result() as $row) {
+			$suggestions[] = array('value' => $row->company_id, 'label' => $row->company_name);
+		}
+
+		if (!$unique) {
+			$this->db->from('companies');
+			// $this->db->join('people', 'customers.person_id = people.person_id');
 			$this->db->where('deleted', 0);
-			$this->db->like('account_number', $search, 'after');
-			$this->db->order_by('account_number', 'asc');
+			$this->db->like('contact_email', $search, 'after');
+			$this->db->order_by('contact_email', 'asc');
 			foreach ($this->db->get()->result() as $row) {
-				$suggestions[] = array('value' => $row->person_id, 'label' => $row->account_number);
+				$suggestions[] = array('value' => $row->company_id, 'label' => $row->contact_email);
+			}
+
+			$this->db->from('companies');
+			// $this->db->join('people', 'customers.person_id = people.person_id');
+			$this->db->where('deleted', 0);
+			$this->db->like('contact_phone', $search, 'after');
+			$this->db->order_by('contact_phone', 'asc');
+			foreach ($this->db->get()->result() as $row) {
+				$suggestions[] = array('value' => $row->company_id, 'label' => $row->contact_phone);
 			}
 		}
 
@@ -339,6 +636,7 @@ class Customer extends Person
 
 	public function search_page_count(array $inputs)
 	{
+		//$this->db->cache_on();
 		$this->db->from('customers');
 		$this->db->join('people', 'customers.person_id = people.person_id');
 		if (!empty($inputs['search'])) {
@@ -375,7 +673,7 @@ class Customer extends Person
 		$this->db->or_like('last_name', $search);
 		$this->db->or_like('email', $search);
 		$this->db->or_like('phone_number', $search);
-		$this->db->or_like('account_number', $search);
+
 		$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
@@ -395,11 +693,38 @@ class Customer extends Person
 		$this->db->or_like('last_name', $search);
 		$this->db->or_like('email', $search);
 		$this->db->or_like('phone_number', $search);
-		$this->db->or_like('account_number', $search);
+
 		$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
+		// $this->db->order_by($sort, $order);
+		$this->db->order_by('last_name', 'asc');
+
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+
+		return $this->db->get();
+	}
+
+	/*
+	Performs a search on companies
+	*/
+	public function search_companies($search, $rows = 0, $limit_from = 0, $sort = 'company_name', $order = 'asc')
+	{
+		$this->db->from('companies');
+		// $this->db->join('people', 'customers.person_id = people.person_id');
+		$this->db->group_start();
+		$this->db->like('company_name', $search);
+		$this->db->or_like('cac', $search);
+		$this->db->or_like('tin', $search);
+		$this->db->or_like('contact_phone', $search);
+		$this->db->or_like('contact_email', $search);
+
+		$this->db->group_end();
+		$this->db->where('deleted', 0);
 		$this->db->order_by($sort, $order);
+		// $this->db->order_by('last_name', 'asc');
 
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);

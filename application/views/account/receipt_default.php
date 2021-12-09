@@ -13,13 +13,13 @@
 		if ($this->config->item('receipt_show_company_name')) 
 		{ 
 		?>
-			<div id="company_name"><?php echo 'Tonia Medical Laboratories LTD';?></div>
+			<div id="company_name"><?php echo 'Tonia Medical Diagnostics Services LTD.';?></div>
 		<?php
 		}
 		?>
 
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
-		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
+		<div id="company_phone"><?php echo $receipt_type == 'lab' ? !empty($this->config->item('laboratory_phone')) ? $this->config->item('laboratory_phone') : '09097486557' : $this->config->item('phone'); ?></div>
 		<div id="sale_receipt"><h4><?php echo $receipt_title; ?></h4></div>
 		<div id="sale_time"><?php echo $transaction_time ?></div>
 		
@@ -178,12 +178,17 @@
 		</tr> -->
 	</table>
 
-	<div id="sale_return_policy">
+	<!-- <div id="sale_return_policy">
 		<?php echo nl2br($this->config->item('return_policy')); ?>
-	</div>
+	</div> -->
 
 	<div id="barcode">
 		<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
 		<?php echo $sale_id; ?>
+	</div>
+
+	<div id="sale_return_policy">
+		<i><?php echo 'Thank you, please call again'; ?></i><br>
+		<b>Powered by Infostrategy Technology Ltd</b>
 	</div>
 </div>

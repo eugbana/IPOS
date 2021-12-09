@@ -18,6 +18,8 @@ class Login extends CI_Controller
 			if ($this->form_validation->run() == FALSE) {
 				$this->load->view('login');
 			} else {
+				$this->load->model('Stock_location');
+				$this->Stock_location->get_updated_locations();
 				if ($this->config->item('statistics')) {
 					$this->load->library('tracking_lib');
 
@@ -54,10 +56,8 @@ class Login extends CI_Controller
 
 		if (!$this->Employee->login($username, $password)) {
 			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
-
 			return FALSE;
 		}
-
 		return TRUE;
 	}
 

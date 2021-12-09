@@ -22,7 +22,7 @@
 			<div id="receipt_header">
 				<?php
 				if ($this->config->item('company_logo') != '') {
-					?>
+				?>
 					<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
 				<?php
 				}
@@ -30,7 +30,7 @@
 
 				<?php
 				if ($this->config->item('receipt_show_company_name')) {
-					?>
+				?>
 					<div id="company_name"><?php echo $this->config->item('company'); ?></div>
 				<?php
 				}
@@ -45,7 +45,6 @@
 			<div id="receipt_general_info">
 				<div class="clearfix">
 					<div class="pull-right">
-
 
 						<div id="customer"><?php echo "<b>TO</b>: " . $to_branch; ?></div>
 
@@ -77,23 +76,23 @@
 						</tr>
 					</thead>
 					<?php
-					$total = 0;
+					$grand_total = 0;
 					$sn = 1;
 					foreach ($items as $line => $item) {
-						$total += $item->pushed_quantity * $item->item_unit_price;
-						?>
+						$grand_total += $item->pushed_quantity * $item->transfer_price;
+					?>
 						<tr>
 							<td><?php echo $sn++; ?></td>
 							<td><?php echo $item->name; ?></td>
 							<td><?php echo $item->item_number; ?></td>
 							<td><?php echo to_quantity_decimals(abs($item->pushed_quantity)); ?>
 							</td>
-							<td><?php echo to_currency($item->item_unit_price); ?></td>
+							<td><?php echo to_currency($item->transfer_price); ?></td>
 							<!-- <td><?php //echo to_currency($item['unit_price']); 
-											?></td> -->
+										?></td> -->
 
 							<td>
-								<div class="total-value"><?php echo to_currency($item->pushed_quantity * $item->unit_price); ?></div>
+								<div class="total-value"><?php echo to_currency($item->pushed_quantity * $item->transfer_price); ?></div>
 							</td>
 						</tr>
 
@@ -104,7 +103,7 @@
 					<tr>
 						<th colspan="4" style='text-align:right;border-top:2px solid #000000;'>Grand Total</th>
 						<td colspan="2" style='border-top:2px solid #000000;'>
-							<div class="total-value"><?php echo to_currency(abs($total)); ?></div>
+							<div class="total-value"><?php echo to_currency(abs($grand_total)); ?></div>
 						</td>
 					</tr>
 
@@ -121,5 +120,12 @@
 	</div>
 </div>
 
-
+<script>
+    $(document).ready(function(){
+        $('.recall-button').on('click',function(){
+            alert("hi");
+            console.log($(this).attr('data-transref'));
+        });
+    })
+</script>
 <?php $this->load->view("partial/footer"); ?>

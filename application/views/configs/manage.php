@@ -1,13 +1,22 @@
 <?php $this->load->view("partial/header"); ?>
 
 <script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
+	dialog_support.init("a.modal-dlg");
 </script>
-            <div class="content-page">
-                <!-- Start content -->
-                <div class="content">
+<div class="content-page">
+	<!-- Start content -->
+	<div class="content">
 		<ul class="nav nav-tabs" data-tabs="tabs">
-			<li class="active" role="presentation">
+            <?php
+            if(isset($c_error)){
+                ?>
+                <li class="active" role="presentation">
+                    <a data-toggle="tab" href="#error_tab" title="Error that occurs when trying to backup database">Backup Error</a>
+                </li>
+            <?php
+            }
+            ?>
+			<li <?=$c_error?'':'class="active" '?>role="presentation">
 				<a data-toggle="tab" href="#info_tab" title="<?php echo $this->lang->line('config_info_configuration'); ?>"><?php echo $this->lang->line('config_info'); ?></a>
 			</li>
 			<li role="presentation">
@@ -22,15 +31,15 @@
 			<li role="presentation">
 				<a data-toggle="tab" href="#stock_tab" title="<?php echo $this->lang->line('config_location_configuration'); ?>">Departments</a>
 			</li>
-			
-			
-			
+
+
+
 			<li role="presentation">
 				<a data-toggle="tab" href="#reward_tab" title="<?php echo $this->lang->line('config_reward_configuration'); ?>"><?php echo $this->lang->line('config_reward'); ?></a>
 			</li>
-			<li role="presentation">
+			<!-- <li role="presentation">
 				<a data-toggle="tab" href="#reminder_tab" title="<?php echo $this->lang->line('config_reward_configuration'); ?>"><?php echo $this->lang->line('config_remind'); ?></a>
-			</li>
+			</li> -->
 			<li role="presentation">
 				<a data-toggle="tab" href="#receipt_tab" title="<?php echo $this->lang->line('config_receipt_configuration'); ?>"><?php echo $this->lang->line('config_receipt'); ?></a>
 			</li>
@@ -46,11 +55,29 @@
 			<li role="presentation">
 				<a data-toggle="tab" href="#mailchimp_tab" title="<?php echo $this->lang->line('config_mailchimp_configuration'); ?>"><?php echo $this->lang->line('config_mailchimp'); ?></a>
 			</li>
-			
+			<li role="presentation">
+				<a data-toggle="tab" href="#inventory_tab" title="Sales Settings">Inventory Settings</a>
+			</li>
+			<li role="presentation">
+				<a data-toggle="tab" href="#reorder_tab" title="Reorder Level Default">Items Expiry</a>
+			</li>
+            <li role="presentation">
+                <a data-toggle="tab" href="#extra_config_tab" title="Reorder Level Default">Extra Configuration</a>
+            </li>
+
 		</ul>
 
 		<div class="tab-content">
-			<div class="tab-pane fade in active" id="info_tab">
+            <?php
+            if(isset($c_error) && isset($error_det)){
+                ?>
+                <div class="tab-pane fade in active" id="error_tab">
+                    <?php $this->load->view("configs/backup_error",$error_det); ?>
+                </div>
+                <?php
+            }
+            ?>
+			<div class="tab-pane <?=$c_error?'':'fade in active'?>" id="info_tab">
 				<?php $this->load->view("configs/info_config"); ?>
 			</div>
 			<div class="tab-pane" id="general_tab">
@@ -71,9 +98,9 @@
 			<div class="tab-pane" id="reward_tab">
 				<?php $this->load->view("configs/reward_config"); ?>
 			</div>
-			<div class="tab-pane" id="reminder_tab">
+			<!-- <div class="tab-pane" id="reminder_tab">
 				<?php $this->load->view("configs/remind_config"); ?>
-			</div>
+			</div> -->
 			<div class="tab-pane" id="receipt_tab">
 				<?php $this->load->view("configs/receipt_config"); ?>
 			</div>
@@ -89,10 +116,22 @@
 			<div class="tab-pane" id="mailchimp_tab">
 				<?php $this->load->view("configs/mailchimp_config"); ?>
 			</div>
-			
+			<div class="tab-pane" id="inventory_tab">
+				<?php $this->load->view("configs/inventory_settings"); ?>
+			</div>
+			<div class="tab-pane" id="reorder_tab">
+				<?php $this->load->view("configs/reorder_level_settings"); ?>
+			</div>
+            <div class="tab-pane" id="extra_config_tab">
+                <?php
+                $this->load->view("configs/extra_config");
+//                
+                ?>
+            </div>
+
 		</div>
 
 	</div>
-			
-		</div>
+
+</div>
 <?php $this->load->view("partial/footer"); ?>

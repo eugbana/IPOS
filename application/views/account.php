@@ -190,17 +190,30 @@
                     <ul>
 
                         <li>
-                            <a href="<?= site_url(); ?>" class="waves-effect waves-light active"><i class="md md-home"></i><span> Dashboard </span></a>
+                            <a href="<?= site_url(); ?>" class="waves-effect waves-light active"><i class="md md-home"></i><span>Dashboard </span></a>
                         </li>
                         <li>
-
-
                             <a href="<?php echo site_url("reports/account_report"); ?>" class="waves-effect waves-light"><i class="md md-mail"></i><span><?php echo 'Reports' ?></span></a>
                         </li>
                         <li>
-
-
                             <a href="<?php echo site_url("receivings/transfer_history"); ?>" class="waves-effect waves-light"><i class="md md-redeem"></i>Transfers</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url("customers"); ?>" class="waves-effect waves-light"><i class="md md-redeem"></i>Customers</a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url("expense"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/expense") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Expense Management</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url("account/sales_day_book"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/account/sales_day_book") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Sales Day Book</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url("account/purchase_day_book"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/account/purchase_day_book") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Purchase Day Book</span></a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo site_url("profit_and_loss"); ?>" <?php if ($_SERVER['REQUEST_URI'] == "/profit_and_loss") : ?>class="waves-effect waves-light active" <?php else : ?>class="waves-effect waves-light" <?php endif; ?>><i class="<?php echo $module->icon; ?>"></i><span>Profit and Loss</span></a>
                         </li>
 
 
@@ -233,7 +246,7 @@
                             <h4 class="pull-left page-title">Welcome <?= $user_info->first_name . ' ' . $user_info->last_name;  ?> !</h4>
                             <ol class="breadcrumb pull-right">
                                 <!-- <li><a href="#">Moltran</a></li> -->
-                                <li class="active">Dashboard</li>
+                                <li class="active">Accountant/Dashboard</li>
                             </ol>
                         </div>
                     </div>
@@ -246,21 +259,21 @@
                             if ($value['location_id'] != 2) {
                                 continue;
                             }
-                            ?>
+                        ?>
                             <a href="<?php echo site_url('reports/account_report') ?>">
                                 <div class="col-md-6 col-sm-6 col-lg-3">
                                     <div class="mini-stat clearfix bx-shadow bg-info">
-                                        <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/images.ico'; ?>" width="30" height="30" /></span>
+                                        <span class="mini-stat-icon"><img src="<?php echo base_url() . 'images/menubar/reports.png'; ?>" width="30" height="30" /></span>
                                         <div class="mini-stat-info text-right">
                                             <span class="counter"><?php //echo $value['sales_amount']; 
-                                                                        ?></span>
+                                                                    ?></span>
                                             Reports
                                         </div>
                                         <div class="tiles-progress">
                                             <div class="m-t-20">
                                                 <h5 class="text-uppercase text-white m-0"><?php //echo $value['location_name']; 
-                                                                                                ?> <span class="pull-right"><?php //echo $i 
-                                                                                                                                ?></span></h5>
+                                                                                            ?> <span class="pull-right"><?php //echo $i 
+                                                                                                                        ?></span></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -283,8 +296,8 @@
 
             </div> <!-- content -->
 
-            <footer class="footer text-right">
-                <?php echo date('Y') ?> © Infostrategy.
+            <footer class="footer text-center">
+                © 2018 - <?php echo date("Y") ?> <a href="www.istrategytech.com">Powered By Infostrategy.</a>
             </footer>
 
         </div>

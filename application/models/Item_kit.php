@@ -157,9 +157,10 @@ class Item_kit extends CI_Model
 		return $this->db->delete('item_kits');		
 	}
 
-	public function get_search_suggestions($search, $limit = 25)
+	public function get_search_suggestions($search, $limit = 99999)
 	{
 		$suggestions = array();
+		//$this->db->cache_on();
 
 		$this->db->from('item_kits');
 
@@ -186,7 +187,7 @@ class Item_kit extends CI_Model
 		}
 
 		//only return $limit suggestions
-		if(count($suggestions > $limit))
+		if(count($suggestions) > $limit)
 		{
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
@@ -199,6 +200,9 @@ class Item_kit extends CI_Model
 	*/
 	public function search($search, $rows=0, $limit_from=0, $sort='name', $order='asc')
 	{
+
+		//$this->db->cache_on();
+		
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);

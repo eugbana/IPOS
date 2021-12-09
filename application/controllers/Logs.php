@@ -5,8 +5,8 @@ require_once("Secure_Controller.php");
 class Logs extends Secure_Controller {
     public function __construct() {
 		parent::__construct('employees');
-		$this->load->library('item_lib');
-		$this->load->library('sale_lib');
+//		$this->load->library('item_lib');
+//		$this->load->library('sale_lib');
     }
     
     public function index() {

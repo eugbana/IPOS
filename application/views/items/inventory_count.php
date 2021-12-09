@@ -15,14 +15,23 @@
             <a href="javascript:printdoc();">
                 <div class="btn btn-info btn-sm" , id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div>
             </a>
-            <?php echo anchor("items", '<span class="glyphicon glyphicon-back">&nbsp</span> Go Back To Items', array('class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')); ?>
+            <?php //echo anchor("items", '<span class="glyphicon glyphicon-back">&nbsp</span> Go Back To Items', array('class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')); ?>
+            <?php //echo anchor("javascript:window.history.go(-1);", '<span class="glyphicon glyphicon-back">&nbsp</span> Go Back ', array('class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')); ?>
+
+            <!-- <div class="print_hide" id="control_buttons" style="text-align:right"> -->
+                <a href="javascript:window.history.go(-1);">
+                    <div class="btn btn-info btn-sm" id="show_print_button">
+                        <span class="glyphicon glyphicon-arrow-left">&nbsp;Back</span>
+                    </div>
+                </a>
+            <!-- </div> -->
         </div>
 
         <div id="receipt_wrapper">
             <div id="receipt_header">
                 <?php
                 if ($this->config->item('company_logo') != '') {
-                    ?>
+                ?>
                     <div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
                 <?php
                 }
@@ -30,7 +39,7 @@
 
                 <?php
                 if ($this->config->item('receipt_show_company_name')) {
-                    ?>
+                ?>
                     <div id="company_name"><?php echo $this->config->item('company'); ?></div>
                 <?php
                 }
@@ -77,13 +86,14 @@
             <table id="items_count_details" class="table table-bordered table-hover">
                 <thead>
                     <tr style="background-color: #999 !important;">
-                        <th colspan="5">Inventory Data Tracking</th>
+                        <th colspan="6">Inventory Data Tracking</th>
                     </tr>
                     <tr>
-                        <th width="30%">Date</th>
+                        <th width="20%">Date</th>
                         <th width="20%">Employee</th>
                         <th width="20%">In/Out Qty</th>
-                        <th width="20%">Remaining Qty</th>
+                        <th width="10%">Remaining Qty</th>
+                        <th width="10%">Price</th>
                         <th width="30%">Remarks</th>
                     </tr>
                 </thead>
@@ -96,8 +106,25 @@
                     $inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id, $stock_location_id, $start_date, $end_date)->result_array();
 
 
+                    foreach ($inventory_array as $index => $data) {
+
 
                     ?>
+                        <tr>
+                            <td><?php echo $data['trans_date'];  ?></td>
+                            <td><?php echo $data['firstname'] . ' ' . $data['lastname'];  ?></td>
+                            <td style="text-align:center"><?php echo $data['trans_inventory'];  ?></td>
+                            <td style="text-align:center"><?php echo $data['trans_remaining'];  ?></td>
+                            <td style="text-align:center"><?php echo to_currency($data['selling_price']);  ?></td>
+                            <td ><?php echo $data['trans_comment'];  ?></td>
+                        </tr>
+
+
+
+                    <?php
+                    }
+                    ?>
+
                 </tbody>
             </table>
 
@@ -117,7 +144,7 @@
     $(document).ready(function() {
 
 
-        display_stock(<?php echo $stock_location_id; ?>);
+        //display_stock(<?php echo $stock_location_id; ?>);
     });
 
     function display_stock(location_id) {

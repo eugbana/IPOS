@@ -193,8 +193,8 @@ class Receiving_lib
 		}
 
 		$insertkey = $maxkey + 1;
-		$item_info = $this->CI->Item->get_info($item_id, $item_location);
-		
+		$item_info = $this->CI->Item->get_info($item_id);
+
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;
 		$item = array(
@@ -216,6 +216,8 @@ class Receiving_lib
 				'discount' => $discount,
 				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 				'price' => $price,
+				'unit_price' => $item_info->unit_price,
+				'whole_price' => $item_info->whole_price,
 				// 'unit_price' => $unit_price ? $unit_price : $item_info->unit_price, //no longer needed since updating price has been fixed in items section.
 				'receiving_quantity' => $receiving_quantity != NULL ? $receiving_quantity : $item_info->receiving_quantity,
 				'total' => $this->get_item_total($quantity, $price, $discount)
@@ -237,20 +239,37 @@ class Receiving_lib
 	}
 
 	// public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $batch_no, $expiry, $unit_price)
-	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $batch_no, $expiry)
+	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $batch_no, $expiry, $receiving_quantity)
 	{
+
+
+		//array records are identified by $insertkey and item_id is just another field.
+
+
 		$items = $this->get_cart();
 		if (isset($items[$line])) {
 			$line = &$items[$line];
+			//fetch price again
+			$item_info = $this->CI->Item->get_info($line['item_id']);
+			$cur_quant = $this->CI->Item_quantity->get_item_quantity($line['item_id'], $line['item_location'])->quantity;
+			//check a new price has been changed since this item was added on the cart
+			$price = $item_info->cost_price;
+			// if ($updated_price > 0) {
+			// 	$price = $updated_price;
+			// }
 			$line['description'] = $description;
 			$line['serialnumber'] = $serialnumber;
 			$line['quantity'] = $quantity;
 			$line['discount'] = $discount;
 			$line['price'] = $price;
+			$line['unit_price'] = $item_info->unit_price;
+			$line['whole_price'] = $item_info->whole_price;
 			$line['batch_no'] = $batch_no;
+			$line['in_stock'] = $cur_quant;
 			$line['expiry'] = $expiry;
+			$line['receiving_quantity'] = $receiving_quantity;
 			$line['total'] = $this->get_item_total($quantity, $price, $discount);
-			// $line['unit_price'] = $unit_price;
+			//$line['unit_price'] = $unit_price;
 			$this->set_cart($items);
 		}
 
@@ -311,13 +330,13 @@ class Receiving_lib
 		}
 	}
 
-	public function copy_entire_receiving($receiving_id)
+	public function copy_entire_receiving($receiving_id, $use_cost_price = FALSE)
 	{
 		$this->empty_cart();
 		$this->remove_supplier();
 
 		foreach ($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row) {
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $use_cost_price ? $row->item_cost_price : $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE, $row->batch_no, $row->expiry_date);
 		}
 
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);

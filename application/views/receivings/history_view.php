@@ -31,13 +31,14 @@
                             <tr>
                                 <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;"> S/N</th>
                                 <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Item</th>
-                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Quantity</th>
-                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Cost </th>
-                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Price </th>
+
+                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Cost Price </th>
+                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Retail Price </th>
                                 <!-- <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Unit Price</th> -->
                                 <!-- <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Discount Percent</th> -->
 
-                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Receiving Quantity</th>
+                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Quantity Ordered</th>
+                                <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Quantity Received</th>
                                 <th style="color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Cost Total</th>
                             </tr>
                         </thead>
@@ -46,14 +47,15 @@
                                 <tr>
                                     <td><?php echo ($i += 1); ?></td>
                                     <td><?php echo $val->name; ?></td>
-                                    <td><?php echo $val->quantity_purchased; ?></td>
+
                                     <td><?php echo to_currency($val->item_cost_price); ?></td>
                                     <td><?php echo to_currency($val->item_unit_price); ?></td>
                                     <!-- <td><?php //echo $val->discount_percent; 
-                                                    ?></td> -->
+                                                ?></td> -->
 
                                     <td><?php echo $val->receiving_quantity; ?></td>
-                                    <td><?php echo to_currency($val->receiving_quantity * $val->item_cost_price); ?></td>
+                                    <td><?php echo $val->quantity_purchased; ?></td>
+                                    <td><?php echo to_currency($val->quantity_purchased * $val->item_cost_price); ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

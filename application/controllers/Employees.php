@@ -45,6 +45,26 @@ class Employees extends Persons
 	}
 
 	/*
+	AJAX call to verify if an phone address already exists
+	*/
+	public function ajax_check_phone()
+	{
+		$exists = $this->Employee->check_phone_exists(strtolower($this->input->post('phone_number')), $this->input->post('person_id'));
+
+		echo !$exists ? 'true' : 'false';
+	}
+
+	/*
+	AJAX call to verify if an email address already exists
+	*/
+	public function ajax_check_email()
+	{
+		$exists = $this->Employee->check_email_exists(strtolower($this->input->post('email')), $this->input->post('person_id'));
+
+		echo !$exists ? 'true' : 'false';
+	}
+
+	/*
 	Loads the employee edit form
 	*/
 	public function view($employee_id = -1)
@@ -55,7 +75,8 @@ class Employees extends Persons
 		}
 
 		$data['person_info'] = $person_info;
-		$data['selected_role'] = $person_info->roles;
+		$data['selected_role'] = $person_info->role;
+		$data['selected_branch'] = $person_info->branch_id;
 		/*$roles = array('' => $this->lang->line('employees_roles'),'admin_dash' => 'Admin','cashier' => 'Cashier','invent' => 'Inventory Manager','ceo' => 'CEO','lab_cashier' => 'Laboratory Cashier','lab_account' => 'Laboratory Accountant','lab_result' => 'Laboratory Scientist','custom' => 'Custom');
 		foreach($suppliersd as $row => $value)
 		{
@@ -65,8 +86,14 @@ class Employees extends Persons
 		foreach ($this->Supplier->get_all_roles()->result_array() as $row) {
 			$roles[$this->xss_clean($row['id'])] = $this->xss_clean($row['role']);
 		}
-		$branches = array('' => $this->lang->line('items_none'));
-		foreach ($this->Supplier->get_all_locations()->result_array() as $row) {
+		// $branches = array('' => $this->lang->line('items_none'));
+		// foreach ($this->Supplier->get_all_locations()->result_array() as $row) {
+		// 	$branches[$this->xss_clean($row['location_id'])] = $this->xss_clean($row['location_name']);
+		// }
+
+		// $branches = array('' => $this->lang->line('items_none'));
+		$branches = array();
+		foreach ($this->Supplier->get_default_location(2)->result_array() as $row) {
 			$branches[$this->xss_clean($row['location_id'])] = $this->xss_clean($row['location_name']);
 		}
 
@@ -78,48 +105,53 @@ class Employees extends Persons
 
 			$modules[] = $module;
 		}
-		$newmodule = array();
-
-		$newmodules[0]->module_id = items;
-		$newmodules[1]->module_id = receivings;
-		$newmodules[2]->module_id = suppliers;
+//		$newmodule = array();
+        $newmodules = [new stdClass(),new stdClass(),new stdClass()];
+		$newmodules[0]->module_id = "items";
+		$newmodules[1]->module_id = "receivings";
+		$newmodules[2]->module_id = "suppliers";
 		foreach ($newmodules as $module) {
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
 
 			$newmodule[] = $module;
 		}
-		$cashiermodules[0]->module_id = sales;
+		$cashiermodules = [new stdClass()];
+		$cashiermodules[0]->module_id = "sales";
 		foreach ($cashiermodules as $module) {
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
 
 			$cashiermodule[] = $module;
 		}
-		$labaccountmodules[0]->module_id = account;
+		$labaccountmodules = [new stdClass()];
+		$labaccountmodules[0]->module_id = "account";
 		foreach ($labaccountmodules as $module) {
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
 
 			$labaccountmodule[] = $module;
 		}
-		$lab_cashiermodules[0]->module_id = laboratory;
-		$lab_cashiermodules[1]->module_id = customers;
+		$lab_cashiermodules = [new stdClass(),new stdClass()];
+		$lab_cashiermodules[0]->module_id = "laboratory";
+		$lab_cashiermodules[1]->module_id = "customers";
 		foreach ($lab_cashiermodules as $module) {
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
 
 			$lab_cashiermodule[] = $module;
 		}
-		$ceomodules[0]->module_id = reports;
+		$ceomodules = [new stdClass()];
+		$ceomodules[0]->module_id = "reports";
 		foreach ($ceomodules as $module) {
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
 
 			$ceomodule[] = $module;
 		}
-		$adminmodules[0]->module_id = employees;
-		$adminmodules[1]->module_id = config;
+		$adminmodules = [new stdClass(),new stdClass()];
+		$adminmodules[0]->module_id = "employees";
+		$adminmodules[1]->module_id = "config";
 		foreach ($adminmodules as $module) {
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
@@ -145,10 +177,14 @@ class Employees extends Persons
 			$permissions[] = $permission;
 		}
 		$data['all_subpermissions'] = $permissions;
+		$data['updating'] = false;
+		if ($employee_id > 0) {
+			$data['updating'] = true;
+		}
 
 		$this->load->view('employees/form', $data);
 	}
-	public function view_assign($employee_id = -1)
+	public function view_assign($employee_id = -1,$data = [])
 	{
 		$person_info = $this->Employee->get_info($employee_id);
 
@@ -171,17 +207,21 @@ class Employees extends Persons
 		$modules = array();
 		$role_input = $this->input->post('role_input') == '' ? $person_info->role : $this->input->post('role_input');
 		//$special_module=$this->sale_lib->get_modulecart();
-		foreach ($this->Module->get_all_modules_role($role_input)->result() as $module) {
+        $already_granted = [];
+//		foreach ($this->Module->get_all_modules_role($role_input)->result() as $module) {
+        foreach ($this->Module->get_all_modules()->result() as $module) {
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
 
 			$modules[] = $module;
+			$already_granted[$module->module_id] = $this->Employee->get_custom_grants($employee_id,$module->module_id);
 		}
 		$newmodule = array();
 
 
 		$data['all_modules'] = $modules;
 		$data['roles'] = $roles;
+		$data['granted'] = $already_granted;
 
 		$permissions = array();
 		foreach ($this->Module->get_all_subpermissions()->result() as $permission) {
@@ -194,6 +234,7 @@ class Employees extends Persons
 		$data['all_subpermissions'] = $permissions;
 		$special_module = $this->Module->get_all_modules_role(1)->result();
 		$data['special_module'] = $special_module;
+		$data['cust_perms'] = $this->Module->get_module_permissions();
 
 		$this->load->view('employees/form_assign_role', $data);
 	}
@@ -262,6 +303,8 @@ class Employees extends Persons
 		$data['final_check'] = $final_check;
 
 
+
+
 		$this->load->view('employees/form', $data);
 	}
 	public function saving($employee_id = -1)
@@ -308,6 +351,11 @@ class Employees extends Persons
 				'country' => $this->input->post('country'),
 				'comments' => $this->input->post('comments'),
 			);
+			$person_info = $this->Employee->get_info($employee_id);
+			foreach (get_object_vars($person_info) as $property => $value) {
+				$person_info->$property = $this->xss_clean($value);
+			}
+
 			$role_permission = $this->input->post('role_permission') == '' ? $person_info->role : $this->input->post('role_permission');
 
 			$special_module = $this->Module->get_all_modules_role($role_permission)->result();
@@ -333,22 +381,29 @@ class Employees extends Persons
 					$grants_data[] = $valueV['permission_id'];
 				}
 			}
+
 			//$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
 
 			//Password has been changed OR first time password set
+			$deleted = 0;
+			if ($this->input->post('deleted')) $deleted = 1;
 			if ($this->input->post('password') != '') {
 				$employee_data = array(
 					'username' => $this->input->post('username'),
-					'role' => $this->input->post('role_permission'),
+					//'role' => $this->input->post('role_permission'),
 					'branch_id' => $this->input->post('branch_id'),
 					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+					'auth_code' => $this->input->post('auth_code'),
+					'deleted' => $deleted,
 					'hash_version' => 2
 				);
 			} else //Password not changed
 			{
 				$employee_data = array(
 					'username' => $this->input->post('username'),
-					'role' => $this->input->post('role_permission'),
+					//'role' => $this->input->post('role_permission'),
+					'auth_code' => $this->input->post('auth_code'),
+					'deleted' => $deleted,
 				);
 			}
 
@@ -485,12 +540,13 @@ class Employees extends Persons
 	*/
 	public function save($employee_id = -1)
 	{
-		if ($this->input->post('current_password') != '') {
+		if ($this->input->post('current_password') != '') { //there is no current password field in the new/update employee form. it's only on the change password form. so this part will only execut when the employee is updating his/here password
 			if ($this->Employee->check_password($this->input->post('username'), $this->input->post('current_password'))) {
 				$employee_data = array(
 					'username' => $this->input->post('username'),
 					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-					'hash_version' => 2
+					'hash_version' => 2,
+					'auth_code' => $this->input->post('auth_code')
 				);
 
 				if ($this->Employee->change_password($employee_data, $employee_id)) {
@@ -524,31 +580,40 @@ class Employees extends Persons
 				'zip' => $this->input->post('zip'),
 				'country' => $this->input->post('country'),
 				'comments' => $this->input->post('comments'),
+
 			);
 			//$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
 
 			//Password has been changed OR first time password set
+			$deleted = 0;
+			if ($this->input->post('deleted')) $deleted = 1;
+
 			if ($this->input->post('password') != '') {
 				$employee_data = array(
 					'username' => $this->input->post('username'),
 					'roles' => $this->input->post('roles'),
 					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-					'hash_version' => 2
+					'hash_version' => 2,
+					'auth_code' => $this->input->post('auth_code'),
+					'deleted' => $deleted,
 				);
 			} else //Password not changed
 			{
 				$employee_data = array(
 					'username' => $this->input->post('username'),
 					'roles' => $this->input->post('roles'),
+					'auth_code' => $this->input->post('auth_code'),
+					'deleted' => $deleted,
 				);
 			}
+
 
 			if ($this->Employee->save_employee($person_data, $employee_data, $employee_id)) {
 				// New employee
 				if ($employee_id == -1) {
 					echo json_encode(array(
 						'success' => TRUE,
-						'message' => $this->lang->line('employees_successful_adding') . ' ' . $first_name . ' ' . $last_name,
+						'message' => $this->lang->line('employees_successful_adding') . $first_name . ' ' . $last_name,
 						'id' => $this->xss_clean($employee_data['person_id'])
 					));
 				} else // Existing employee
@@ -572,8 +637,12 @@ class Employees extends Persons
 	public function save_employee_role($employee_id = -1)
 	{
 
-
 		$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
+		if(empty($grants_data)){
+		     redirect(base_url('employees/view_assign/'.$employee_id));
+        }
+		// created the grants module array  :::Lekan
+		$grants_module = $this->input->post('grantsPMod') != NULL ? $this->input->post('grantsPMod') : array();
 
 		if (count($grants_data) > 1) {
 			$grants_data = array_unique($grants_data);
@@ -590,21 +659,21 @@ class Employees extends Persons
 		// print_r($grants_data);
 		// echo "</pre>";
 		// exit;
-
-		if ($this->Employee->save_employee_role($employee_data, $grants_data, $employee_id)) {
+        // added the grants module array   :::Lekan
+		if ($this->Employee->save_employee_role($employee_data, $grants_data,$grants_module, $employee_id)) {
 			// New employee
 			if ($employee_id == -1) {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_adding') . ' ', 'id' => $this->xss_clean($employee_data['person_id'])));
 			} else {
 				// Existing employee
-				$data = array('success' => TRUE, 'message' => $this->lang->line('employees_successful_updating') . ' ', 'id' => $employee_id);
-				$this->view_assign($employee_id, $data);
+				$data = array('success' => "Role and permissions updated for the employee", 'id' => $employee_id);
+				$this->view_assign($employee_id,$data);
 				// echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_updating') . ' ' , 'id' => $employee_id));
 			}
 		} else {
 			// Failure
-			$data = array('success' => FALSE, 'message' => $this->lang->line('employees_error_adding_updating') . ' ', 'id' => -1);
-			$this->view_assign($employee_id, $data);
+			$data = array('error' => $this->lang->line('employees_error_adding_updating') . ' ', 'id' => -1);
+			$this->view_assign($employee_id,$data);
 			// echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_error_adding_updating') . ' ' , 'id' => -1));
 		}
 	}
@@ -669,9 +738,6 @@ class Employees extends Persons
 	*/
 	public function change_password($employee_id = -1)
 	{
-
-
-
 		$this->load->view('update_profile', array());
 	}
 	public function change_password1($employee_id = -1)

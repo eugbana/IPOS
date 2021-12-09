@@ -1,6 +1,17 @@
-<?php $this->load->view("partial/header_print"); ?>
+<?php
+//var_dump($this->_ci_cached_vars);
+//eixt(0);
+$this->load->view("partial/header_print"); ?>
 
 <style>
+	table {
+		table-layout: fixed;
+	}
+
+	td {
+		word-wrap: break-word;
+	}
+
 	#receipt_wrapper {
 		width: 100% !important;
 	}
@@ -30,7 +41,7 @@
 	td.first-col,
 	td.second-col,
 	td.forth-col {
-		word-wrap: break-word;
+		/* word-wrap: break-word; */
 		text-align: justify;
 		text-justify: inter-word;
 	}
@@ -77,12 +88,12 @@ if (isset($error_message)) {
 
 		<div class="print_hide" id="control_buttons" style="text-align:right">
 			<a href="javascript:printdoc();">
-				<div class="btn btn-info btn-sm" , id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div>
+				<div class="btn btn-info btn-sm"  id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div>
 			</a>
 			<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
 			<?php if (isset($customer_email) && !empty($customer_email)) : ?>
 				<a href="javascript:void(0);">
-					<div class="btn btn-info btn-sm" , id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . $this->lang->line('sales_send_receipt'); ?></div>
+					<div class="btn btn-info btn-sm"  id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . $this->lang->line('sales_send_receipt'); ?></div>
 				</a>
 			<?php endif; ?>
 			<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')); ?>
@@ -94,5 +105,11 @@ if (isset($error_message)) {
 
 	</div>
 </div>
+
+<script type="text/javascript">
+	window.onafterprint = (event) => {
+		 window.location = '<?=base_url("sales")?>';
+	};
+</script>
 
 <?php $this->load->view("partial/footer"); ?>

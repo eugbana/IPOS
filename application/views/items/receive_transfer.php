@@ -347,7 +347,7 @@
 	});
 </script>
 
-<div id="userModal" class="modal fade">
+<!-- <div id="userModal" class="modal fade">
 	<div class="modal-dialog">
 		<?php echo form_open('Account/lab_account_sales', array('id' => 'item_form', 'enctype' => 'multipart/form-data')); ?>
 		<div class="modal-content">
@@ -374,5 +374,5 @@
 		<?php echo form_close(); ?>
 	</div>
 
-</div>
+</div> -->
 <?php $this->load->view("partial/footer"); ?>

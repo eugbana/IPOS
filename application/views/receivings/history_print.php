@@ -62,13 +62,12 @@
                 <table class="table table-bordered table-hover" id="receipt_items">
                     <tr>
                         <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">S/N.</th>
+                        <th style="width:30%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('items_item'); ?></th>
                         <th style="width:15%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Item No.</th>
-                        <th style="width:40%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('items_item'); ?></th>
-                        <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php 'Cost'; //echo $this->lang->line('common_price'); 
-                                                                                                                ?></th>
-                        <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php 'Price'; //echo $this->lang->line('common_price'); 
-                                                                                                                ?></th>
-                        <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+                        <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Cost Price</th>
+                        <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Retail Price</th>
+                        <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Quantity Ordered</th>
+                        <th style="width:10%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;">Quantity Received</th>
                         <th style="width:15%; color: #495057; background-color: #e9ecef;border-color: #dee2e6;"><?php echo 'Cost Total'; ?></th>
 
                         <!-- <th>Receiving Quantity</th> -->
@@ -83,11 +82,14 @@
 
                             <tr>
                                 <td><?php echo $sn++; ?></td>
-                                <td><?php echo $val->item_number; ?></td>
                                 <td><?php echo $val->name; ?></td>
+                                <td><?php echo $val->item_number; ?></td>
                                 <td><?php echo $val->item_cost_price; ?></td>
                                 <td><?php echo $val->item_unit_price; ?></td>
+                                <!-- <td><?php //echo $val->item_unit_price; 
+                                            ?></td> -->
                                 <td><?php echo abs($val->quantity_purchased); ?></td>
+                                <td><?php echo abs($val->receiving_quantity); ?></td>
                                 <td>&#8358;<?php echo number_format(abs($val->item_cost_price * ($val->quantity_purchased)), 2); ?></td>
 
 
@@ -96,8 +98,8 @@
 
 
                         <tr>
-                            <th colspan="4" style='text-align:right;border-top:2px solid #000000;'>Grand Cost Total</th>
-                            <td colspan="2" style='border-top:2px solid #000000;'>
+                            <th colspan="5" style='text-align:right;border-top:2px solid #000000;'>Grand Cost Total</th>
+                            <td colspan="3" style='border-top:2px solid #000000;'>
                                 <div class="total-value"><?php echo to_currency(abs($sumTotal)); ?></div>
                             </td>
                         </tr>
@@ -107,12 +109,12 @@
                                 <div class="total-value"><?php echo $meta->payment_type; ?></div>
                             </td>
                         </tr> -->
-                        <tr>
+                        <!-- <tr>
                             <th colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_amount_tendered'); ?></th>
                             <td colspan="2">
                                 <div class="total-value"><?php echo to_currency(abs($sumTotal)); ?></div>
                             </td>
-                        </tr>
+                        </tr> -->
 
                         <!-- <tr>
                             <th colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></th>

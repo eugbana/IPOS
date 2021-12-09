@@ -1,7 +1,13 @@
 <?php $this->load->view("partial/header"); ?>
-
+<script type="text/javascript" src="dataTables/dataTables.min.js"></script>
+<script type="text/javascript" src="dataTables/Buttons-1.7.1/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="dataTables/Buttons-1.7.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="dataTables/Buttons-1.7.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="dataTables/JSZip-2.5.0/jszip.min.js"></script>
+<script type="text/javascript" src="dataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+	    var first_view = true;
 		$('#generate_barcodes').click(function() {
 			window.open(
 				'index.php/items/generate_barcodes/' + table_support.selected_ids().join(':'),
@@ -27,15 +33,29 @@
 		$("#stock_location").change(function() {
 			table_support.refresh();
 		});
+        $('#export-all').on('click',function () {
+            $('#s-table-holder').toggle()
+            $('#table_holder').toggle()
+            if(first_view){
+                $(this).html("Back")
+                first_view = false;
+            }else{
+                $(this).html('<span class="glyphicon glyphicon-export">&nbsp;</span> Back')
+                first_view = true;
+            }
+        });
 
-		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+		<?php
+//        $this->load->view('partial/bootstrap_tables_locale');
+		?>
 
 		table_support.init({
 			employee_id: <?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>,
 			resource: '<?php echo site_url($controller_name); ?>',
 			headers: <?php echo $table_headers; ?>,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
-			uniqueId: 'items.item_id',
+			// uniqueId: 'items.item_id',
+
 			queryParams: function() {
 				return $.extend(arguments[0], {
 					start_date: start_date,
@@ -45,6 +65,30 @@
 				});
 			},
 			onLoadSuccess: function(response) {
+			    // $('#second_table').DataTable();
+                var all_resp = response.all;
+                if(all_resp){
+                    $('#second_table').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'csv', 'excel', 'pdf'
+                        ],
+                        "bSort": false,
+                        "destroy": true,
+                        "autoWidth": false,
+                        data: all_resp,
+                        columns:[
+                            {"data":"name"},
+                            {"data":"item_number"},
+                            {"data":"quantity"},
+                            {"data":"category"},
+                            {"data":"pack"},
+                            {"data":"cost_price"},
+                            {"data":"whole_price"},
+                            {"data":"unit_price"}
+                        ]
+                    });
+                }
 				$('a.rollover').imgPreview({
 					imgCSS: {
 						width: 200
@@ -53,7 +97,7 @@
 						top: 10,
 						left: -210
 					}
-				})
+				});
 			}
 		});
 	});
@@ -74,6 +118,9 @@
 								<span class="glyphicon glyphicon-new-window">&nbsp;</span><?php echo 'Request'; ?>
 							</button></a>
 
+						<!-- <button class='btn btn-info btn-sm pull-right' title='Print current items'>
+							<span class="glyphicon glyphicon-print">&nbsp;</span>Print
+						</button> -->
 						<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name . "/excel_import"); ?>' title='<?php echo $this->lang->line('items_import_items_excel'); ?>'>
 							<span class="glyphicon glyphicon-import">&nbsp;</span><?php echo $this->lang->line('common_import_excel'); ?>
 						</button>
@@ -93,7 +140,7 @@
 						<!--<button id="apply_vat" class="btn btn-default btn-sm print_hide">
 							<span class="glyphicon glyphicon-credit-card">&nbsp;</span> Toggle Vat
 						</button> -->
-						<button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" , data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' , data-href='<?php echo site_url($controller_name . "/bulk_edit"); ?>' title='<?php echo $this->lang->line('items_edit_multiple_items'); ?>'>
+						<button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide"  data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' , data-href='<?php echo site_url($controller_name . "/bulk_edit"); ?>' title='<?php echo $this->lang->line('items_edit_multiple_items'); ?>'>
 							<span class="glyphicon glyphicon-edit">&nbsp;</span><?php echo $this->lang->line("items_bulk_edit"); ?>
 						</button>
 						<button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?php echo site_url($controller_name . "/generate_barcodes"); ?>' title='<?php echo $this->lang->line('items_generate_barcodes'); ?>'>
@@ -102,30 +149,45 @@
 						<?php echo form_input(array('name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker')); ?>
 						<?php echo form_multiselect('filters[]', $filters, '', array('id' => 'filters', 'class' => 'selectpicker show-menu-arrow', 'data-none-selected-text' => $this->lang->line('common_none_selected_text'), 'data-selected-text-format' => 'count > 1', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit')); ?>
 						<?php
-						if (count($stock_locations) > 1) {
+						if(isset($stock_locations) && count($stock_locations) > 1) {
 							echo form_dropdown('stock_location', $stock_locations, $stock_location, array('id' => 'stock_location', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit'));
 						} else {
 							//echo form_hidden('stock_location', $stock_location, array('id' => "stock_location"));
-							?>
+						?>
 							<input type="hidden" name="stock_location" id="stock_location" value="<?= $stock_location ?>">
 						<?php
 						}
 						?>
 					</div>
 				</div>
+                <button class='btn btn-default btn-sm' id="export-all" title='Export all to Excel in background'>
+                    <span class="glyphicon glyphicon-export">&nbsp;</span><?php echo 'Export All'; ?>
+                </button>
 			</div>
 			<div class="row">
 				<div id="table_holder">
 					<table id="table"></table>
 				</div>
 			</div>
+            <div class="row mt-5" id="s-table-holder" style="display: none">
+                <table id="second_table" class="table table-bordered table-primary mt-4">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Item number</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                        <th>Pack</th>
+                        <th>Cost Price ()</th>
+                        <th>Whole Price</th>
+                        <th>Unit Price</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
 
 			<?php echo form_open($controller_name . "/cancel", array('id' => 'butons_form')); ?>
 			<?php echo form_close(); ?>
-
-
-
-
 		</div> <!-- container -->
 
 	</div> <!-- content -->

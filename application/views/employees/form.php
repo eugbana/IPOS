@@ -44,7 +44,7 @@
 							'name' => 'username',
 							'id' => 'username',
 							'class' => 'form-control input-sm',
-							'value' => $username
+							'value' => $person_info->username
 						)
 					); ?>
 				</div>
@@ -85,22 +85,51 @@
 			</div>
 		</div>
 
+		<div class="form-group form-group-sm">
+			<?php echo form_label('Authorization Code', 'auth_code', array('class' => 'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-look"></span></span>
+					<?php echo form_input(
+						array(
+							'name' => 'auth_code',
+							'id' => 'auth_code',
+							'class' => 'form-control input-sm',
+							'maxlength' => 20,
+							'value' => $person_info->auth_code
+
+
+						)
+					); ?>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+
 		<div class="form-group form-group-sm" style="margin-top:10px">
+			<?php echo form_label('De-activated', 'deleted', array('class' => 'control-label col-xs-3')); ?>
+			<div class='col-xs-4'>
+				<?php echo form_checkbox("deleted",  1, ($person_info->deleted) == 1 ? TRUE : FALSE); ?>
+			</div>
+		</div>
+		<!-- <div class="form-group form-group-sm" style="margin-top:10px">
 			<?php echo form_label('Role', 'role_permission', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_dropdown('role_permission', $roles, $selected_role, array('id' => 'role_permission', 'class' => 'form-control')); ?>
 			</div>
-		</div>
+		</div> -->
 		<div class="form-group form-group-sm" style="margin-top:10px">
 			<?php echo form_label('Branch', 'Branch', array('class' => 'control-label col-xs-3')); ?>
-			<div class='col-xs-4'>
-				<?php echo form_dropdown('branch_id', $branches, $selected_role, array('id' => 'branch_id', 'class' => 'form-control')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_dropdown('branch_id', $branches, $selected_branch, array('id' => 'branch_id', 'class' => 'form-control')); ?>
 			</div>
 		</div>
-		<?php
-		//sprint_r($final_check);
+		<?php echo form_hidden("employee_id", ($person_info->person_id) ? $person_info->person_id : -1); ?>
 
-		?>
 	</div>
 
 
@@ -120,42 +149,42 @@
 			ignore: []
 		});
 
-		$.validator.addMethod("module", function(value, element) {
-			var result = $("#permission_list input").is(":checked");
-			$(".module").each(function(index, element) {
-				var parent = $(element).parent();
-				var checked = $(element).is(":checked");
-				if ($("ul", parent).length > 0 && result) {
-					result &= !checked || (checked && $("ul > li > input:checked", parent).length > 0);
-				}
-			});
-			return result;
-		}, '<?php echo $this->lang->line('employees_subpermission_required'); ?>');
+		// $.validator.addMethod("module", function(value, element) {
+		// 	var result = $("#permission_list input").is(":checked");
+		// 	$(".module").each(function(index, element) {
+		// 		var parent = $(element).parent();
+		// 		var checked = $(element).is(":checked");
+		// 		if ($("ul", parent).length > 0 && result) {
+		// 			result &= !checked || (checked && $("ul > li > input:checked", parent).length > 0);
+		// 		}
+		// 	});
+		// 	return result;
+		// }, '<?php echo $this->lang->line('employees_subpermission_required'); ?>');
 
-		$("ul#permission_list > li > input[name='grants[]']").each(function() {
-			var $this = $(this);
-			$("ul > li > input", $this.parent()).each(function() {
-				var $that = $(this);
-				var updateCheckboxes = function(checked) {
-					$that.prop("disabled", !checked);
-					!checked && $that.prop("checked", false);
-				}
-				$this.change(function() {
-					updateCheckboxes($this.is(":checked"));
-				});
-				updateCheckboxes($this.is(":checked"));
-			});
-		});
+		// $("ul#permission_list > li > input[name='grants[]']").each(function() {
+		// 	var $this = $(this);
+		// 	$("ul > li > input", $this.parent()).each(function() {
+		// 		var $that = $(this);
+		// 		var updateCheckboxes = function(checked) {
+		// 			$that.prop("disabled", !checked);
+		// 			!checked && $that.prop("checked", false);
+		// 		}
+		// 		$this.change(function() {
+		// 			updateCheckboxes($this.is(":checked"));
+		// 		});
+		// 		updateCheckboxes($this.is(":checked"));
+		// 	});
+		// });
 
-		$("#role_permission").on("change", function() {
-			//var role=$("#username").val();
-			//$('#role_submission').submit();
-			$("#role_submission").submit();
-			//$("#receiving_quantity").val(role);
-			//$.post('<?php echo site_url($controller_name . "/set_role"); ?>', {role: role});
+		//$("#role_permission").on("change", function() {
+		//var role=$("#username").val();
+		//$('#role_submission').submit();
+		//$("#role_submission").submit();
+		//$("#receiving_quantity").val(role);
+		//$.post('<?php echo site_url($controller_name . "/set_role"); ?>', {role: role});
 
-			//alert('HEllo World'); 
-		});
+		//alert('HEllo World'); 
+		////});
 
 		$('#employee_form').validate($.extend({
 			submitHandler: function(form) {
@@ -178,7 +207,7 @@
 				password: {
 					<?php
 					if ($person_info->person_id == "") {
-						?>
+					?>
 						required: true,
 					<?php
 					}
@@ -188,11 +217,32 @@
 				repeat_password: {
 					equalTo: "#password"
 				},
-				email: "email"
+				// email: "email",
+				email: {
+					remote: {
+						url: "<?php echo site_url($controller_name . '/ajax_check_email') ?>",
+						type: "post",
+						data: $.extend(csrf_form_base(), {
+							"person_id": "<?php echo $person_info->person_id; ?>",
+							// email is posted by default
+						})
+					}
+				},
+				phone_number: {
+					remote: {
+						url: "<?php echo site_url($controller_name . '/ajax_check_phone') ?>",
+						type: "post",
+						data: $.extend(csrf_form_base(), {
+							"person_id": "<?php echo $person_info->person_id; ?>",
+							// phone is posted by default
+						})
+					}
+				}
 			},
 			messages: {
 				first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
 				last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
+
 				username: {
 					required: "<?php echo $this->lang->line('employees_username_required'); ?>",
 					minlength: "<?php echo $this->lang->line('employees_username_minlength'); ?>"
@@ -201,7 +251,7 @@
 				password: {
 					<?php
 					if ($person_info->person_id == "") {
-						?>
+					?>
 						required: "<?php echo $this->lang->line('employees_password_required'); ?>",
 					<?php
 					}
@@ -211,7 +261,9 @@
 				repeat_password: {
 					equalTo: "<?php echo $this->lang->line('employees_password_must_match'); ?>"
 				},
-				email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
+				// email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
+				email: "<?php echo $this->lang->line('customers_email_duplicate'); ?>",
+				phone_number: "Phone number already exists",
 			}
 		}, form_support.error));
 	});

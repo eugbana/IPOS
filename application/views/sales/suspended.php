@@ -12,14 +12,14 @@
 			}
 			?>
 			<th><?php echo $this->lang->line('sales_customer'); ?></th>
-			<th><?php echo $this->lang->line('sales_comments'); ?></th>
+			<th>Sale Amount</th>
+			<!-- <th><?php echo $this->lang->line('sales_comments'); ?></th> -->
 			<th><?php echo $this->lang->line('sales_unsuspend_and_delete'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
-		foreach ($suspended_sales as $suspended_sale)
-		{
+		foreach ($suspended_sales as $suspended_sale){
 		?>
 			<tr>
 				<td><?php echo $suspended_sale['sale_id'];?></td>
@@ -47,7 +47,8 @@
 					}
 					?>
 				</td>
-				<td><?php echo $suspended_sale['comment'];?></td>
+				<td><?php echo to_currency($suspended_sale['price']);?></td>
+				<!-- <td><?php echo $suspended_sale['comment'];?></td> -->
 				<td>
 					<?php echo form_open('sales/unsuspend');
 						echo form_hidden('suspended_sale_id', $suspended_sale['suspended_sale_id']);
@@ -61,3 +62,5 @@
 		?>
 	</tbody>
 </table>
+
+

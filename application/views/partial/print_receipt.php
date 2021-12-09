@@ -59,6 +59,11 @@ function printdoc()
 	else
 	{
 		window.print();
+		// window.location = 'index.php';
+		// 	console.log('hey');
+		// setTimeout(() => {
+		// 	console.log('uuu')
+		// }, 1000);
 	}
 }
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_available_points"] = "Available Points";
 $lang["wholesale"] = "WholeSale";
@@ -93,7 +93,7 @@ $lang["sales_price"] = "Price";
 $lang["sales_print_after_sale"] = "Print after sale";
 $lang["sales_quantity"] = "Qty.";
 $lang['sales_unit_price'] = "Retail Price";
-$lang["sales_quantity_less_than_reorder_level"] = "Warning, Desired Quantity is below Minimum Purchase level";
+$lang["sales_quantity_less_than_reorder_level"] = "Warning, Quantity is below Reorder level. You can still process the sale, but inform inventory officer to update the item";
 $lang["sales_quantity_less_than_zero"] = "Warning, Desired Quantity is Insufficient. You can still process the sale, but check your inventory";
 $lang["sales_quote"] = "Quote";
 $lang["sales_quote_number"] = "Quote Number";
@@ -108,7 +108,7 @@ $lang["sales_remove_customer"] = "Remove Customer";
 $lang["sales_return"] = "Return";
 $lang["sales_rewards"] = "Reward Points";
 $lang["sales_rewards_balance"] = "Reward Points Balance";
-$lang["sales_sale"] = "Sale";
+$lang["sales_sale"] = "Sales";
 $lang["sales_sale_by_invoice"] = "Sale by Invoice";
 $lang["sales_sale_for_customer"] = "Customer:";
 $lang["sales_sale_time"] = "Time";

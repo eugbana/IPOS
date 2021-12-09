@@ -1,0 +1,823 @@
+DEBUG - 2020-03-07 18:33:04 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:33:04 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:33:05 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:33:05 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:33:05 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:33:05 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:33:05 --> Total execution time: 0.9438
+DEBUG - 2020-03-07 18:34:35 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:34:35 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:34:35 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:34:35 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:34:36 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:34:36 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:34:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:34:36 --> Total execution time: 1.6942
+DEBUG - 2020-03-07 18:35:33 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:35:33 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:35:33 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:35:33 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:35:34 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:34 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:34 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:34 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:35:36 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:35:36 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:35:36 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 18:36:05 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:36:05 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:36:05 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:36:06 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:36:06 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:36:06 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 18:36:18 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:36:18 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:36:19 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:19 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:36:20 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:36:20 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:36:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 18:36:25 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:36:25 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:36:25 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:36:26 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:36:26 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:36:26 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 18:37:41 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:37:41 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:37:41 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:37:42 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:37:42 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:37:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 18:38:13 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:38:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:38:13 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:38:14 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:38:14 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:14 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:14 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:14 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:38:15 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:38:15 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:38:15 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+ERROR - 2020-03-07 19:38:15 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Reports.php 969
+ERROR - 2020-03-07 19:38:15 --> Could not find the language line "reports_confirm_delete (TBD)"
+DEBUG - 2020-03-07 19:38:15 --> Total execution time: 2.2764
+DEBUG - 2020-03-07 18:38:46 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:38:46 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:38:46 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:38:47 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:38:47 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:47 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:47 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:47 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:38:48 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:38:48 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:38:48 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+ERROR - 2020-03-07 19:39:08 --> Could not find the language line "reports_confirm_delete (TBD)"
+DEBUG - 2020-03-07 19:39:08 --> Total execution time: 21.5542
+DEBUG - 2020-03-07 18:39:20 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:39:20 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:39:20 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:39:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:39:20 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:39:21 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:39:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:39:30 --> Total execution time: 10.2648
+DEBUG - 2020-03-07 18:41:08 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:41:08 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:41:08 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:41:09 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:41:09 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:41:09 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:41:19 --> Total execution time: 10.3402
+DEBUG - 2020-03-07 18:45:50 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:45:50 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:45:50 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:45:50 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:45:50 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:50 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:50 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:50 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:45:51 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:45:51 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:45:51 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 18:45:59 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:45:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:46:00 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:46:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:46:01 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:46:01 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:46:01 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+ERROR - 2020-03-07 19:46:18 --> Could not find the language line "reports_confirm_delete (TBD)"
+DEBUG - 2020-03-07 19:46:18 --> Total execution time: 28.3408
+DEBUG - 2020-03-07 18:47:21 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:47:21 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:47:21 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:47:21 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:47:22 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:47:22 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:47:22 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:47:35 --> Total execution time: 13.8707
+DEBUG - 2020-03-07 18:48:56 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:48:56 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:48:57 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:48:58 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:48:59 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:48:59 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:48:59 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:48:59 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:49:00 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:49:00 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:49:01 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:49:17 --> Total execution time: 21.2945
+DEBUG - 2020-03-07 18:51:00 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:51:00 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:51:03 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:51:06 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:51:07 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:07 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:07 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:07 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:51:10 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:51:10 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:51:11 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:51:28 --> Total execution time: 28.4535
+DEBUG - 2020-03-07 18:52:40 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 18:52:40 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 18:52:41 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 18:52:41 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+DEBUG - 2020-03-07 18:52:42 --> Tracking_lib class already loaded. Second attempt ignored.
+ERROR - 2020-03-07 18:52:42 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 19:52:42 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 19:52:55 --> Total execution time: 14.8546
+DEBUG - 2020-03-07 20:15:06 --> UTF-8 Support Enabled
+DEBUG - 2020-03-07 20:15:07 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2020-03-07 20:15:09 --> Encryption: Auto-configured driver 'openssl'.
+ERROR - 2020-03-07 20:15:09 --> Severity: Warning --> socket_connect(): Host lookup failed [11001]: No such host is known.
+ C:\wamp64\www\ipos\vendor\ins0\google-measurement-php-client\src\Racecore\GATracking\Client\Adapter\Socket.php 32
+ERROR - 2020-03-07 20:15:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:10 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:10 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:20 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 52
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 54
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> Invalid argument supplied for foreach() C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 64
+ERROR - 2020-03-07 20:15:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\controllers\Secure_Controller.php 55
+ERROR - 2020-03-07 21:15:21 --> Severity: Warning --> count(): Parameter must be an array or an object that implements Countable C:\wamp64\www\ipos\application\hooks\load_stats.php 8
+DEBUG - 2020-03-07 21:15:25 --> Total execution time: 18.7240

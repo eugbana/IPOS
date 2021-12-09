@@ -205,6 +205,7 @@
 			pageSize: options.pageSize,
 			striped: true,
 			pagination: true,
+			
 			search: options.resource || false,
 			showColumns: true,
 			clickToSelect: true,

@@ -10,6 +10,7 @@ $lang["customers_basic_information"] = "Information";
 $lang["customers_cannot_be_deleted"] = "Could not deleted selected customers, one or more of the selected customers has sales.";
 $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "Are you sure you want to delete the selected customers?";
+$lang["companies_confirm_delete"] = "Are you sure you want to delete the selected companies?";
 $lang["customers_customer"] = "Customer";
 $lang["customers_lab"] = "Patient";
 $lang["customers_discount"] = "Discount";

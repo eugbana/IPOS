@@ -132,4 +132,6 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Appconfig', 'Person', 'Customer', 'Employee', 'Module', 'Item', 'Item_taxes', 'Sale', 'Sale_suspended', 'Supplier', 'Inventory', 'Receiving', 'Giftcard', 'Item_kit', 'Item_kit_items', 'Stock_location', 'Item_quantity', 'Dinner_table', 'Customer_rewards', 'Rewards', 'Tax', 'Role');
+$autoload['model'] = array('Appconfig', 'Person', 'Customer', 'Employee', 'Module', 'Item', 'Item_taxes', 'Sale', 'Sale_suspended', 'reports/Specific_employee',
+    'Supplier', 'Inventory', 'Receiving', 'Audits', 'Giftcard', 'Item_kit', 'Item_kit_items', 'Stock_location', 'Item_quantity', 'Dinner_table',
+    'Customer_rewards', 'Rewards', 'Tax', 'Role');

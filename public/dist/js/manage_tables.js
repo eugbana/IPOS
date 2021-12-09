@@ -205,7 +205,8 @@
 			striped: true,
 			pagination: true,
 			search: options.resource || false,
-			showColumns: true,
+			showColumns: false,
+			showPrint:true,
 			clickToSelect: true,
 			showExport: true,
 			exportOptions: {
